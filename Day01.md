@@ -1,5 +1,6 @@
-:wolf:  Why are we here? :bear:
+# Why are we here?
 
+## Login
 
 ~~~
 $ pwd
@@ -13,15 +14,15 @@ $ cd shell_data
 We can see files and subdirectories are in this directory by running `ls`,
 which stands for "listing":
 
-~~~shell
+~~~
 $ ls
 ~~~
-
+{: .bash}
 
 ~~~
 sra_metadata  untrimmed_fastq
 ~~~
-
+{: .out}
 
 `ls` prints the names of the files and directories in the current directory in
 alphabetical order,
@@ -32,7 +33,7 @@ which tells `ls` to add a trailing `/` to the names of directories:
 ~~~
 $ ls -F
 ~~~
-
+{: .comment}
 
 ~~~
 sra_metadata/  untrimmed_fastq/
