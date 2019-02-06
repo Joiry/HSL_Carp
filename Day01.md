@@ -1,12 +1,34 @@
-# Why are we here?
+# Introduction to the Shell
 
 ## Login
+
+from command line...
+onyen   <onyen>
+
+`ssh <onyen>@longleaf.unc.edu`
+  
+for me would be:  
+  
+`ssh tristand@longleaf.unc.edu`
+
+
+from terminal program...
+
+`$` is the prompt, telling you the shell is ready to take a command.
+
+`[tristand@longleaf-login2 ~]$`
 
 ~~~
 $ pwd
 ~~~
 
-~~~bash
+~~~
+/nas/longleaf/home/tristand
+~~~
+
+This is your home directory, where you will always be when logging in.  However, there isn't much disk space allocated to individual home directories.  For genomics data sets, you'll have to work in the scratch space or your groups `/proj/<labname/` directory.
+
+~~~
 $ cd shell_data
 ~~~
 
@@ -17,12 +39,12 @@ which stands for "listing":
 ~~~
 $ ls
 ~~~
-{: .bash}
+
 
 ~~~
 sra_metadata  untrimmed_fastq
 ~~~
-{: .out}
+
 
 `ls` prints the names of the files and directories in the current directory in
 alphabetical order,
@@ -33,7 +55,7 @@ which tells `ls` to add a trailing `/` to the names of directories:
 ~~~
 $ ls -F
 ~~~
-{: .comment}
+
 
 ~~~
 sra_metadata/  untrimmed_fastq/
@@ -64,21 +86,17 @@ to quit.
 > > ~~~
 > > $ ls -l
 > > ~~~
-> > {: .bash}
 > > 
 > > ~~~
 > > total 8
 > > drwxr-x--- 2 dcuser dcuser 4096 Jul 30  2015 sra_metadata
 > > drwxr-xr-x 2 dcuser dcuser 4096 Nov 15  2017 untrimmed_fastq
 > > ~~~
-> > {: .output}
 > > 
 > > The additional information given includes the name of the owner of the file,
 > > when the file was last modified, and whether the current user has permission
 > > to read and write to the file.
 > > 
-> {: .solution}
-{: .challenge}
 
 No one can possibly learn all of these arguments, that's why the manual page
 is for. You can (and should) refer to the manual page or other help files
@@ -90,12 +108,12 @@ Let's go into the `untrimmed_fastq` directory and see what is in there.
 $ cd untrimmed_fastq
 $ ls -F
 ~~~
-{: .bash}
+
 
 ~~~
 SRR097977.fastq  SRR098026.fastq
 ~~~
-{: .output}
+
 
 This directory contains two files with `.fastq` extensions. FASTQ is a format
 for storing information about sequencing reads and their quality.
@@ -114,14 +132,14 @@ Return to your home directory:
 ~~~
 $ cd
 ~~~
-{: .bash}
+
 
 then enter:
 
 ~~~
 $ cd she<tab>
 ~~~
-{: .bash}
+
 
 The shell will fill in the rest of the directory name for
 `shell_data`.
@@ -132,7 +150,7 @@ Now change directories to `untrimmed_fastq` in `shell_data`
 $ cd shell_data
 $ cd untrimmed_fastq
 ~~~
-{: .bash}
+
 
 Using tab complete can be very helpful. However, it will only autocomplete
 a file or directory name if you've typed enough characters to provide
@@ -147,7 +165,7 @@ $ cd shell_data
 $ cd untrimmed_fastq
 $ ls SR<tab>
 ~~~
-{: .bash}
+
 
 The shell auto-completes your command to `SRR09`, because all file names in 
 the directory begin with this prefix. When you hit
@@ -156,12 +174,12 @@ the directory begin with this prefix. When you hit
 ~~~
 $ ls SRR09<tab><tab>
 ~~~
-{: .bash}
+
 
 ~~~
 SRR097977.fastq  SRR098026.fastq
 ~~~
-{: .output}
+
 
 Tab completion can also fill in the names of programs, which can be useful if you
 remember the begining of a program name. 
@@ -169,11 +187,11 @@ remember the begining of a program name.
 ~~~
 $ pw<tab><tab>
 ~~~
-{: .bash}
+
 
 ~~~
 pwd         pwd_mkdb    pwhich      pwhich5.16  pwhich5.18  pwpolicy
 ~~~
-{: .output}
+
 
 Displays the name of every program that starts with `pw`. 
