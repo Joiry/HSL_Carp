@@ -1,5 +1,7 @@
 # Introduction to the Shell
 
+https://datacarpentry.org/shell-genomics/
+
 ## Login
 
 from command line...
@@ -35,7 +37,7 @@ However, there isn't much disk space allocated to individual home directories.  
 
 
 
-Scratch is a special area where you can work with large files, but files are deleted after 21 days.  Let's navigate there using the `cd` command, which stands for *change directory*.  We'll dive in a slightly complicated command, it requires a few user specific substitutions:
+Scratch is a special area where you can work with large files, but files are deleted after 21 days.  Let's navigate there using the `cd` command, which stands for *change directory*.  We'll dive in with a slightly complicated command, it requires a few user specific substitutions:
 
 ~~~
 cd /pine/scr/<a>/<b>/<onyen>
@@ -60,12 +62,15 @@ We can see files and subdirectories are in this directory by running `ls`, which
 $ ls
 ~~~
 
-There shouldn't be anything here yet, unless you've used your scratch space before, like me.
+There shouldn't be anything here yet, unless you've used your scratch space before, like me.  We're going to use the `cp`, aka *copy*, command.  'cp' takes two arguments, the first is where you're copying from, and the second where you're copying to.  For now, ignore the `-r`, we'll cover this later in the lesson.
 
 ~~~
-$ cp -r /proj/seq/data/carpentry/dc_sample_data/ .
+$ cp -r /proj/seq/data/carpentry/shell_data/ .
 ~~~
 
+In this case, `/proj/seq/data/carpentry/shell_data/` is where we're copying from, and `.` the to.  '.' is a special shell notation meaning essentially *here*, whichever directory you are currently in.  Once the prompt returns, you can use `ls` again to see the directory you've copied, `shell_data`
+
+The Unix shell uses spaces and whitespace as separators, so we typically use an underscore in naming files with multiple words.
 
 
 ~~~
@@ -81,11 +86,8 @@ sra_metadata  untrimmed_fastq
 ~~~
 
 
-`ls` prints the names of the files and directories in the current directory in
-alphabetical order,
-arranged neatly into columns.
-We can make its output more comprehensible by using the **flag** `-F`,
-which tells `ls` to add a trailing `/` to the names of directories:
+`ls` prints the names of the files and directories in the current directory in alphabetical order, arranged neatly into columns.
+We can make its output more comprehensible by using the **flag** `-F`, which tells `ls` to add a trailing `/` to the names of directories:
 
 ~~~
 $ ls -F
@@ -97,8 +99,10 @@ sra_metadata/  untrimmed_fastq/
 ~~~
 
 
-Anything with a "/" after it is a directory. Things with a "*" after them are programs. If
-there are no decorations, it's a file.
+Anything with a "/" after it is a directory. Things with a "*" after them are programs. If there are no decorations, it's a file.
+
+A lot of modern terminal applications color different file types, so `-F` isn't as essential as it once was, but it can still be useful.
+
 
 `ls` has lots of other options. To find out what they are, we can type:
 
