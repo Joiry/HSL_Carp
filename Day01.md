@@ -7,9 +7,10 @@ onyen   <onyen>
 
 `ssh <onyen>@longleaf.unc.edu`
   
-for me would be:  
+Since my onyen is `tristand`, for me the command is:  
   
 `ssh tristand@longleaf.unc.edu`
+
 
 
 from terminal program...
@@ -22,23 +23,57 @@ from terminal program...
 $ pwd
 ~~~
 
+Which results in:
+
+> ~~~
+> /nas/longleaf/home/tristand
+> ~~~
+
+This is the location of your home directory, where you will always be when logging in.  Each word separated by a slash is a directory within the directory to its left.  Directories are essentially the same as folders in Windows or MacOS.  So `tristand` is a subdirectory of `home`, which is a subdirectory of `longleaf`, etc.  The first `/` is a special directory, the root of the filesystem.
+
+However, there isn't much disk space allocated to individual home directories.  For genomics data sets, you'll have to work in the scratch space or your group's `/proj/<labname>/` directory - we'll get into that later.
+
+
+
+Scratch is a special area where you can work with large files, but files are deleted after 21 days.  Let's navigate there using the `cd` command, which stands for *change directory*.  We'll dive in a slightly complicated command, it requires a few user specific substitutions:
+
 ~~~
-/nas/longleaf/home/tristand
+cd /pine/scr/<a>/<b>/<onyen>
 ~~~
 
-This is your home directory, where you will always be when logging in.  However, there isn't much disk space allocated to individual home directories.  For genomics data sets, you'll have to work in the scratch space or your groups `/proj/<labname/` directory.
+Replacing `<a>` with the first letter of your onyen, `<b>` with the second letter of your onyen, and as before your onyen for `<onyen>`.  For me, the command is:
+
+~~~
+cd /pine/scr/t/r/tristand/
+~~~
+
+Once there, use `pwd` to see your location.
+
+> ~~~
+> /pine/scr/t/r/tristand
+> ~~~
+
+
+We can see files and subdirectories are in this directory by running `ls`, which stands for "listing":
+
+~~~
+$ ls
+~~~
+
+There shouldn't be anything here yet, unless you've used your scratch space before, like me.
+
+~~~
+$ cp -r /proj/seq/data/carpentry/dc_sample_data/ .
+~~~
+
+
 
 ~~~
 $ cd shell_data
 ~~~
 
 
-We can see files and subdirectories are in this directory by running `ls`,
-which stands for "listing":
 
-~~~
-$ ls
-~~~
 
 
 ~~~
