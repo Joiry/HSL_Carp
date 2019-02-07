@@ -22,7 +22,7 @@ Since my onyen is `tristand`, for me the command is:
 
 ## Finding Yourself and Going Places
 
-`$` is the prompt, telling you the shell is ready to accept a command.  By default, the prompt on Longleaf will look like this:
+The `$` indicates the prompt, telling you the shell is ready to accept a command.  By default, the prompt on Longleaf will look like this:
 
 > ~~~
 > [tristand@longleaf-login2 ~]$`
@@ -107,7 +107,7 @@ which should produce:
 
 `ls` prints the names of the files and directories in the current directory in alphabetical order, arranged neatly into columns.
 
-We can make `ls` output more information by using the option `-F`, also called a **flag** , which tells `ls` to add a trailing `/` to the names of directories:
+We can make `ls` output more information by using the option `-F`, also called a *flag*, which tells `ls` to add a trailing `/` to the names of directories:
 
 ~~~
 $ ls -F
@@ -123,7 +123,7 @@ Anything with a "/" after it is a directory. Things with a "\*" after them are p
 A lot of modern terminal applications color different file types, so `-F` isn't as essential as it once was, but it can still be useful.
 
 
-`ls` has lots of other options. To find out what they are, we can use the `man` command, which was shortend from *manual*.
+`ls` has lots of other options. To find out what they are, we can use the `man` command, which was shortened from *manual*.
 
 ~~~
 $ man ls
@@ -139,11 +139,11 @@ to quit.
 > in the directory. What is one piece of additional information this long format
 > gives you that you don't see with the bare `ls` command?
 
-***
-***
+***  
+***  
 Do this on your own before looking below - think about the information displayed for a moment.  
-***
-***
+***  
+***  
 
 > > ## Solution
 > > ~~~
@@ -161,9 +161,7 @@ Do this on your own before looking below - think about the information displayed
 > > to read and write to the file.  We'll cover permissions in a later lesson.
 > > 
 
-No one can possibly learn all of these arguments, that's what the manual page
-is for. You can (and should) refer to the manual page or other help files
-as needed.
+No one can possibly learn all of these arguments, that's what the manual page is for. You can (and should) refer to the manual page or other help files as needed.
 
 Let's go into the `untrimmed_fastq` directory and see what is in there.
 
@@ -210,7 +208,7 @@ Now, move up one more level on your own, and confirm your location
 
 Typing out file or directory names can waste a lot of time and it's easy to make typing mistakes. Instead we can use tab complete as a shortcut. When you start typing out the name of a directory or file, then hit the <kbd>Tab</kbd> key, the shell will try to fill in the rest of the directory or file name.
 
-In the example below, you're typing `cd she` and then hitting the tab key once.
+In the example below, you're typing `cd she` and then hitting the <kbd>tab</kbd> key once.
 
 ~~~
 $ cd she<tab>
@@ -228,7 +226,7 @@ $ cd untrimmed_fastq
 
 Using tab complete can be very helpful. However, it will only autocomplete a file or directory name if you've typed enough characters to provide a unique identifier for the file or directory you are trying to access.
 
-What happens when we try the following (only hit tab once)
+What happens when we try the following (only hit <kbd>tab</kbd> once)
 
 ~~~
 $ ls SR<tab>
@@ -274,6 +272,3 @@ pwd         pwd_mkdb    pwhich      pwhich5.16  pwhich5.18  pwpolicy
 
 Displays the name of every program that starts with `pw`. 
 
-## Review
-
-* `pwd`, `cd`, `ls`
