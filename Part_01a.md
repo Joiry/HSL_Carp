@@ -6,11 +6,11 @@
 * Learning to use the shell requires more up front effort, but in the long term can save you time
   * Most of the commands are cryptically short, but are often abbreviations of some sort
 * Many commonly used bioinformatics programs and tools are written on Unix systems
-  * You'll get the most power out of these tools because you are accesses them in their native environment
+  * You'll get the most power out of these tools when you are access them in their native environment
   * Web and GUI interfaces exist for a number of tools, but rarely offer the full range of options available to them
 * The shell is how you access powerful compute clusters like UNC's *Longleaf* system.
   * You can use the shell to automate some tasks
-  * Its through the shell you can submit large computation tasks to the systems queue
+  * Its through the shell you can submit large computation tasks to the system's queue
 
 
 ## Login
