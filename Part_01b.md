@@ -1,71 +1,69 @@
-## Moving around the file system
+## More moving around the file system
 
 We've learned how to use `pwd` to find our current location within our file system. 
 We've also learned how to use `cd` to change locations and `ls` to list the contents
 of a directory. Now we're going to learn some additional commands for moving around 
 within our file system.
 
-Use the commands we've learned so far to navigate to the `shell_data/untrimmed_fastq` directory, if
-you're not already there. 
+Let's try using the `cd` command without any arguments
+
+~~~
+$ cd
+~~~
+
+Where are we now?
+
+****
+
+The `cd` command without any arguments takes you back to your home directory.  You're no longer in your scratch space and you'll have to navigate back to it.  However, instead of typing out that command again, we can use the shell's *history*.  The history is a log of the commands you've typed in.
+
+Use the up arrow key to scroll back through your history until you find:
+(you can use the down arrow key to scroll forward, in case you skip by the command you want)
+
+~~~
+$ cd /pine/scr/t/r/tristand/
+~~~
+
+Except with your own info.  Hit enter.  You've exectued the command just as if you typed it out.
+
+Often there are multiple ways to do something in the shell.  Say we wanted to navigate to the `shell_data/untrimmed_fastq` directory, we could use two commands:
 
 ~~~
 $ cd shell_data
 $ cd untrimmed_fastq
 ~~~
 
+or use one, using `/` to separate each directory in the hierarchy we want to travel.
 
-What if we want to move back up and out of this directory and to our top level 
-directory? Can we type `cd shell_data`? Try it and see what happens.
+~~~
+$ cd shell_data/untrimmed_fastq
+~~~
+
+What happens if we type `cd shell_data` from here? Try it and see what happens.
 
 ~~~
 $ cd shell_data
 ~~~
 
-
 > ~~~
 > -bash: cd: shell_data: No such file or directory
 > ~~~
 
-
-Your computer looked for a directory or file called `shell_data` within the 
+The system looked for a directory or file called `shell_data` within the 
 directory you were already in. It didn't know you wanted to look at a directory level
-above the one you were located in. 
+above the one you were located in.  
 
-We have a special command to tell the computer to move us back or up one directory level. 
+The shell isn't terribly smart, it can only do what its explicitly told, it can't infer much.
 
-~~~
-$ cd ..
-~~~
-
-
-Now we can use `pwd` to make sure that we are in the directory we intended to navigate
-to, and `ls` to check that the contents of the directory are correct.
+We can also chain together the special `..` notion for the next directory up
 
 ~~~
-$ pwd
+$ cd ../..
 ~~~
 
-~~~
-/home/dcuser/shell_data
-~~~
+Where are we now?
 
-~~~
-$ ls
-~~~
 
-> ~~~
-> sra_metadata  untrimmed_fastq
-> ~~~
-
-From this output, we can see that `..` did indeed take us back one level in our file system. 
-
-You can chain these together like so:
-
-~~~
-$ ls ../../
-~~~
-
-prints the contents of `/home`, which is one level up from your root directory. 
 
 > ## Challenge - Finding hidden directories
 >
@@ -82,125 +80,83 @@ prints the contents of `/home`, which is one level up from your root directory.
 By default, the `ls` commands lists the contents of the working
 directory (i.e. the directory you are in). You can always find the
 directory you are in using the `pwd` command. However, you can also
-give `ls` the names of other directories to view. Navigate to your
-home directory if you are not already there.
-
-~~~
-$ cd
-~~~
-{: .bash}
+give `ls` the names of other directories to view. Navigate to the top of your scratch space.
 
 Then enter the command:
 
 ~~~
 $ ls shell_data
 ~~~
-{: .bash}
 
-~~~
-sra_metadata  untrimmed_fastq
-~~~
-{: .output}
+> ~~~
+> sra_metadata  untrimmed_fastq
+> ~~~
 
-This will list the contents of the `shell_data` directory without
-you needing to navigate there.
+This will list the contents of the `shell_data` directory without you needing to navigate there.
 
-The `cd` command works in a similar way.
 
-Try entering:
 
-~~~
-$ cd
-$ cd shell_data/untrimmed_fastq
-~~~
-{: .bash}
 
-This will take you to the `untrimmed_fastq` directory without having to go through
-the intermediate directory.
-
-> ## Navigating practice
+> ## Listing practice
 > 
-> Navigate to your home directory. From there, list the contents of the `untrimmed_fastq` 
-> directory. 
+> Try to list the contents of the `untrimmed_fastq` directory from the top of your scratch space. 
 > 
 > > ## Solution
 > >
 > > ~~~
-> > $ cd
 > > $ ls shell_data/untrimmed_fastq/
 > > ~~~
-> > {: .bash}
 > > 
-> > ~~~
+> > > ~~~
 > > SRR097977.fastq  SRR098026.fastq 
-> > ~~~
-> > {: .output}
+> > > ~~~
 > > 
-> {: .solution}
-{: .challenge}
+>
 
-## Full vs. Relative Paths
 
-The `cd` command takes an argument which is a directory
-name. Directories can be specified using either a *relative* path or a
-full *absolute* path. The directories on the computer are arranged into a
-hierarchy. The full path tells you where a directory is in that
-hierarchy. Navigate to the home directory, then enter the `pwd`
-command.
+## Paths: Full vs. Relative 
 
-~~~
-$ cd  
-$ pwd  
-~~~
-{: .bash}
+Understanding *paths* is key to understanding the Unix shell.  The path, much like its name suggests, is where to find a file or directory.
 
-You will see: 
+For example, the `cd` command takes an argument which is a directory name - but we've combined multiple directories as one argument.  Both are examples of *paths*, which can be either a *relative* path or an *absolute* path.  We've seen how the directories on the system are arranged into a hierarchy. 
 
-~~~
-/home/dcuser
-~~~
-{: .output}
+Imagine the file system as a building.  The front door of the building is like the *root directory*.  To get to a particular room, you could always use the directions from the front door, which floor, which hall, which room.  This would be the absolute path.  You're always navigating from the beginning.
 
-This is the full name of your home directory. This tells you that you
-are in a directory called `dcuser`, which sits inside a directory called
-`home` which sits inside the very top directory in the hierarchy. The
-very top of the hierarchy is a directory called `/` which is usually
-referred to as the *root directory*. So, to summarize: `dcuser` is a
-directory in `home` which is a directory in `/`.
+However, if you're already in a room somewhere in the building, you could use directions from that room to another, this is like a relative path.  For example, "go out the door, turn left, go past three doors then take the next door on the right."
 
-Now enter the following command:
+The `pwd` command gives you the absolute path to your current directory.  Both of these are absolute paths:
+
+> ~~~
+> /nas/longleaf/home/tristand
+> ~~~
+
+> ~~~
+> /pine/scr/t/r/tristand
+> ~~~
+
+The absolute path starts with `/` and has to have the correct hierarchy of directories.  Tab completion is very useful when navigating with absolute paths.
+
+Enter the following command (substituting in your own scratch space)
 
 ~~~
-$ cd /home/dcuser/shell_data/.hidden
+$ cd /pine/scr/t/r/tristand/shell_data/.hidden/
 ~~~
-{: .bash}
 
-This jumps forward multiple levels to the `.hidden` directory. 
-Now go back to the home directory. 
+This navigates multiple levels to the `.hidden` directory, no matter where you are in the file system.
+
+Now that we are in the `.hidden` directory, we can use a relative path to go to the `untrimmed` directory:
 
 ~~~
-$ cd
+$ cd ../untrimmed_fastq/
 ~~~
-{: .bash}
 
-You can also navigate to the `.hidden` directory using:
+Now try to use a relative path to get to the `sra_metadata`
 
 ~~~
 $ cd shell_data/.hidden
 ~~~
 {: .bash}
 
-
-These two commands have the same effect, they both take us to the `.hidden` directory.
-The first uses the absolute path, giving the full address from the home directory. The
-second uses a relative path, giving only the address from the working directory. A full
-path always starts with a `/`. A relative path does not.
-
-A relative path is like getting directions from someone on the street. They tell you to
-"go right at the stop sign, and then turn left on Main Street". That works great if
-you're standing there together, but not so well if you're trying to tell someone how to
-get there from another country. A full path is like GPS coordinates. It tells you exactly
-where something is no matter where you are right now.
 
 You can usually use either a full path or a relative path
 depending on what is most convenient. If we are in the home directory,
@@ -209,34 +165,26 @@ involves less typing.
 
 Over time, it will become easier for you to keep a mental note of the
 structure of the directories that you are using and how to quickly
-navigate amongst them.
+navigate amongst them.  Always remember the `pwd` command, it can help you figure out relative paths.
 
 
 
 ### Navigational Shortcuts
 
 There are some shortcuts which you should know about. Dealing with the
-home directory is very common. The tilde character,
-`~`, is a shortcut for your home directory. Navigate to the `shell_data`
-directory:
-
-~~~
-$ cd
-$ cd shell_data
-~~~
-{: .bash}
-
-Then enter the command:
+home directory is very common. The tilde character, `~`, is a shortcut for your home directory
 
 ~~~
 $ ls ~
 ~~~
-{: .bash}
+
+Will always list the contents of your home directory.
+
+You'll note the following two commands do the same thing
 
 ~~~
-shell_data
+$ cd
+$ cd ~
 ~~~
-{: .output}
 
-This prints the contents of your home directory, without you needing to 
-type the full path. 
+So we see the commands `ls` and `cd` have different behaviors when no argument is supplied.
