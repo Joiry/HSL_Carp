@@ -2,21 +2,30 @@
 
 ## What is the Shell and Why Do I Care?
 
+* A shell interprets commands you type, it does many of the things you'd normall do with a mouse using a graphical user interface (GUI), such as moving and copying files.
+* Learning to use the shell requires more up front effort, but in the long term can save you time
+  * Most of the commands are cryptically short, but are often abbreviations of some sort
+* Many commonly used bioinformatics programs and tools are written on Unix systems
+  * You'll get the most power out of these tools because you are accesses them in their native environment
+  * Web and GUI interfaces exist for a number of tools, but rarely offer the full range of options available to them
+* The shell is how you access powerful compute clusters like UNC's *Longleaf* system.
+  * You can use the shell to automate some tasks
+  * Its through the shell you can submit large computation tasks to the systems queue
+
 
 ## Login
 
-**demo terminal program**
+**demo ssh program**
 
-from command line...
-onyen   <onyen>
+If you have a local terminal program, such as Terminal on MacOS X, you can connect to longleaf with this command:
 
 `ssh <onyen>@longleaf.unc.edu`
   
-Since my onyen is `tristand`, for me the command is:  
+Where you should replace `<onyen>` with your own onyen. Since my onyen is `tristand`, for me the command is:  
   
 `ssh tristand@longleaf.unc.edu`
 
-
+You'll be prompted for your onyen password.
 
 
 
@@ -42,12 +51,12 @@ Which results in:
 > /nas/longleaf/home/tristand
 > ~~~
 
-This is the location of your home directory, where you will always be when logging in.  Each word separated by a slash is a directory within the directory to its left.  Directories are essentially the same as folders in Windows or MacOS.  So `tristand` is a subdirectory of `home`, which is a subdirectory of `longleaf`, etc.  The first `/` is a special directory, the root of the filesystem.
+This is the location of your home directory, where you will always be when logging in.  Each word separated by a slash is a directory within the directory to its left.  Directories are essentially the same as folders in Windows or MacOS.  So `tristand` is a subdirectory of `home`, which is a subdirectory of `longleaf`, etc.  The first `/` is a special directory, the root directory of the filesystem.
 
 However, there isn't much disk space allocated to individual home directories.  For genomics data sets, you'll have to work in the scratch space or your group's `/proj/<labname>/` directory - we'll talk about the `/proj` space in a future lesson.
 
 
-Scratch is a special area where you can work with large files, but files are deleted after 21 days.  Let's navigate there using the `cd` command, which stands for *change directory*.  We'll dive in with a slightly complicated command, it requires a few user specific substitutions:
+Scratch is a special area where you can work with large files, but files are deleted after 36 days.  Let's navigate there using the `cd` command, which stands for *change directory*.  We'll dive in with a slightly complicated command, it requires a few user specific substitutions:
 
 ~~~
 cd /pine/scr/<a>/<b>/<onyen>
@@ -59,24 +68,28 @@ Replacing `<a>` with the first letter of your onyen, `<b>` with the second lette
 cd /pine/scr/t/r/tristand/
 ~~~
 
+If your onyen was 'zjdown', the location of your scratch space would be:
+
+`/pine/scr/z/j/zjdown`
+
 Once there, use `pwd` to see your new location, which for my account is:
 
 > ~~~
 > /pine/scr/t/r/tristand
 > ~~~
 
-We've just used two commands.  While `pwd` just works on its own, `cp` required an argument - the destination you wanted to go to.  Most of the basic shell commands typically use 0 to 2 arguments.
+We've just used two commands.  While `pwd` just works on its own, `cd` required an argument - the destination you wanted to go to.  Most of the basic shell commands typically use 0 to 2 arguments.
 
 
-We can see files and subdirectories are in this directory by running `ls`, which stands for "listing":
+We can see files and subdirectories are in this directory by running `ls`, which stands for *listing*:
 
 ~~~
 $ ls
 ~~~
 
-There shouldn't be anything here yet, unless you've used your scratch space before, like me.  We're going to use the `cp` command, aka *copy*.
+There shouldn't be anything here yet, unless you've used your scratch space before, like me.  We're going to use the `cp` command, which is short for *copy*.
 
-`cp` takes two arguments, the first is where you're copying *from*, and the second where you're copying *to*.  There's also the `-r` in there, this is a special argument referred to as an *comand-line option* , we'll cover these later in the lesson.
+`cp` takes two main arguments, the first is where you're copying *from*, and the second where you're copying *to*.  There's also the `-r` in there, this is a special argument referred to as an *comand-line option* , we'll cover these later in the lesson.
 
 ~~~
 $ cp -r /proj/seq/data/carpentry/shell_data/ .
@@ -130,7 +143,7 @@ $ man ls
 ~~~
 
 Some manual files are very long. You can scroll through the file using
-your keyboard's down arrow or use the <kbd>Space</kbd> key to go forward one page
+your keyboard's up and down arrows or use the <kbd>Space</kbd> key to go forward one page
 and the <kbd>b</kbd> key to go backwards one page. When you are done reading, hit <kbd>q</kbd>
 to quit.
 
@@ -212,7 +225,7 @@ Now, move up one more level on your own, and confirm your location
 
 Typing out file or directory names can waste a lot of time and it's easy to make typing mistakes. Instead we can use tab complete as a shortcut. When you start typing out the name of a directory or file, then hit the <kbd>Tab</kbd> key, the shell will try to fill in the rest of the directory or file name.
 
-In the example below, you're typing `cd she` and then hitting the <kbd>tab</kbd> key once.
+In the example below, you're typing 'cd she' and then hitting the <kbd>tab</kbd> key once.
 
 ~~~
 $ cd she<tab>
