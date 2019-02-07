@@ -5,7 +5,7 @@
 
 ## Login
 
-* demo terminal program *
+**demo terminal program**
 
 from command line...
 onyen   <onyen>
@@ -140,9 +140,13 @@ to quit.
 > gives you that you don't see with the bare `ls` command?
 
 ***  
+
 ***  
+
 Do this on your own before looking below - think about the information displayed for a moment.  
+
 ***  
+
 ***  
 
 > > ## Solution
