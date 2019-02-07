@@ -1,9 +1,11 @@
-# Introduction to the Shell
+# First Steps with the Shell
 
 ## What is the Shell and Why Do I Care?
 
 
 ## Login
+
+* demo terminal program *
 
 from command line...
 onyen   <onyen>
@@ -16,15 +18,17 @@ Since my onyen is `tristand`, for me the command is:
 
 
 
-from terminal program...
 
-`$` is the prompt, telling you the shell is ready to accept a command.  When you see it in the lesson examples below, what comes after it is what you'll type.  By default, the prompt on Longleaf will look like this:
+
+## Finding Yourself and Going Places
+
+`$` is the prompt, telling you the shell is ready to accept a command.  By default, the prompt on Longleaf will look like this:
 
 > ~~~
 > [tristand@longleaf-login2 ~]$`
 > ~~~
 
-Except with your own onyen instead of `tristand`, and you may be on either `login1` or `login2` - these are just two nodes you are arbitrarily assigned when logging in.
+Except with your own onyen instead of `tristand`, and you may be on either `login1` or `login2` - these are just two nodes you are arbitrarily assigned when logging in.  In the lesson examples below, we'll just shorten it to `$`, what comes after it is what you'll type.
 
 Let's use our first command, `pwd`, which stands for *print working directory*
 
@@ -70,7 +74,9 @@ We can see files and subdirectories are in this directory by running `ls`, which
 $ ls
 ~~~
 
-There shouldn't be anything here yet, unless you've used your scratch space before, like me.  We're going to use the `cp`, aka *copy*, command.  'cp' takes two arguments, the first is where you're copying *from*, and the second where you're copying *to*.  There's also the `-r` in there, this is a special argument referred to as an *comand-line option* , we'll cover these later in the lesson.
+There shouldn't be anything here yet, unless you've used your scratch space before, like me.  We're going to use the `cp` command, aka *copy*.
+
+`cp` takes two arguments, the first is where you're copying *from*, and the second where you're copying *to*.  There's also the `-r` in there, this is a special argument referred to as an *comand-line option* , we'll cover these later in the lesson.
 
 ~~~
 $ cp -r /proj/seq/data/carpentry/shell_data/ .
@@ -133,9 +139,11 @@ to quit.
 > in the directory. What is one piece of additional information this long format
 > gives you that you don't see with the bare `ls` command?
 
-
-
-
+***
+***
+Do this on your own before looking below - think about the information displayed for a moment.  
+***
+***
 
 > > ## Solution
 > > ~~~
@@ -237,6 +245,20 @@ $ ls SRR09<tab><tab>
 > SRR097977.fastq  SRR098026.fastq
 > ~~~
 
+Now let's try the following:
+
+~~~
+$ ls sr<tab><tab>
+~~~
+
+Nothing is happening, no matter how many times we hit <kbd>Tab</kbd>.  This is because the shell is case sensitive.  The following are different identifiers to the shell:
+
+> ~~~
+> SRR097977.fastq
+> srr097977.fastq
+> SRR097977.FASTQ
+> ~~~
+
 
 Tab completion can also fill in the names of programs, which can be useful if you remember the begining of a program name. 
 
@@ -251,3 +273,7 @@ pwd         pwd_mkdb    pwhich      pwhich5.16  pwhich5.18  pwpolicy
 
 
 Displays the name of every program that starts with `pw`. 
+
+## Review
+
+* `pwd`, `cd`, `ls`
