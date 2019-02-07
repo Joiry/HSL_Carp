@@ -1,3 +1,5 @@
+# Second steps
+
 ## More moving around the file system
 
 We've learned how to use `pwd` to find our current location within our file system. 
@@ -26,14 +28,14 @@ $ cd /pine/scr/t/r/tristand/
 
 Except with your own info.  Hit enter.  You've exectued the command just as if you typed it out.
 
-Often there are multiple ways to do something in the shell.  Say we wanted to navigate to the `shell_data/untrimmed_fastq` directory, we could use two commands:
+Often there are multiple ways to do something in the shell.  Say we wanted to navigate to the `untrimmed_fastq` directory, which is in the `shell_data` directory.  We could use two commands (but don't):
 
 ~~~
 $ cd shell_data
 $ cd untrimmed_fastq
 ~~~
 
-or use one, using `/` to separate each directory in the hierarchy we want to travel.
+or do it with one command, using `/` to separate each directory in the hierarchy we want to travel.
 
 ~~~
 $ cd shell_data/untrimmed_fastq
@@ -199,7 +201,7 @@ So we see the commands `ls` and `cd` have different behaviors when no argument i
 
 One of the little secrets of Unix is all these 'commands' we're using are actually just little programs, and the shell is letting you execute them.  And all these commands have been written and modified over many years, by different programmers.
 
-Which leads to another little secret - many things in Unix are simply conventions.  Command options aren't guaranteed to be same between different commands, though usually they are.
+Which leads to another little secret - many things in Unix are simply conventions.  Command options aren't guaranteed to be same between different commands, though often they are - or are thematically very similar.
 
 Let's head back to the `untrimmed` directory and look at a new command, `less`
 
@@ -233,7 +235,7 @@ Finally, let's revisit the `cp`, aka `copy` command.  I had you use it with mini
 
 Hopefully it makes more sense now.  We're copying from the absolute path `/proj/seq/data/carpentry/shell_data/` to our current location using the `.` shorthand.  But what is that `-r`?  Use the `man` command to find out.
 
-Here's an extra trick, while in the man page, hit <kbd>/</kbd>.  You'll get a cursor in the bottom corner, now type '-r', and voila, you skip to the first time '-r' appears in the man page.  This is a general search feature, not just for the different command options or flags.  If you typed in 'recursively', it would have jumped to the next line down.
+Here's an extra trick, while in the man page, hit the <kbd>/</kbd> key.  You'll get a cursor in the bottom corner, now type '-r', and voila, you skip to the first time '-r' appears in the man page.  This is a general search feature, not just for the different command options or flags.  If you typed in 'recursively', it would have jumped to the next line down.
 
 `-r`, also often `-R`, is one of the most powerful, and thus **dangerous**, options for commands that use it.
 
@@ -252,3 +254,5 @@ $ cp SRR098026.fastq SRR.098026.copy.txt.zongaaa
 ~~~
 
 We can use `less` to look both of these copies and see they are both still just the same text file as the original .fastq file.
+
+That's all for today.  Next class we'll get into more advanced manipulation of files.
