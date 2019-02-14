@@ -32,7 +32,7 @@ $ ls
 ~~~
 
 > ~~~
-> Control_A.fastq  Control_SS.fastq  SRR097977.fastq
+> Control_A.fastq  Control_SR.fastq  SRR097977.fastq
 > Control_B.fastq  file_sizes.txt    SRR098026.fastq
 > ~~~
 
@@ -47,7 +47,7 @@ $ ls *.fastq
 You should only see these files (the column placement might be slightly different):
 
 > ~~~
-> Control_A.fastq  Control_SS.fastq  SRR098026.fastq
+> Control_A.fastq  Control_SR.fastq  SRR098026.fastq
 > Control_B.fastq  SRR097977.fastq
 > ~~~
 
@@ -76,7 +76,7 @@ $ echo *.fastq
 
 
 > ~~~
-> Control_A.fastq Control_B.fastq Control_SS.fastq SRR097977.fastq SRR098026.fastq
+> Control_A.fastq Control_B.fastq Control_SR.fastq SRR097977.fastq SRR098026.fastq
 > ~~~
 
 The `*` is expanded to include any file that ends with `.fastq`.
@@ -88,7 +88,7 @@ $ ls Control_*.fastq
 ~~~
 
 > ~~~
-> Control_A.fastq  Control_B.fastq  Control_SS.fastq
+> Control_A.fastq  Control_B.fastq  Control_SR.fastq
 > ~~~
 
 
@@ -133,13 +133,24 @@ $ ls *S*fastq
 ~~~
 
 > ~~~
-> Control_SS.fastq  SRR097977.fastq  SRR098026.fastq
+> Control_SR.fastq  SRR097977.fastq  SRR098026.fastq
 > ~~~
 
 This also demostrates that `*` can match nothing.
 
+The `?` character only matches a single character.
 
-> > Bonus: `ls /usr/bin/*[ac]*`
+~~~
+$ ls Control_?.fastq
+~~~
+
+> ~~~
+> Control_A.fastq  Control_B.fastq
+> ~~~
+
+`Control_SR.fastq` is not listed, because it contains two letter between `Control_` and `.fastq`
+
+
 
 
 ## Command History
