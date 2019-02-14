@@ -247,7 +247,7 @@ $ wc -l bad_reads.txt
 
 
 
-> ## File extensions - part 2
+> ## Making use of file extensions
 > 
 > This is where we would have trouble if we were naming our output file with a `.fastq` extension. 
 > If we already had a file called `bad_reads.fastq` (from our previous `grep` practice) 
@@ -352,6 +352,8 @@ efficiently. Let's take a few minutes to practice.
 >>> ~~~
 >>> 186
 >>> ~~~
+
+
 ## Writing for loops
 
 Loops are key to productivity improvements through automation as they allow us to execute commands repeatedly. 
