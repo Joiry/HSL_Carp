@@ -80,9 +80,11 @@ One of the sets of lines returned by this command is:
 > Have your search return all matching lines and the name (or identifier) for each sequence
 > that contains a match.
 
-~~~~
+****
 
-~~~~
+****
+
+****
 
 > > ## Solution  
 > > 1. `grep -B1 GNATNACCACTTCC SRR098026.fastq`  
@@ -144,9 +146,11 @@ four to get the number of sequences that match our search pattern.
 >
 > How many sequences in `SRR098026.fastq` contain at least 3 consecutive Ns?
 
-~~~~
+****
 
-~~~~
+****
+
+****
 
 >> ## Solution
 >>  
@@ -241,7 +245,6 @@ $ wc -l bad_reads.txt
 > 537 bad_reads.txt
 > ~~~
 
-~~~~
 
 
 > ## File extensions - part 2
@@ -276,9 +279,11 @@ reads using a wildcard within our search string for `grep`.
 > How many reads in the `SRR098026.fastq` file contain at least two regions of 5 unknown
 > nucleotides in a row, separated by any number of known nucleotides?
 
-~~~~
+****
 
-~~~~
+****
+
+****
 
 >> ## Solution
 >> 
@@ -332,9 +337,11 @@ efficiently. Let's take a few minutes to practice.
 > nucleotides in a row, separated by any number of known nucleotides. Do this without creating 
 > a new file.
 
-~~~~
+****
 
-~~~~
+****
+
+****
 
 >> ## Solution
 >> 
@@ -436,9 +443,11 @@ sequencing.
 >
 > How many single-end libraries are in our samples? 
 
-~~~~
+****
 
-~~~~
+****
+
+****
 
 >> ## Solution
 >> ~~~
@@ -503,9 +512,11 @@ $ cut -f3 SraRunTable.txt | grep -v LibraryLayout_s | sort | uniq -c
 > 1. How many different sample load dates are there?   
 > 2. How many samples were loaded on each date?  
 
-~~~~
+****
 
-~~~~
+****
+
+****
 
 >> ## Solution
 >>  
@@ -571,9 +582,11 @@ $ grep PAIRED SraRunTable.txt > SraRunTable_only_paired_end.txt
 > Sort samples by load date and export each of those sets to a new file (one new file per
 > unique load date). 
 
-~~~~
+****
 
-~~~~
+****
+
+****
 
 > > ## Solution
 > > 
