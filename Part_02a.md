@@ -31,6 +31,12 @@ Let's take a quick look at the files since I've added a few:
 $ ls
 ~~~
 
+> ~~~
+> Control_A.fastq  Control_SS.fastq  SRR097977.fastq
+> Control_B.fastq  file_sizes.txt    SRR098026.fastq
+> ~~~
+
+
 We are interested in looking at the FASTQ files in this directory. We can list
 all files with the .fastq extension using the command:
 
@@ -114,9 +120,11 @@ Lists every file in `/usr/bin` that ends in the characters `.sh`.
 > 2.  List all of the files in `/usr/bin` that end with the letter 'o'. 
 > 3.  List all of the files in `/usr/bin` that contain the letter 'q'.
 
-~~~~
+****
 
-~~~~
+****
+
+****
 
 That last one required a little extra thought.  You can use the wildcard multiple times:
 
@@ -177,9 +185,15 @@ Type `!` (exclamation point) and then the number of the command from your histor
 You will be glad you learned this when you need to re-run very complicated commands.
 
 > ## Exercise
-> Find the line number in your history for the command that listed all the .sh
-> files in `/usr/bin`. Rerun that command.
->
+> Find the line number in your history for the command that listed all the .fastq
+> files that contained an 'S'. Rerun that command.
+
+****
+
+****
+
+****
+
 > > ## Solution
 > > First type `history`. Then use `!` followed by the line number to rerun that command.
 
@@ -207,7 +221,13 @@ This will print out all of the contents of the `SRR098026.fastq` to the screen.
 > 2.  From your home directory, and without changing directories,
 > use one short command to print the contents of all of the files in
 > the `~/shell_data/untrimmed_fastq` directory.
-> 
+
+****
+
+****
+
+****
+
 > > ## Solution
 > > 1. The last line of the file is `TC:CCC::CCCCCCCC<8?6A:C28C<608'&&&,'$`.
 > > 2. `cat ~/shell_data/untrimmed_fastq/*`
@@ -252,7 +272,14 @@ return, you will search backwards and move up the file to previous examples of t
 > ## Exercise
 >
 > What are the next three nucleotides (characters) after the first instance of the sequence quoted above?
-> 
+
+****
+
+****
+
+****
+
+
 
 
 
@@ -456,7 +483,7 @@ If you enter `n` (for no), the file will not be deleted. If you enter `y`, you w
 measure of security, as there is one more step between us and deleting our data files.
 
 **Important**: The `rm` command permanently removes the file. Be careful with this command. It doesn't
-just nicely put the files in the Trash. They're really gone.
+just nicely put the files in the Trash. They're really gone.  **Forever**
 
 By default, `rm` will not delete directories.
 
