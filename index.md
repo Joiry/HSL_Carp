@@ -1,10 +1,10 @@
-
+****
 
 * Introduction to Unix Shell
   * [Part 1A, First Steps](https://joiry.github.io/HSL_Carp/Part_01a)
   * [Part 1B, Second Steps](https://joiry.github.io/HSL_Carp/Part_01b)
-  * [Part 2A, Working with Files]()
-  * [Part 2B, Getting More out of Files]()
+  * [Part 2A, Working with Files](https://joiry.github.io/HSL_Carp/Part_02a)
+  * [Part 2B, Getting More out of Files](https://joiry.github.io/HSL_Carp/Part_02b)
   * Part 3
   
 ****
