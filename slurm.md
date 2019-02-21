@@ -229,7 +229,7 @@ There are some defaults that Research Computing has set, so no all the options n
 
 [https://help.unc.edu/help/getting-started-on-longleaf/](https://help.unc.edu/help/getting-started-on-longleaf/)
 
-(https://help.unc.edu/help/longleaf-slurm-examples/)
+[https://help.unc.edu/help/longleaf-slurm-examples/](https://help.unc.edu/help/longleaf-slurm-examples/)
 
 ~~~
 $ sbatch slurm_gzip.sh Exp_011
