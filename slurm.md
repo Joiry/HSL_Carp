@@ -227,7 +227,7 @@ We can see options we've already used, plus some extra
 
 There are some defaults that Research Computing has set, so no all the options need be specified:  
 
-(https://help.unc.edu/help/getting-started-on-longleaf/)
+[https://help.unc.edu/help/getting-started-on-longleaf/](https://help.unc.edu/help/getting-started-on-longleaf/)
 
 (https://help.unc.edu/help/longleaf-slurm-examples/)
 
