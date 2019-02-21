@@ -5,7 +5,8 @@
   * [Part 1B, Second Steps](https://joiry.github.io/HSL_Carp/Part_01b)
   * [Part 2A, Working with Files](https://joiry.github.io/HSL_Carp/Part_02a)
   * [Part 2B, Getting More out of Files](https://joiry.github.io/HSL_Carp/Part_02b)
-  * Part 3
+  * [Part 3A, More Variables and Loops, then Scripts](https://joiry.github.io/HSL_Carp/var_loop_script)
+  * [Part 3B, Introduction to Slurm](https://joiry.github.io/HSL_Carp/slurm)
   
 ****
   
