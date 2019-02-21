@@ -1,4 +1,4 @@
-# More on Variables and Loops, and finally Scripts!
+# More on Variables and Loops, and then finally Scripts!
 
 
 ## Variables
@@ -24,7 +24,7 @@ $ id=sample 01
 -bash: 01: command not found
 ~~~
 
-Instead, we'd need to use quotes
+Instead, we need to use quotes
 
 ~~~
 $ id="sample 01"
@@ -35,7 +35,7 @@ $ echo $id
 sample 01
 ~~~
 
-However, in general, its not a good idea to have spaces unless you have a specific reason.
+However, in general, its not a good idea to have spaces unless you have a specific need.
 
 There are a number of predefined variables in the shell.  For example, I've talked a lot about paths, and there is a predefined set of paths the shell looks through when you try to execute a command.
 
@@ -89,7 +89,7 @@ $ echo $name_data
 $ echo ${name}_data
 ~~~
 
-The shell interprets `$name_data` as a variable named 'name_data', not the variable 'name' appended to '_data'
+The shell interprets `$name_data` as a variable named 'name_data', not the variable 'name', to have its value appended with '_data'
 
 ****
 ****
@@ -250,7 +250,7 @@ $ pattern=blah
 $ bash test.sh
 ~~~
 
-Hmmm, nothing happened?  This is because invoking the shell with the `bash` command creatures a new temporary environment, and the `pattern` variable is not defined.  A different way of running a script with with `source`, which runs the script in the current environment:
+Hmmm, nothing happened?  This is because invoking the shell with the `bash` command creatures a new temporary environment, and the `pattern` variable is not defined.  A different way of running a script is with the command `source`, which runs the script in the current environment:
 
 ~~~
 $ source test.sh
@@ -289,6 +289,8 @@ Gives:
 not
 ~~~
 
+'bashing' got passed in as the variable `$2`, but we didn't use it in the script.
+
 Now, armed with this, let's make the grep script a lot more flexible to use.
 
 ~~~
@@ -309,9 +311,23 @@ $ source grep_reads_script.sh ATAT
 $ less grepped_ATAT_reads.txt
 ~~~
 
+You can use loops in scripts as well.  Let's make the following script:
 
+~~~
+$ nano loop_test.sh
+~~~
 
-looping with variable?
+~~~
+suffix=$1
+for file in *.$suffix
+do
+echo $file
+done
+~~~
+
+Admittedly, all these scripts are fairly simple.  But there is no limit to how many commands you can put into them.  You could write a script with an entire bioinformatics workflow, or a set of modular smaller scripts to execute parts of the workflow (this allows for picking up work if one step fails instead of re-running everything).
+
+When we get into some of the bioinformatics tools in the last 2 lessons, the complexity of some of the commands and the arguments you pass to them will make scripting a lot more appealing.
 
 
 
