@@ -134,7 +134,9 @@ Use less to look at both compress.out and compress.err - which output stream is 
 
 Slurm has its own special notation, and we can make the log .out and .err log files a bit more unique 
 
-sbatch -o compress.%j.out -e compress.%j.err --wrap="gzip -v Exp_2.fastq"
+~~~
+$ sbatch -o compress.%j.out -e compress.%j.err --wrap="gzip -v Exp_2.fastq"
+~~~
 
 Again, you can up arrow to get to your squeue -u command to try and catch the job running
 
@@ -152,13 +154,14 @@ $ sample_nam=Exp_10
 $ echo $sample_nam
 ~~~
 
-now that we've set the shell variable, we can use it:
+Now that we've set the shell variable, we can use it:
 
 ~~~
 $ sbatch -o $sample_nam.gzip.%j.out -e $sample_nam.gzip.%j.err --wrap="gzip -v $sample_nam.fastq"
 ~~~
 
-# once finished, let's look at the resulting files:
+Once finished, let's look at the resulting files:
+
 ~~~
 $ ls -1
 ~~~
@@ -204,17 +207,17 @@ $ zcat Control_A.fastq.gz | grep "CTGGTGGTACTNTCTGTGGCG"
 ## Slurm Scripts!
 
 
-This whole --wrap="<command you want to run" may seem really awkward, and it is
+This whole --wrap="<command you want to run>" may seem really awkward, and it is!
 
-slurm is really intended for the user to submit a slurm script to run jobs
+Slurm is really intended for the user to submit a slurm script to run jobs
 
-Copy over this slurm script from my scratch space
+Copy over these slurm scripts:
 
 ~~~
-$ cp /pine/scr/t/r/tristand/slurm_gzip.sh .
+$ cp /proj/seq/data/carpentry/slurm_*sh .
 ~~~
 
-Let's take a look at it
+Let's take a look at the first one we will use:
 
 ~~~
 $ less slurm_gzip.sh
@@ -223,6 +226,7 @@ $ less slurm_gzip.sh
 We can see options we've already used, plus some extra
 
 There are some defaults that Research Computing has set, so no all the options need be specified:  
+
 https://help.unc.edu/help/getting-started-on-longleaf/
 
 https://help.unc.edu/help/longleaf-slurm-examples/
@@ -231,13 +235,13 @@ https://help.unc.edu/help/longleaf-slurm-examples/
 $ sbatch slurm_gzip.sh Exp_011
 ~~~
 
-Let's use a pointless time wasting job to see a few extra slurm commands
+We can use a pointless time wasting script to see a few extra slurm commands
 
 ~~~
-$ cp /pine/scr/t/r/tristand/slurm_time_waster.sh .
+$ sbatch slurm_time_waster.sh
 ~~~
 
-Do an squeue -u <your_onyen> to see its job id if you had run it in a previous session
+Do an squeue -u <your_onyen> to see its job id as if you had run it in a previous session
 
 Substitute the job id for <jobid> below
 
@@ -245,9 +249,9 @@ Substitute the job id for <jobid> below
 $ sacct -j <jobid> --format=User,JobID,MaxRSS,Start,End,Elapsed
 ~~~
 
-This gives us info on a running job, or past jobs
+This gives us info on a running job, or past jobs.  Look up the previous job ids and compare with the currently running one.
 
-Now let's kill this job
+We can also stop a job with the `scancel` command:
 
 ~~~
 $ scancel <jobid>
