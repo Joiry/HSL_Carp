@@ -17,7 +17,7 @@ A lot of stuff scrolls by, and it doesn't look like the usual man page or other 
 
 `module` is a program that groups several functions, and you decide which you want to use with a subcommand:
 
-`module <subcommand>'
+`module <subcommand>`
 
 Let's try this:
 
@@ -107,26 +107,12 @@ Let's transfer the `.html` file to our local computer and take a look at it.  So
 $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/ecoli_ref-5m_fastqc.html .
 ~~~
 
-This operates like the `cp` command, only you're copying across a network, and you'll have to enter your onyen password.  You are essentially doing a temporary login, copying the files specified, and then logging out.  On Macs, using `pwd` and the native copy/paste is very useful if you have long paths you need to enter.  Note that by default `scp` begins in your home directory, so you need to supply it the correct relative path or give it an absolute path (which is usually safer, since you can't tab complete).
+This operates like the `cp` command, only you're copying across a network, and you'll have to enter your onyen password when requested.  You are essentially doing a temporary login, copying the files specified, and then logging out.  On Macs, using `pwd` and the native copy/paste is very useful if you have long paths you need to enter.  Note that by default `scp` begins in your home directory, so you need to supply it the correct relative path or give it an absolute path (which is usually safer, since you can't tab complete).
 
-* Now we'll go over the FastQC report *
+**Now we'll go over the FastQC report**
 
-~~~
-$
-~~~
-~~~
-$
-~~~
 
-~~~
-$
-~~~
-~~~
-$
-~~~
-~~~
-$
-~~~
+
 ## Trimming
 
 For this exercise, we're going to use the trimming provided in the `bbmap module`.  `bbmap` is also the module we'll be using for alignment.  There are a number of other trimming programs available, for example:
@@ -136,37 +122,110 @@ trim_galore/0.4.3
 trimmomatic/0.36
 ~~~
 
-BBmap's trimming utility is `bbduk`, and its primary purpose is to trim adapter content, which tends to be the major purpose of trimming nowadays.
+BBmap's trimming utility is `bbduk`, and its primary purpose is to trim adapter content, which tends to be the major purpose of trimming nowadays.  However, as an exercise we'll use it to do simple quality trimming first.
+
+The simplest method is to set a hard quality cutoff.
 
 ~~~
-$
+$ sbatch -o bbduk.%j.out --wrap="bbduk.sh -Xmx1g in=ecoli_ref-5m.fastq.gz out=ecoli_ref-5m.trim_q20.fastq.gz qtrim=rl trimq=20"
 ~~~
+
+Don't worry too much about the `-Xmx1g` for the moment, these are parameters for java, which the bbmap programs are written in.  Most important is `1g` means use 1 gig of memory - this will become more important for alignment.
+
+`in=` is the file you want to trim reads from 
+`out=` specifies the name of the file to write the trimmed to
+`qtrim=rl` indicates to trim from both the left and right ends.  `qtrim=r` would mean just trim from the right side.
+`trimq=20` tells bbduk the cutoff, reads below quality 20 will be trimmed.
+
+Its important to note the trimming proceeds from whichever side until it reaches a bp about the cutoff, and stops there.  Potentially one good read could protect worse reads further in, so another strategy is to use a window, where the cutoff is triggered based on the average quality of several reads.
+
+*(tho, in the case of bbduk, the basic side trimming is a bit more sophisticated already than other trimmers)*
+
 ~~~
-$
+$ sbatch -o bbduk.%j.out --wrap="bbduk.sh -Xmx1g in=ecoli_ref-5m.fastq.gz out=ecoli_ref-5m.trim_win20.fastq.gz qtrim=w trimq=20 minlen=50"
 ~~~
+
+
+As stated above, the main need for trimming is to remove adapter content, and we tend to be less concerned with quality scores these days.  There are still cases where quality trimming is needed.
+
 ~~~
-$
+$ sbatch -o bbduk.%j.out --wrap="bbduk.sh -Xmx1g in=ecoli_ref-5m.fastq.gz out=ecoli_ref-5m.trim.adapt.fastq.gz minlen=50 ref=adapters.fa ktrim=r k=23 mink=11 hdist=1 tpe tbo"
 ~~~
+
+What do these new options mean?  Use bbduk's help to figure them out as a quick exercise - perhaps pipe the help through less to help you search.
+
 ~~~
-$
+ref=adapters.fa
+ktrim=r
+k=23
+mink=11
+hdist=1
+tpe
+tbo
 ~~~
 
 
 ## Re-QCing
 
-Now, let's see what our trimming did.  We'll want to be specific, since we already ran `fastqc` on the original file:
+Now, let's see what our trimming did.  We'll want to be more specific, since we already ran `fastqc` on the original file.  By including 'trim' in all our trimmed fastq files, we have an easy filter:
 
 ~~~
-$
+$ sbatch -o fqc.%j.out -e fqc.%j.err --wrap="fastqc *trim*.fastq.gz"
 ~~~
 
-Once its done, let's transfer it locally and compare the two.
+Once its done, let's transfer it locally and compare what the different trimmings did.  
+
+But first, this directory is getting a bit messy.
 
 ~~~
-$
+$ mkdir fastqc
+$ mv *fastqc* fastqc
+$ ls fastqc/
 ~~~
+
+Notice the error?  This one is rather benign, since all the other files get moved, but we can't move a directory into itself.
+
+If we go in this directory and use `pwd`, it can give us a useful path to help in copying the files to our local machine.
+
+~~~
+$ cd fastqc/
+$ pwd
+~~~
+
+~~~
+/pine/scr/t/r/tristand/trim/fastqc
+~~~
+
+If using `scp` from a local terminal, this helps me build a path to specify the download target.
+
+(remember, this is for use on your local terminal)
+
+~~~
+$ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/fastqc/*.html .
+~~~
+
 
 ## MultiQC
 
 MultiQC is a program that aggregates multiple FastQC files into one report.  If you've got more than a just a few sequencing files, it can give you a quick overview of the major QC stats.  The individual FastQC reports still give better details, but looking at MultiQC, you can narrow down which fastq files you want to look at the QC stats in more detail.
+
+
+MultiQC looks for all the `*fastqc.zip` files in a directory to build up its report.
+
+~~~
+$ module load multiqc
+$ sbatch -o multiqc.%j.out --wrap="multiqc fastqc/"
+~~~
+
+Once its finished, checking the queue, let's see what the logging info has to say:
+
+(substituting in the proper JobID)
+~~~
+$ less multiqc.14274947.out
+~~~
+
+Now let's download the `multiqc_report.html` file and take a look at it.
+
+In this case, we're looking at the same data in multiple trimming states.  But typically you'd fastqc an entire folder and run MultiQC on them all.  You can look at the combined report to get an overall view, and then decide which specific Fastqc reports you want to look at in detail.
+
 
