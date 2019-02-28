@@ -1,13 +1,12 @@
 # QC and trimming of your data
 
+***
 
 ## Modules
 
-The Longleaf cluster uses a system called modules.  Unlike the "basic" commands of the shell, modules are used for more specific purpose software, often whole packages.
+The Longleaf cluster uses a system called modules.  Unlike the "basic" commands of the shell, modules are used for more specific purpose software, often whole packages.  A package usually groups related programs and they may share a common set of conventions and functionality.
 
-Why use modules?  Well, as we'll see, there's usually multiple versions of the same package available at once.
-
-
+Why use modules?  Well, as we'll see, there's usually multiple versions of the same package available, and a module system let's us be specific about which version we want to use.
 
 ~~~
 $ module
@@ -41,10 +40,10 @@ $ module load fastqc<tab><tab>
 
 By hitting tab, you can see the other versions available.  Why are these other versions there - the short answer is you should treat version numbers of software the same as you might lot numbers of reagents.
 
-Updates to packages may fix earlier bugs, improve an algorithm, or introduce new bugs or behaviors.  Its important to document which version you're using.
-Sometimes you may do an analysis months or years after an initial analysis - you may not want to rerun the originals with a newer version of the software.
+Updates to packages may fix earlier bugs, improve an algorithm, or introduce new bugs or behaviors.  Its important to document which version you're using.  
+Sometimes you may do an analysis months or years after an initial analysis - you will have to decide if you want to rerun the originals with a newer version of the software, or run the newer data with the older version of the software.
 
-Also, if comparing to results from another lab's paper, you may want to use the same version of the program.
+Also, if comparing to results from another lab's paper, you may want to use the same version of the program - which is hopefully documented in their methods section or supplemental information.
 
 Go ahead and hit enter so we've loaded the `fastqc` module.
 
@@ -57,16 +56,30 @@ Currently Loaded Modules:
   1) fastqc/0.11.7
 ~~~
 
+FastQC is a nice little program that will compile stats on the read quality of a fastq file and a few other general measures.  We'll look over the results later and talk about what each section of the report means.
 
 Its important to note that the modules are only loaded into the current session, and that like shell variables are gone after logging out.  You can have modules automatically loaded when you login, but I prefer to always explicitly load the modules that I need.  You're less likely to be surprised by a version change or cross module conflict.
+
+***
+
+## Using FastQC
+
+The following can be done in your home directory, or we can work in the scratch space `/pine/scr/<a>/<b>/<onyen>`
+
+We'll make a trimming folder and enter it.
 
 ~~~
 $ mkdir trim
 $ cd trim
 ~~~
+
+Let's copy a test fastq, this is a file of E Coli reads, 5 million in fact.  Its a bit bigger than the previous files we worked with, but still smaller than a typical modern fastq (of course this depends on your experiment)
+
 ~~~
 $ cp /proj/seq/data/carpentry/ecoli/ecoli_ref-5m.fastq.gz .
 ~~~
+
+Now we'll run `fastqc` on it.  
 
 ~~~
 $ sbatch -o fqc.%j.out -e fqc.%j.err --wrap="fastqc *.fastq.gz"
@@ -109,9 +122,11 @@ $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/ecoli_ref-5m_fastqc.
 
 This operates like the `cp` command, only you're copying across a network, and you'll have to enter your onyen password when requested.  You are essentially doing a temporary login, copying the files specified, and then logging out.  On Macs, using `pwd` and the native copy/paste is very useful if you have long paths you need to enter.  Note that by default `scp` begins in your home directory, so you need to supply it the correct relative path or give it an absolute path (which is usually safer, since you can't tab complete).
 
+***  
 **Now we'll go over the FastQC report**
+***  
 
-
+***
 
 ## Trimming
 
@@ -164,6 +179,7 @@ tpe
 tbo
 ~~~
 
+***
 
 ## Re-QCing
 
@@ -204,6 +220,7 @@ If using `scp` from a local terminal, this helps me build a path to specify the 
 $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/fastqc/*.html .
 ~~~
 
+***
 
 ## MultiQC
 
