@@ -1,8 +1,14 @@
 # Aligning Data
 
+***
 **Alignment Slides**
+***
 
 ## Data Organization
+
+As we've seen, things can get quite messy once you start processing and analyzing a lot of files.  Once you get more comfortable with paths you can start to have your commands and programs access data from different directories and write out results to a different set of directories.  For now we'll just continue to use the approach of accessing and writing to the current directory, then sort out files afterwards.
+
+Let's move all our fastq files to a new directory (normally we may just move only the trimmed ones, but we're keeping the original for our alignment practice and demostration).
 
 ~~~
 $ mkdir align
@@ -12,13 +18,36 @@ $ cd ../align/
 $ ls -1
 ~~~
 
-## Making a reference
+In the last three commands, we move the new `align` directory up one level and then enter it, and lastly make sure all the files we want are here.
 
-Let's make sure `bbmap` is loaded:
+
+***  
+
+## Making a reference with BBmap
+
+Let's pretend we logged out, or we just loaded so many modules we're worried there may be a conflict:
 
 ~~~
+$ module purge
 $ module list
 ~~~
+
+`purge` will remove all currently loaded modules.  We could also use `module unload` to remove a specific module.
+
+Now let's cleanly reload `bbmap`:
+
+~~~
+$ module load bbmap
+$ module list
+~~~
+
+~~~
+Currently Loaded Modules:
+  1) samtools/1.9   2) pigz/2.3.4   3) bbmap/38.41
+~~~
+
+As we saw earlier, extra modules have appeared.  The BBmap package makes use of other modules, and ITS has set up the system so these modules are loaded automatically.  Here's another reason for using the modules system, some packages may depend on very specific versions of other packages.  Samtools is a module we'll be using later - it has a lot of utilities for working with alignment files.  `pigz` is module that let's the BBmap programs access compressed files.
+
 
 Making a reference is fairly straight forward with `bbmap`
 
@@ -41,8 +70,11 @@ $ mkdir index_ecoli
 $ mv ref/ index_ecoli/
 ~~~
 
+***
 
 ## Premade references
+
+Since indexes for each reference genome only need to be made once, we've provided a number of common reference genomes for some of the most commonly used aligners.
 
 ~~~
 $ ls /proj/seq/data/
@@ -68,6 +100,8 @@ $ ls /proj/seq/data/Ecoli_K12_DH10B_ENSEMBL/Sequence/BBMapIndex/
 
 Now we see the `ref` directory that BBmap likes to see!  We can give the above path to BBmap and it will automatically find the `ref` directory there.
 
+***
+
 ## Alignment
 
 I've made a simple alignment script using `bbmap`, let's copy it and take a look:
@@ -77,6 +111,38 @@ $ cp /proj/seq/data/carpentry/scripts/slurm_bbmap_basic.sh .
 $ less slurm_bbmap_basic.sh 
 ~~~
 
+There's a few things to take note of:
+
+~~~
+base=$1
+refpath=$2
+~~~
+
+I've written the script to take two arguments, once is a 'basename' of a file, and the other is the path to the reference index.
+
+~~~
+#SBATCH -n 8
+...
+threads=8
+~~~
+
+I request 8 nodes with the `-n` option for `sbatch`, and I've told `bbmap` to use 8 threads - these should be equal.
+
+~~~
+#SBATCH --mem 32g
+...
+-Xmx32g
+~~~
+
+We're going to request 32 gigs of memory from slurm, and you see below we're telling `bbmap` to use the same amount.
+
+~~~
+in1=${base}.fastq.gz
+~~~
+
+`in1=<file_path>` tells `bbmap` what fastq file to use.  If we had paired end data in 2 separate files (which is how data is released by default), we'd have to specify the 'R2' file using `in2=`
+
+`out=` specifies the name of the file we want to write the bam (aka alignment file) to.
 
 ~~~
 $ sbatch slurm_bbmap_basic.sh ecoli_ref-5m index_ecoli/
@@ -109,7 +175,7 @@ $ sbatch slurm_bbmap_basic.sh ecoli_test $ecoli_index
 
 
 
-The `bbmap` log files are very useful, it reports all sorts of info on how well the alignments we to standard out:
+The `bbmap` log files are very useful (not all aligners make such convenient summaries), it reports all sorts of info on how well the alignments we to standard out:
 
 ~~~
 $ less bbmap.14281627.err
@@ -122,6 +188,8 @@ Now say you setup a lot of fastq files to be aligned overnight, and want a quick
 ~~~
 $ grep "mated pair" *err
 ~~~
+
+***
 
 ## Samtools
 
@@ -176,8 +244,6 @@ A lot of the programs that require sorted bams also need an index file of the ba
 ~~~
 $ sbatch -o bam_index.out --wrap="samtools index ecoli_ref-5m.sorted.bam"
 ~~~
-
-***  
 
 ***  
 
