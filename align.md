@@ -1,14 +1,17 @@
 # Aligning Data
 
 ***
+
 **Alignment Slides**
+
 ***
 
 ## Data Organization
 
 As we've seen, things can get quite messy once you start processing and analyzing a lot of files.  Once you get more comfortable with paths you can start to have your commands and programs access data from different directories and write out results to a different set of directories.  For now we'll just continue to use the approach of accessing and writing to the current directory, then sort out files afterwards.
 
-Let's move all our fastq files to a new directory (normally we may just move only the trimmed ones, but we're keeping the original for our alignment practice and demostration).
+Let's move all our fastq files to a new directory  
+(normally we might just move only the trimmed ones to align, but we're going to use the original for our alignment practice and demostration).
 
 ~~~
 $ mkdir align
@@ -46,12 +49,12 @@ Currently Loaded Modules:
   1) samtools/1.9   2) pigz/2.3.4   3) bbmap/38.41
 ~~~
 
-As we saw earlier, extra modules have appeared.  The BBmap package makes use of other modules, and ITS has set up the system so these modules are loaded automatically.  Here's another reason for using the modules system, some packages may depend on very specific versions of other packages.  Samtools is a module we'll be using later - it has a lot of utilities for working with alignment files.  `pigz` is module that let's the BBmap programs access compressed files.
+As might have noticed earlier, extra modules have appeared in addition to `bbmap`.  The BBmap package makes use of other modules, and ITS has set up the system so these modules are loaded automatically.  Here's another reason for using the modules system, some packages may depend on very specific versions of other packages.  Samtools is a module we'll be using later - it has a lot of utilities for working with alignment files.  `pigz` is module that let's the BBmap programs access compressed files.
 
 
 Making a reference is fairly straight forward with `bbmap`
 
-First let's get a genome to use - usually these aren't sitting around.
+First let's get a genome to use - usually these aren't just sitting around but I've made one available.
 
 ~~~
 $ cp /proj/seq/data/carpentry/ref_genome/ecoli_rel606.fasta .
@@ -63,7 +66,7 @@ BBmap will by default write its indexing files to a directory called `ref` in th
 $ less ecoli_indexing.out
 ~~~
 
-Because I've setup the alignment script to point to a directory containing a `ref` directory, let's move the index we just made into a newly made directory.  Why we do this will hopefully become clear below:
+Because I've setup the alignment script to point to a directory containing a `ref` directory, let's move the index we just made into a newly made directory.  Why we do this will hopefully become clear later.
 
 ~~~
 $ mkdir index_ecoli
@@ -144,20 +147,25 @@ in1=${base}.fastq.gz
 
 `out=` specifies the name of the file we want to write the bam (aka alignment file) to.
 
+
+***
+
+Now let's run the script:
+
 ~~~
 $ sbatch slurm_bbmap_basic.sh ecoli_ref-5m index_ecoli/
 ~~~
 
-(a lot of these make some time to queue, and then a few minutes to run, so we'll go ahead and submit a few and look at the results once all have finished)
+A lot of these may take some time to queue, especially if we're all submitting at once.  Then a few minutes to run, so we'll go ahead and submit a few and look at the results once all have finished.
 
-Now the more aggressively trimmed file:
+Now one of the trimmed files:
 
 ~~~
 $ sbatch slurm_bbmap_basic.sh ecoli_ref-5m.trim_q20 index_ecoli/
 ~~~
 
 
-Let's try using the premade index in `/proj/seq/data/Ecoli_K12_DH10B_ENSEMBL`
+Next, we'll try using the premade index in `/proj/seq/data/Ecoli_K12_DH10B_ENSEMBL`
 
 To make things a little more clear, and show a possible step towards future automation, let's store the path to the index in a shell variable first:
 
@@ -173,7 +181,7 @@ $ cp ecoli_ref-5m.fastq.gz ecoli_test.fastq.gz
 $ sbatch slurm_bbmap_basic.sh ecoli_test $ecoli_index
 ~~~
 
-
+*wait for at least one run from everyone to finish*
 
 The `bbmap` log files are very useful (not all aligners make such convenient summaries), it reports all sorts of info on how well the alignments we to standard out:
 
@@ -181,7 +189,7 @@ The `bbmap` log files are very useful (not all aligners make such convenient sum
 $ less bbmap.14281627.err
 ~~~
 
-That's a lot of info.
+That's a lot of info.  Notice anything in particular?
 
 Now say you setup a lot of fastq files to be aligned overnight, and want a quick check to see how they did.  We can use `grep` to pull out specific lines from all the `.err` files at once:
 
