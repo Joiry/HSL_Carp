@@ -60,6 +60,12 @@ FastQC is a nice little program that will compile stats on the read quality of a
 
 Its important to note that the modules are only loaded into the current session, and that like shell variables are gone after logging out.  You can have modules automatically loaded when you login, but I prefer to always explicitly load the modules that I need.  You're less likely to be surprised by a version change or cross module conflict.
 
+We can also see that a new path has been added to the `PATH` variable:
+
+~~~
+$ echo $PATH
+~~~
+
 ***
 
 ## Using FastQC
@@ -78,6 +84,8 @@ Let's copy a test fastq, this is a file of E Coli reads, 5 million in fact.  Its
 ~~~
 $ cp /proj/seq/data/carpentry/ecoli/ecoli_ref-5m.fastq.gz .
 ~~~
+
+***
 
 Now we'll run `fastqc` on it.  
 
@@ -122,11 +130,13 @@ $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/ecoli_ref-5m_fastqc.
 
 This operates like the `cp` command, only you're copying across a network, and you'll have to enter your onyen password when requested.  You are essentially doing a temporary login, copying the files specified, and then logging out.  On Macs, using `pwd` and the native copy/paste is very useful if you have long paths you need to enter.  Note that by default `scp` begins in your home directory, so you need to supply it the correct relative path or give it an absolute path (which is usually safer, since you can't tab complete).
 
-***  
+***
+
 **Now we'll go over the FastQC report**
+
 ***  
 
-***
+
 
 ## Trimming
 
@@ -137,7 +147,11 @@ trim_galore/0.4.3
 trimmomatic/0.36
 ~~~
 
-BBmap's trimming utility is `bbduk`, and its primary purpose is to trim adapter content, which tends to be the major purpose of trimming nowadays.  However, as an exercise we'll use it to do simple quality trimming first.
+~~~
+module load bbmap
+~~~
+
+BBmap's trimming utility is `bbduk`, and its primary purpose is to trim adapter content, which tends to be the major purpose of trimming nowadays.  However, as an exercise we'll use it to do simpler quality trimming first.
 
 The simplest method is to set a hard quality cutoff.
 
