@@ -12,8 +12,8 @@
   
 * Introduction to Bioinformatics Basics
   * Part 1
-    * [Quality Control and Trimming]
-    * [Alignment]
+    * [Quality Control and Trimming](https://joiry.github.io/HSL_Carp/qc_trim)
+    * [Alignment](https://joiry.github.io/HSL_Carp/align)
   * Part 2
   
   
