@@ -12,6 +12,8 @@
   
 * Introduction to Bioinformatics Basics
   * Part 1
+    * [Quality Control and Trimming]
+    * [Alignment]
   * Part 2
   
   
