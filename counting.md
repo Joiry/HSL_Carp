@@ -3,7 +3,7 @@
 ## Motivation
 
 
-![Kvam Fig5A](/images/Kvam_2012_fig5A.png =400x)
+![Kvam Fig5A](/images/Kvam_2012_fig5A.png | width=400)
 
 ## Getting counts
 
