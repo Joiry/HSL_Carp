@@ -1,5 +1,34 @@
 # Deseq2 Analysis Basics
 
+We're going to use an R package called DESeq2.  It has extensive documention here:
+
+[DESeq2 at Bioconductor](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
+
+The *vignette* is particularly useful, and is frequently updated.  You'll be learning a small subset of it today, which should give you a foundation to explore the extent of DESeq2's functionality.
+
+
+## The basic steps in abstract
+
+Before we get into the actual code we'll be using, here's a quick outline of the analysis:
+
+1. Load DESeq2 R library
+2. Read in Count Data
+3. Read in Experiment Design
+4. Combine Data & Design into DDS object
+5. Run DESeq
+6. Data Interpretation - the hard part
+
+
+
+The two main pieces of data we need for steps 2 and 3:
+ * a table of the counts themselves
+ * the experiment design - essentially all the samples and what conditions we assign them (at a minimum control vs treated)
+
+The counts we should be familiar with now, however let's look at the experimental design file we'll be using.
+
+
+A lot of the work above is in loading the data into R, and then making sure they are formatted correctly.  Once this is done, running DESeq is fairly straightforward.
+
 ## Running R on Longleaf
 
 As with other programs, we need to load the R module:
@@ -26,7 +55,7 @@ We're asking for the interactive queue with `-p interact` and `--pty` actually i
 
 One of the things you'll notice is our prompt is now `>` instead of `$` - this is just the prompt style of R.
 
-We're no longer working in the shell, so the commands you learned don't apply anymore.  Instead we're using R commands.
+**We're no longer working in the shell, so the commands you learned don't apply anymore.  Instead we're using R commands.**
 
 
 ### Step 1: load DESeq2 library
@@ -46,13 +75,10 @@ This looks fairly simple, partly because ITS Research Computing has already adde
 
 Deseq wants data in a particular format, there are several ways to get to this format depending on how you generated it in the first place.  The steps we will follow are for the table format we produced with `featureCounts`
 
-There are two main pieces of data we need:
- * a table of the counts themselves
- * the experiment design - essentially all the samples and what conditions we assign them (at a minimum control vs treated)
 
 ### Step 2: read in count data
 ~~~
-> Counts_bbmap <- read.table("../counts/Gm_counts_all.txt", header = TRUE, row.names=1)
+> Counts_bbmap <- read.table("Gm_counts_all.txt", header = TRUE, row.names=1)
 ~~~
 
 
