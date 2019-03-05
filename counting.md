@@ -1,11 +1,12 @@
-# Preparing for Differential Expression Analysis
+# Differential Expression Analysis
 
-##
-
-
-![Kvam Fig5A](/images/Kvam_2012_fig5A.png)
+## Motivation
 
 
-## GFF files
+![Kvam Fig5A](/images/Kvam_2012_fig5A.png =400x)
 
-## Feature Counts
+## Getting counts
+
+### GFF files
+
+### Feature Counts
