@@ -8,35 +8,106 @@
 
 The basic idea behind differential expression analysis is that sequencing of RNA fragments serves as a rough proxy for how much those genes are expressed.
 
-Alignment can be to whole reference sequence or just transcriptome
-Transcriptome alignment
-Faster – smaller target reference
-Implicit filter of non-transcribed reads, if you trust your reference transcriptome
-Whole genome alignment
-Discover new transcripts not in transcriptome annotation
+Alignment can be to whole reference sequence or just transcriptome  
+* Transcriptome alignment
+  * Faster – smaller target reference
+  * Implicit filter of non-transcribed reads, if you trust your reference transcriptome
+* Whole genome alignment
+  * Discover new transcripts not in transcriptome annotation
 
 
 
 ## How many Biological replicates
+
+The more biological replicates you can manage, the more robust your analysis results will be.
 
 [Schurch et al 2016](https://rnajournal.cshlp.org/content/22/6/839.short)
 
 
 ## Which analysis software should you use
 
+Like other areas of bioinfomatics, there is a large number of tools that have be written.
+
+There are many papers out there comparing many of the tools (Schurch above also includes an more recent comparison of major tools).
+
+Take a look at this Venn diagram of a comparison of three tools:
+
 ![Kvam Fig5A](/images/Kvam_2012_fig5A.png)
 
-## Getting counts
+[Kvam 2012](https://bsapubs.onlinelibrary.wiley.com/doi/full/10.3732/ajb.1100340)
+
+This is an older analysis, but the figure shows how all the tools agree on a subset of the data and differ on other parts.
+
+Previous lesson, I mentioned how the differences between aligners tend to occur with edge case reads, but generally agree about reads that have a single highly likely alignment.  Similarly, DE tools tend to agree on genes that have the largest changes, and disagree on whether smaller expression level changes are significant.
+
+## Getting gene counts
+
+First, let's get some data to work on.  I've prepared a set of subdirectories within `project_Gm` with some pre-aligned data and other files we'll need.  The data is a bit big, so we'll want to work in our scratch space.  Once there:
 
 ~~~
 $ cp -r /proj/seq/data/carpentry/project_Gm/ .
 ~~~
 
-### GFF files
 
-review data location
+### Annotation files
 
+When you align data, we're only matching each read to a location on the genome.  The reference genome and the alignment files, SAM or BAM, know nothing about where exons, protein binding sites, or other features exist in the genome.
+
+This sort of meta-data is generally found in GFF or GTF files, which are tab delimited files that contain information on features in a genome, their chromosome, start and stop locations, and other information.
+
+For all the genomes we provide in `/proj/seq/data/` there are corresponding annotation files.
+
+~~~
+$ cd /proj/seq/data/
+~~~
+
+Let's look in the `HG19_UCSC` directory:
+
+~~~
+$ cd HG19_UCSC
+$ ls
+~~~
+
+~~~
+Annotation    Homo_sapiens_UCSC_hg19.tar  README.txt
+Homo_sapiens  NOTE                        Sequence
+~~~
+
+Recall the index files we use to align are in the `Sequence` directory.  The GTF files are in `Annotation` and its subdirectories, and for today's lesson we'll just be using the `Genes` annotations.
+
+~~~
+$ cd Annotation
+$ ls
+$ cd Genes
+$ ls
+~~~
+
+For today's lesson, we'll be using `genes.gtf`
+
+~~~
+$ less -S genes.gtf 
+~~~
+
+The `-S` is a useful option for `less` when viewing structured files, it disables line wrapping allowing us to view the data columns in the GTF file more clearly.
+
+
+Just as a reminder, let's see where we are:
+
+~~~
+$ pwd
+~~~
+
+~~~
+/proj/seq/data/HG19_UCSC/Annotation/Genes
+~~~
+
+And the full path to the GTF is:
+
+~~~
 /proj/seq/data/HG19_UCSC/Annotation/Genes/genes.gtf
+~~~
+
+We'll see this path in the script we use below.
 
 ### featureCounts
 
