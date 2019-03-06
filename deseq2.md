@@ -18,16 +18,40 @@ Before we get into the actual code we'll be using, here's a quick outline of the
 5. Run DESeq
 6. Data Interpretation - the hard part
 
-
+A lot of the work above is in loading the data into R, and then making sure they are formatted correctly.  Once this is done, running DESeq is fairly straightforward.  
 
 The two main pieces of data we need for steps 2 and 3:
- * a table of the counts themselves
- * the experiment design - essentially all the samples and what conditions we assign them (at a minimum control vs treated)
+ * a table of the counts  
+ * the experiment design  
+ 
+The counts we should be familiar with now, however let's look at the experimental design file we'll be using.  The design is a list of all the samples and what experimental conditions are assigned to them - at a minimum control vs treated.
 
-The counts we should be familiar with now, however let's look at the experimental design file we'll be using.
+Let's take a look at the provided experimental design file in the `project_Gm` directory:
 
+~~~
+$ cd deseq/
+$ less Gm_sampleInfo.txt
+~~~
 
-A lot of the work above is in loading the data into R, and then making sure they are formatted correctly.  Once this is done, running DESeq is fairly straightforward.
+Which shows:
+
+~~~
+run,pheno
+Gm10847,female
+Gm10851,male
+Gm12752,male
+Gm12753,female
+Gm12801,male
+Gm12802,female
+Gm12818,female
+Gm12832,female
+Gm12864,male
+Gm12877,male
+~~~
+
+We have the name of each sample in the first column labelled `run` and a single experimental condition `pheno`.  In our teaching example, we're going to use the fact these samples came from male and female subjects.  You could have more than one condition, addition comma separated columns can be added.  The column names can be anything you want, but keeping them relatively simple will make things easier.
+
+***  
 
 ## Running R on Longleaf
 
@@ -56,6 +80,7 @@ We're asking for the interactive queue with `-p interact` and `--pty` actually i
 One of the things you'll notice is our prompt is now `>` instead of `$` - this is just the prompt style of R.
 
 **We're no longer working in the shell, so the commands you learned don't apply anymore.  Instead we're using R commands.**
+*technically there is a way, but we won't go into that*
 
 
 ### Step 1: load DESeq2 library
@@ -66,35 +91,9 @@ Similar to the modules system, R doesn't have all its packages loaded at once.  
 > library("DESeq2")
 ~~~
 
-This looks fairly simple, partly because ITS Research Computing has already added many packages.  If you install R on your own laptop, you'll have to install the packages
-
-## Local installs
-
-** Note, we're not going to do any of this section - this is FYI for running R on your own computer**
-
-We won't go much into installing R and the very useful RStudio on a MacOS or Windows computer.
+This looks fairly simple, partly because ITS Research Computing has already added many packages.  If you install R on your own laptop, you'll have to install the packages yourself.  See section at the end.
 
 
-
-Once running R locally (again, RStudio highly recommended)
-
-~~~
-> install.packages("BiocManager")
-~~~
-
-This installs the `BiocManager` package which manages other packages.  A lot of biostats and bioinformatics packages make use of it to make installing them easier.  Once this finishes - you may need to agree to some new packages being installed, you can install `DESeq2`
-
-~~~
-> BiocManager::install("DESeq2", version = "3.8")
-~~~
-
-The above syntax tells `R` to use `BiocManager`'s version of installing, and it queries its own repository for DESeq2.
-
-You may also want to install the useful `ggplot2` package, which provides a lot of useful graphing capabilities.
-
-~~~
-> install.packages("ggplot2")
-~~~
 
 ## Formatting data
 
@@ -153,15 +152,13 @@ Deseq wants data in a particular format, there are several ways to get to this f
 > write.table(res, "Gm_result_table.txt", col.names=NA, sep="\t")
 ~~~
 
-
+This function will write the data in `res` to a file in the current directory (ie the one you started R in) `Gm_result_table.txt` and will separate the columns with tabs.
 
 
 
 ## Now for some exploration of the data -------------------------
 
-# some plotting packages
-library("gplots")
-library("ggplot2")
+
 
 # Let's make some subsets of the data that might be interesting to look at
 
@@ -197,24 +194,52 @@ library("ggplot2")
 
 
 
-## some graphing -----------------------------------
+## some graphing
 
-# basic MA-plot
+some plotting packages
+
+library("gplots")
+library("ggplot2")
+
+### basic MA-plot
 
 plotMA(res, alpha =0.05,  main="MA-plot\nfemale vs male", ylim=c(-10,10))
 
 
-# volcano plot
 
-plot(res$log2FoldChange, -log(res$padj, 10), xlim = c(-10,10), pch = 20, col = "#00000040", main = "Volcano Plot\nfemle vs male",xlab = "log2(fold change)", ylab = "-log10(adjusted p-value)")
 
-# color in resOrdered subset
+***  
 
-points(resOrdered$log2FoldChange, -log(resOrdered$padj, 10), pch = 20, col = "red")
+## Local installs
 
-# add some reference lines
+** Note, we're not going to do any of this section - this is FYI for running R on your own computer**
 
-abline(h=-log(0.05, 10), lty=2, col = "red")
+We won't go much into installing R and the very useful RStudio on a MacOS or Windows computer.  You'll have to follow the system specific instructions for your computer.
 
-abline(v=0, lty=2)
+[R Project](https://www.r-project.org/)
+[RStudio](https://www.rstudio.com/)
+
+Once running R locally:
+
+~~~
+> install.packages("BiocManager")
+~~~
+
+This installs the `BiocManager` package which manages other packages.  A lot of biostats and bioinformatics packages make use of it to make installing them easier.  Once this finishes - you may need to agree to some new packages being installed, you can install `DESeq2`
+
+~~~
+> BiocManager::install("DESeq2", version = "3.8")
+~~~
+
+The above syntax tells `R` to use `BiocManager`'s version of installing, and it queries its own repository for DESeq2.
+
+You may also want to install the useful `ggplot2` package, which provides a lot of useful graphing capabilities.
+
+~~~
+> install.packages("ggplot2")
+~~~
+
+***
+
+
 
