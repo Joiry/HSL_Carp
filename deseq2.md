@@ -68,8 +68,33 @@ Similar to the modules system, R doesn't have all its packages loaded at once.  
 
 This looks fairly simple, partly because ITS Research Computing has already added many packages.  If you install R on your own laptop, you'll have to install the packages
 
-**section on local installs**
+## Local installs
 
+** Note, we're not going to do any of this section - this is FYI for running R on your own computer**
+
+We won't go much into installing R and the very useful RStudio on a MacOS or Windows computer.
+
+
+
+Once running R locally (again, RStudio highly recommended)
+
+~~~
+> install.packages("BiocManager")
+~~~
+
+This installs the `BiocManager` package which manages other packages.  A lot of biostats and bioinformatics packages make use of it to make installing them easier.  Once this finishes - you may need to agree to some new packages being installed, you can install `DESeq2`
+
+~~~
+> BiocManager::install("DESeq2", version = "3.8")
+~~~
+
+The above syntax tells `R` to use `BiocManager`'s version of installing, and it queries its own repository for DESeq2.
+
+You may also want to install the useful `ggplot2` package, which provides a lot of useful graphing capabilities.
+
+~~~
+> install.packages("ggplot2")
+~~~
 
 ## Formatting data
 
