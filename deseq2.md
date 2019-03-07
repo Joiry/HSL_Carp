@@ -105,43 +105,90 @@ Deseq wants data in a particular format, there are several ways to get to this f
 > Counts_bbmap <- read.table("Gm_counts_all.txt", header = TRUE, row.names=1)
 ~~~
 
+`read` is a function that reads from a file, and we are specifying to read in a table format.
+`header = True` means to read the first line as column headers
+`row.names=1` means the first column contains names for each row
 
-## Step 2a: remove unneeded columns
+The `<-` is the assignment operator in R, it is like the `=` in the shell.  We're assigning the data returned by `read.table` to the variable `Counts_bbmap`
+
+The counts are getting written into a `data frame`, a data structure in R that allows easy access to specific columns and rows
+
+R has a `head` function much like the Unix shell we can use to get a quick idea of what the data looks like
+
+~~~
+> head(Counts_bbmap)
+~~~
+
+After each of the formatting steps below, we'll use `head` to see what changes have occurred.
+
+### Step 2a: remove unneeded columns
 ~~~
 > CountTable <- Counts_bbmap[,6:15]
 ~~~
 
-## Step 2b: truncate count headers to match experiment design names
+Most of the columns created by featureCounts are unneeded by DESeq, so we're going to remove them.
+
+`[,6:15]` this syntax means we're taking all the rows (nothing before the comma) and only columns 6 through 15 - we have 10 data rows.
+
+Note, we've assigned this cropping of the data to a new variable:
+
+~~~
+> head(CountTable)
+~~~
+
+
+
+### Step 2b: truncate count headers to match experiment design names
 ~~~
 > colnames(CountTable) <- sapply(colnames(CountTable), substr, 0,7)
 ~~~
 
+featureCounts names each column of the counts by the name of the file, but in our experiment design file, we just use the names of the sames.  Eg sample `Gm10847` in the design file corresponds to `Gm10847.bam` in the counts file, so we need to remove the `.bam`, or in this as, we're using the `substr` function to just keep the first 7 characters of the column name.
 
-## Step 3: read in experiment design
+What's happening here is `colnames` is fetching all the column names in `CountTable`, `sapply` is applying the `substr` function to each of these names.  Then, we take that list and put it back into the data structure using `colnames` again.
+
+~~~
+> head(CountTable)
+~~~
+
+
+### Step 3: read in experiment design
 ~~~
 > sampleInfo <- read.csv("Gm_sampleInfo.txt")
 ~~~
 
-## Step 3a: format for DDS object
+~~~
+> head(sampleInfo)
+~~~
+
+
+### Step 3a: format for DDS object
 ~~~
 > sampleInfo <- DataFrame(sampleInfo)
 ~~~
 
+Here, we're just converting `sampleInfo` into a data frame
 
+~~~
+> head(sampleInfo)
+~~~
 
-## Step 4: Make DDS object
+### Step 4: Make DDS object
 ~~~
 > ddsFullCountTable <- DESeqDataSetFromMatrix(countData = CountTable, colData = sampleInfo, design = ~pheno)
 ~~~
 
 
-## Step 5: Run Deseq2 analysis
+### Step 5: Run Deseq2 analysis
 ~~~
 > dds <- DESeq(ddsFullCountTable)
 ~~~
 
+This is it, the big analysis step!  Exciting, right?
 
-## convert results into more useable format
+Or just anti-climatic, as I said earlier, most of the work is in getting the data formatted correctly, `DESeq` running is fairly straightforward.
+
+### convert results into more useable format
 ~~~
 > res <- results(dds)
 ~~~
@@ -156,7 +203,7 @@ This function will write the data in `res` to a file in the current directory (i
 
 
 
-## Now for some exploration of the data -------------------------
+## Now for some exploration of the data
 
 
 
