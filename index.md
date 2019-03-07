@@ -17,6 +17,7 @@
     
 ***
 
+*  
   * Part 2 - Differential Expression Analysis
     * [Intro and Counting](https://joiry.github.io/HSL_Carp/counting)
     * [DESeq Basaics](https://joiry.github.io/HSL_Carp/deseq2)
