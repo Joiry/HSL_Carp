@@ -230,13 +230,52 @@ This is it, the big analysis step!  Exciting, right?
 
 Or just anti-climatic, as I said earlier, most of the work is in getting the data formatted correctly, `DESeq` running is fairly straightforward.
 
-### convert results into more useable format
+### Convert results into more useable format
 ~~~
 > res <- results(dds)
 ~~~
 
+We can look at the data:
 
-### write results to a file
+~~~
+> res
+~~~
+
+But what does all this mean?  We can use `mcols` to get some details that the results data structure provides:
+
+~~~
+> mcols(res, use.names=TRUE)
+~~~
+
+~~~
+baseMean       intermediate    mean of normalized counts for all samples
+log2FoldChange      results log2 fold change (MAP): pheno male vs female
+lfcSE               results         standard error: pheno male vs female
+stat                results         Wald statistic: pheno male vs female
+pvalue              results      Wald test p-value: pheno male vs female
+padj                results                         BH adjusted p-values
+~~~
+
+The Benjamini–Hochberg (BH) procedure is used to find adjusted p-values
+
+We can also use the summary function:
+
+~~~
+> summary(res)
+~~~
+
+~~~
+out of 19254 with nonzero total read count
+adjusted p-value < 0.1
+LFC > 0 (up)     : 21, 0.11% 
+LFC < 0 (down)   : 15, 0.078% 
+outliers [1]     : 243, 1.3% 
+low counts [2]   : 4412, 23% 
+(mean count < 2)
+~~~
+
+
+### Writing results to a file
 ~~~
 > write.table(res, "Gm_result_table.txt", col.names=NA, sep="\t")
 ~~~
@@ -249,7 +288,7 @@ This function will write the data in `res` to a file in the current directory (i
 
 We can use various R features make some subsets of the data, which are smaller and more convenient to work with.
 
-### cutoff by present
+### Cutoff by present
 
 ~~~
 > resPresent <- res[which(res$baseMean > 1),]
@@ -266,7 +305,7 @@ The results of the above are used as row selectors, so every row whose `baseMean
 
 
 
-### cutoff by multiple testing adjusted p-value
+### Cutoff by multiple testing adjusted p-value
 
 ~~~
 > resPvalCutoff <-resPresent[which(resPresent$padj<0.05),]
@@ -275,7 +314,7 @@ The results of the above are used as row selectors, so every row whose `baseMean
 Here, we apply a second filtering step, this time using the `padj` column's values
 
 
-### order by padj
+### Order by padj
 
 ~~~
 > resOrdered <- resPvalCutoff[order(resPvalCutoff$padj),]
@@ -284,7 +323,7 @@ Here, we apply a second filtering step, this time using the `padj` column's valu
 We can also sort the data.  We pull out the `padj` values and feed them to the `order` function, which returns then from lowest to highest.  Because they are reordered, when we use the `padj` values as row identifiers, the rows are written into our new data frame in that order.
 
 
-### write out the ordered Pval Cutoff results
+### Write out the ordered Pval Cutoff results
 
 Once we've done the filtering we like, we can also write out the results:
 
@@ -294,7 +333,7 @@ Once we've done the filtering we like, we can also write out the results:
 
 
 
-## Checking the results
+## Checking the results with PCA
 
 There are a variety of ways to graph and explore the data.  Most of this is best done locally, for example running RStudio.  The DESeq documentation linked above goes indepth into graphing.
 
@@ -318,11 +357,43 @@ We can transfer the resulting file, `Gm_pca.png` to a local machine and view the
 ![Gm PCA](/images/Gm_pca.png)
 
 
+## Quiting R and saving the session
+
+Everything in R is a function, so quitting is also a function:
+
+~~~
+> q()
+~~~
+
+~~~
+Save workspace image? [y/n/c]: 
+~~~
+
+Answer 'y'
+
+If we look in the directory
+
+~~~
+$ ls -la
+~~~
+
+We'll see amongs the files:
+
+~~~
+-rw-r--r-- 1 tristand its_employee_psx 12843105 Mar  7 13:18 .RData
+-rw------- 1 tristand its_employee_psx      736 Mar  7 13:18 .Rhistory
+~~~
+
+R will use these to restart a session.  You can download these two files and open them locally in RStudio.
+
+Thus, you could do all the heavy lifting of running the analysis on the cluster (even submitting for example as a script), and then do all your graphing and data exploration locally.
+
+
 ***  
 
 ## Local installs
 
-** Note, we're not going to do any of this section - this is FYI for running R on your own computer**
+**Note, we're not going to do any of this section - this is FYI for running R on your own computer**
 
 We won't go much into installing R and the very useful RStudio on a MacOS or Windows computer.  You'll have to follow the system specific instructions for your computer.
 
