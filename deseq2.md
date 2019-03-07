@@ -53,6 +53,44 @@ We have the name of each sample in the first column labelled `run` and a single 
 
 ***  
 
+Next, let's copy over the counts we generated in the `bams` folder.  The same counts file is also available in prebaked if your run hasn't finished yet.
+
+~~~
+$ cp ../bams/Gm_counts_all.txt .
+~~~
+
+**or**
+
+~~~
+cp ../prebaked/Gm_counts_all.txt .
+~~~
+
+So we should have the following files:
+
+~~~
+$ ls -1
+~~~
+
+~~~
+deseq2.barebones.R
+Gm_counts_all.txt
+Gm_sampleInfo.txt
+~~~
+
+Now we're all set to use DESeq2 to analyze the data.
+
+***
+
+## R
+
+R is a powerful, and free, statistics package.  Many things are possible with R, and we're only going to scratch the surface.
+
+[R for Data Science](https://r4ds.had.co.nz/)
+
+The above is a great resource, available both online for free and in print form.  Its a general introduction, so its not specifically geared toward bioinformatics analyses, but the basic principles hold.
+
+***
+
 ## Running R on Longleaf
 
 As with other programs, we need to load the R module:
@@ -157,6 +195,8 @@ What's happening here is `colnames` is fetching all the column names in `CountTa
 > sampleInfo <- read.csv("Gm_sampleInfo.txt")
 ~~~
 
+Here, we use `read`'s method for csv (Comma Separated Values) files.
+
 ~~~
 > head(sampleInfo)
 ~~~
@@ -167,11 +207,13 @@ What's happening here is `colnames` is fetching all the column names in `CountTa
 > sampleInfo <- DataFrame(sampleInfo)
 ~~~
 
-Here, we're just converting `sampleInfo` into a data frame
+Here, we convert `sampleInfo` into a data frame from a simple matrix.
 
 ~~~
 > head(sampleInfo)
 ~~~
+
+Data frames are 
 
 ### Step 4: Make DDS object
 ~~~
@@ -194,65 +236,86 @@ Or just anti-climatic, as I said earlier, most of the work is in getting the dat
 ~~~
 
 
-## write results to a file
+### write results to a file
 ~~~
 > write.table(res, "Gm_result_table.txt", col.names=NA, sep="\t")
 ~~~
 
-This function will write the data in `res` to a file in the current directory (ie the one you started R in) `Gm_result_table.txt` and will separate the columns with tabs.
+This function will write the data in `res` to a file in the current directory (ie the one you started R in) `Gm_result_table.txt` and will separate the columns with tabs.  This table delimited text file can be read by Excel, however, note it may be quite large.
 
 
 
-## Now for some exploration of the data
+## Filtering of data
 
+We can use various R features make some subsets of the data, which are smaller and more convenient to work with.
 
+### cutoff by present
 
-# Let's make some subsets of the data that might be interesting to look at
-
-# cutoff by present
 ~~~
 > resPresent <- res[which(res$baseMean > 1),]
 ~~~
 
+Here, we're using two features of R
 
-# cutoff by FoldChange
-~~~
-> resFoldCutoff <-res[which(abs(resPresent$log2FoldChange)>1 & !is.na(resPresent$log2FoldChange)),]
-~~~
+`$` is used to indicate column identifiers within a data frame.  
+Thus `res$baseMean` accesses all the values in the `baseMean` column
+
+`which` is a function that selects items based on a test, in this case `<value> > 1` - all values greater than 1
+
+The results of the above are used as row selectors, so every row whose `baseMean` value is greater than one is selected, and are assigned to a new data frame.
 
 
-# cutoff by multiple testing adjusted p-value
+
+### cutoff by multiple testing adjusted p-value
+
 ~~~
 > resPvalCutoff <-resPresent[which(resPresent$padj<0.05),]
 ~~~
 
+Here, we apply a second filtering step, this time using the `padj` column's values
 
-# order by padj
+
+### order by padj
+
 ~~~
 > resOrdered <- resPvalCutoff[order(resPvalCutoff$padj),]
 ~~~
 
+We can also sort the data.  We pull out the `padj` values and feed them to the `order` function, which returns then from lowest to highest.  Because they are reordered, when we use the `padj` values as row identifiers, the rows are written into our new data frame in that order.
 
-# write out the ordered Pval Cutoff results
+
+### write out the ordered Pval Cutoff results
+
+Once we've done the filtering we like, we can also write out the results:
+
 ~~~
 > write.table(resOrdered, "export_significant_result_table.txt", col.names=NA, sep="\t")
 ~~~
 
 
 
+## Checking the results
 
-## some graphing
+There are a variety of ways to graph and explore the data.  Most of this is best done locally, for example running RStudio.  The DESeq documentation linked above goes indepth into graphing.
 
-some plotting packages
+We're going to take a look at a PCA plot of the dispersion of the data.  This isn't quite the results, but represents one of the steps taken during the analysis.  However, it can give us an idea of how well the data separates out.
 
-library("gplots")
-library("ggplot2")
+PCA - Principle Component Analysis - this is a method of reducing high dimensionality data by finding a rotation, or set of axes, that captures the greatest set of differences within the data.
 
-### basic MA-plot
+~~~
+> rld <- rlog(dds, blind=FALSE)
+> png('Gm_pca.png')
+> plotPCA(rld, intgroup=c("pheno", "run"))
+> dev.off()
+~~~
 
-plotMA(res, alpha =0.05,  main="MA-plot\nfemale vs male", ylim=c(-10,10))
+`rlog` - 'Regularized Log' transforms the data to Log2 scale
+`plotPCA` - does the PCA plotting
+The `png` and `dev.off()` functions are only being used to store the plot into a png file.  This is a bit hack-y, but a way to make graphs and write them to a file when using a simple terminal connection.  Thus, for more serious plotting, and re-plotting, of data, its best to do this locally.
 
+We can transfer the resulting file, `Gm_pca.png` to a local machine and view the results.
 
+![Gm PCA](/images/Gm_pca.png)
 
 
 ***  
