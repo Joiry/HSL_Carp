@@ -8,12 +8,17 @@
 
 The basic idea behind differential expression analysis is that sequencing of RNA fragments serves as a rough proxy for how much those genes are expressed.
 
-Alignment can be to whole reference sequence or just transcriptome  
+
+## Aligned data
+
+Alignment for DE can be to a whole reference sequence or just transcriptome  
 * Transcriptome alignment
   * Faster – smaller target reference
   * Implicit filter of non-transcribed reads, if you trust your reference transcriptome
+  * may not be as good with isoforms
 * Whole genome alignment
   * Discover new transcripts not in transcriptome annotation
+  * Time to align less of a factor nowadays
 
 
 
@@ -21,16 +26,20 @@ Alignment can be to whole reference sequence or just transcriptome
 
 The more biological replicates you can manage, the more robust your analysis results will be.
 
+The MODEncode project, which wrapped up data submissions ~2011-12 required 2 biological replicates.  Soon after 3 biological replicates became the recommendation, then 4.
+
 [Schurch et al 2016](https://rnajournal.cshlp.org/content/22/6/839.short)
+
+In this paper, 48 biologial replicates were sequenced both from WT yeast and a known mutant strain.  42 of each where used to perform a variety of analyses.  Unsurprisingly, the more replicates used, the more of the "full set" of changes were captured (here defined by using all the replicates).
+
+The authors' take away was that at least 6 biological replicates be used, preferably 12.
 
 
 ## Which analysis software should you use
 
 Like other areas of bioinfomatics, there is a large number of tools that have be written.
 
-There are many papers out there comparing many of the tools (Schurch above also includes an more recent comparison of major tools).
-
-Take a look at this Venn diagram of a comparison of three tools:
+There are many papers out there comparing many of the tools (Schurch above also includes an more recent comparison of major tools).  Take a look at this Venn diagram of a comparison of three tools:
 
 ![Kvam Fig5A](/images/Kvam_2012_fig5A.png)
 
@@ -38,7 +47,9 @@ Take a look at this Venn diagram of a comparison of three tools:
 
 This is an older analysis, but the figure shows how all the tools agree on a subset of the data and differ on other parts.
 
-Previous lesson, I mentioned how the differences between aligners tend to occur with edge case reads, but generally agree about reads that have a single highly likely alignment.  Similarly, DE tools tend to agree on genes that have the largest changes, and disagree on whether smaller expression level changes are significant.
+IN the previous lesson, I mentioned how the differences between aligners tend to occur with edge case read alignments, but generally agree about reads that have a single highly likely alignment.  Similarly, DE tools tend to agree on genes that have the largest changes, and disagree on whether smaller expression level changes are significant.
+
+***
 
 ## Getting gene counts
 
@@ -82,7 +93,15 @@ $ cd Genes
 $ ls
 ~~~
 
-For today's lesson, we'll be using `genes.gtf`
+For today's lesson, we'll be using `genes.gtf`, a detailed explanation of GTF files is here:
+
+[GTF format](http://mblab.wustl.edu/GTF22.html)
+
+Briefly, it takes the following form, tab delimited fields:
+
+`<seqname> <source> <feature> <start> <end> <score> <strand> <frame> [attributes] [comments]`
+
+Let's take a look at the one we'll be using.
 
 ~~~
 $ less -S genes.gtf 
@@ -151,7 +170,7 @@ $ less Gm_fcounts.slurm.sh
 ~~~
 
 ~~~
-featureCounts -a $gtf -o Gm_counts_all.txt -T 8 -g gene_id -p -s 2 $bam1 $bam2 $bam3 $bam4 $bam5 $bam6 $bam7 $bam8 $bam9 $bam10
+featureCounts -a $gtf -o Gm_counts_all.txt -T 4 -g gene_id -p -s 2 $bam1 $bam2 $bam3 $bam4 $bam5 $bam6 $bam7 $bam8 $bam9 $bam10
 ~~~
 
 `-p` tells `featureCounts` this is paired end data, if you don't use this option with paired data, the counts will be weird
@@ -159,4 +178,14 @@ featureCounts -a $gtf -o Gm_counts_all.txt -T 8 -g gene_id -p -s 2 $bam1 $bam2 $
 
 If your read counts are low, try with `0`, as it will count in both directions, and then you can figure out if the library was actually in the other direction.
 
-`-T 8` specifies to use 8 threads, which should have the same value as the `-n` for the slurm script
+`-T 4` specifies to use 8 threads, which should have the same value as the `-n` for the slurm script
+
+Finally, there is the list of paths to all the bams we want to count.  You can modify this script by changing the path/names of the variable assignments for the variables `bam1`, `bam2`, etc.
+
+To run this script, we just `sbatch` it, since all values it needs is coded into the script itself
+
+~~~
+$ sbatch Gm_fcounts.slurm.sh
+~~~
+
+***
