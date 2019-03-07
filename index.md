@@ -11,13 +11,12 @@
 ****
   
 * Introduction to Bioinformatics Basics
-  * Part 1
+* Part 1
     * [Quality Control and Trimming](https://joiry.github.io/HSL_Carp/qc_trim)
     * [Alignment](https://joiry.github.io/HSL_Carp/align)
     
 ***
 
-*  
   * Part 2 - Differential Expression Analysis
     * [Intro and Counting](https://joiry.github.io/HSL_Carp/counting)
     * [DESeq Basaics](https://joiry.github.io/HSL_Carp/deseq2)
