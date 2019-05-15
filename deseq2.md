@@ -213,12 +213,26 @@ Here, we convert `sampleInfo` into a data frame from a simple matrix.
 > head(sampleInfo)
 ~~~
 
-Data frames are 
+Data frames are an special R data type that basically store a table of data, with identifiers for the rows and columns.
 
 ### Step 4: Make DDS object
 ~~~
 > ddsFullCountTable <- DESeqDataSetFromMatrix(countData = CountTable, colData = sampleInfo, design = ~pheno)
 ~~~
+
+By default, R chooses the reference level alphabetically.  Thus, if you had a condition 'genotype' with levels 'wildtype' and 'mutant', 'm' comes before 'w' in the alphabet, so 'mutant' will be considered the reference level.  There are a number of ways to change this, two of which are:
+
+~~~
+> dds$condition <- factor(dds$condition, levels = c("wildtype","mutant"))
+~~~
+
+or
+
+~~~
+> dds$condition <- relevel(dds$condition, ref = "wildtype")
+~~~
+
+This has to be done before the next step.
 
 
 ### Step 5: Run Deseq2 analysis
@@ -245,6 +259,12 @@ But what does all this mean?  We can use `mcols` to get some details that the re
 
 ~~~
 > mcols(res, use.names=TRUE)
+~~~
+
+or
+
+~~~
+> mcols(res)$description
 ~~~
 
 ~~~
