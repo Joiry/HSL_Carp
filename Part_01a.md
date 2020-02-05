@@ -188,10 +188,11 @@ $ ls -F
 ~~~
 
 > ~~~
-> SRR097977.fastq  SRR098026.fastq
+> Control_A.fastq  Control_SR.fastq  SRR097977.fastq
+> Control_B.fastq  file_sizes.txt    SRR098026.fastq
 > ~~~
 
-This directory contains two files with `.fastq` extensions. FASTQ is a format for storing information about sequencing reads and their quality. We will be learning more about FASTQ files in a later lesson.
+This directory contains a few files with `.fastq` extensions. FASTQ is a format for storing information about sequencing reads and their quality. We will be learning more about FASTQ files in a later lesson.
 
 Where are we currently?  Never be afraid to use `pwd` a lot to remember where in the file system you are - once you learn more powerful commands, you want to make sure you're using them while in the right directory.
 
