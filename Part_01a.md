@@ -34,7 +34,7 @@ You'll be prompted for your onyen password.
 The `$` indicates the prompt, telling you the shell is ready to accept a command.  By default, the prompt on Longleaf will look like this:
 
 > ~~~
-> [tristand@longleaf-login2 ~]$`
+> [tristand@longleaf-login2 ~]$
 > ~~~
 
 Except with your own onyen instead of `tristand`, and you may be on either `login1` or `login2` - these are just two nodes you are arbitrarily assigned when logging in.  In the lesson examples below, we'll just shorten it to `$`, what comes after it is what you'll type.
