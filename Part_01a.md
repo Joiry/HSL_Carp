@@ -194,6 +194,24 @@ $ ls -F
 
 This directory contains a few files with `.fastq` extensions. FASTQ is a format for storing information about sequencing reads and their quality. We will be learning more about FASTQ files in a later lesson.
 
+The `-F` option isn't too informative, but there are other `ls` options which are useful.  By default, `ls` tries to group files is as many columns as the terminal window permits.  You can use the `-1` (the number, not lowercase L) to force the files listed in a single column.
+
+~~~
+$ ls -1
+~~~
+
+> ~~~
+> Control_A.fastq
+> Control_B.fastq
+> Control_SR.fastq
+> file_sizes.txt
+> SRR097977.fastq
+> SRR098026.fastq
+> ~~~
+
+This can be useful when you need to construct a list of files.
+
+
 Where are we currently?  Never be afraid to use `pwd` a lot to remember where in the file system you are - once you learn more powerful commands, you want to make sure you're using them while in the right directory.
 
 ~~~
