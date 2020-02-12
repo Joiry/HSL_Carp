@@ -150,6 +150,8 @@ $ ls Control_?.fastq
 
 `Control_SR.fastq` is not listed, because it contains two letter between `Control_` and `.fastq`
 
+Can you write a pattern to only show files with only 2 characters after `Control_` and before the file extension?
+
 
 
 
@@ -458,8 +460,7 @@ that deal with your permissions (as the file owner).
 
 Here the three positions that relate to the file owner are `rw-`. The `r` means that you have permission to read the file, the `w` 
 indicates that you have permission to write to (i.e. make changes to) the file, and the third position is a `-`, indicating that you 
-don't have permission to carry out the ability encoded by that space (this is the space where `x` or executable ability is stored, we'll 
-talk more about this in [a later lesson](http://www.datacarpentry.org/shell-genomics/05-writing-scripts/)).
+don't have permission to carry out the ability encoded by that space (this is the space where `x` or executable ability is stored).
 
 Our goal for now is to change permissions on this file so that you no longer have `w` or write permissions. We can do this using the `chmod` (change mode) command and subtracting (`-`) the write permission `-w`. 
 
@@ -528,12 +529,42 @@ $ rm -r backup
 
 This will delete not only the directory, but all files within the directory. If you have write-protected files in the directory, you will be asked whether you want to override your permission settings.
 
-**`rm -r` is the most dangerous command to issue.  Especially with wildcards**  Think about using `ls` with the same argument you will be using for `rm -r` to make sure you know what is about to be deleted forever.
+**`rm -r` is the most dangerous command to issue.  Especially with wildcards**  Think about using `ls` with the same argument you will be using for `rm -r` to make sure you know what is about to be deleted forever.  **Forever**
 
-Now, let's delete `backup` in a safer manner (answer 'y' to remove the write-protected file)
+Now, let's delete `backup` in a safer manner.  We could answer 'y' to remove the write-protected file, but here's how to restore the write permission
 
 ~~~
 $ cd backup
+$ chmod +w Control_A.fastq 
+$ ls -la
+~~~
+
+> ~~~
+> drwxr-xr-x 2 tristand its_employee_psx 4096 Feb 12 11:00 .
+> drwxr-xr-x 3 tristand its_employee_psx 4096 Feb 12 11:00 ..
+> -rw-r--r-- 1 tristand its_employee_psx 3990 Feb 12 11:00 Control_A.fastq
+> ~~~
+
+We're actually using a bit of shorthand, by default `chmod` assumes you're changing the owner/user permission field.  You can specify which of the permissions sets you are working with: `u` for user, `g` for group, `o` for other, and `a` for all - which is all three of u, g, and o.
+
+So, for example, if you want to add permission for someone else in the group (for me "its_employee_psx"):
+
+~~~
+$ chmod g+w Control_A.fastq 
+$ ls -la
+~~~
+
+~~~
+> drwxr-xr-x 2 tristand its_employee_psx 4096 Feb 12 11:00 .
+> drwxr-xr-x 3 tristand its_employee_psx 4096 Feb 12 11:00 ..
+> -rw-rw-r-- 1 tristand its_employee_psx 3990 Feb 12 11:00 Control_A.fastq
+~~~
+
+See the new `w` has popped up in the third set of three.
+
+After that aside, delete the file and the directory:
+
+~~~
 $ rm SRR098026_backup.fastq 
 $ cd ..
 $ rmdir backup/
