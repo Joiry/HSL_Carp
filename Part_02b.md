@@ -434,10 +434,72 @@ $ for filename in */*.fastq; do name=$(basename ${filename} .fastq); echo ${name
 
 Now, what happens if we modify the loop further to remove the use of `basename` and only echo out `$filename`
   
+
+## Combining multiple commands with more piping
+
+You've seen a simple way to search back through you history, but its a bit limited.  With pipes and the `grep` command, you can mine your history with a lot more power!  `history` sends its results to the output stream, and can be manipulated by the commands its piped to.
+
+~~~
+$ history | less
+~~~
+
+Instead of `less` opening a file, it takes as input the piped output stream of `history`.  Similarly, `grep` can take the output stream instead of specifying file(s) for it to operate on:
+
+~~~
+$ history | grep "mkdir"
+~~~
+
+Your command number will differ, but you should see at least this command in the output:
+
+> ~~~
+> 250  mkdir backup
+> ~~~
+
+You'll also notice the search itself is added to the history before the output is sent to grep
+
+> ~~~
+> 1007  history | grep "mkdir"
+> ~~~
+
+
+You can search on any part of line of the command:
+
+~~~
+$ history | grep "NNNN"
+~~~
+
+> ~~~
+> 103  grep NNNNNNNNNN SRR098026.fastq 
+> 104  grep -B1 -A2 NNNNNNNNNN SRR098026.fastq 
+> 107  grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
+> 118  grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
+> 121  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq > bad_reads.txt
+> 123  grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
+> 125  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq >> bad_reads.txt
+> ~~~
+
+Since `grep` is also sending its results to the output stream, you can keep on piping:
+
+~~~
+$ history | grep "for" | less
+~~~
+
+So long as a command or program outputs to the out stream, you can keep piping.  This is what a lot of bioinformatics utilities do, and are designed to chain a series of manipulations.
+
+Eg:
+`program1 -i input.data | program2 [some options] | program3 > results_file.format`
+
+Or with some of the commands we've used:
+
+~~~
+$ history | grep "basename" > basename_uses.txt
+$ less basename_uses.txt
+~~~
+
   
   
-  
-## File manipulation and more practice with pipes
+## Optional: File manipulation with `cut`, `sort`, and `uniq`
+(and yet more practice with pipes)
 
 Let's use the tools we've added to our tool kit so far, along with a few new ones, to example our SRA metadata file. First, let's navigate to the correct directory.
 
