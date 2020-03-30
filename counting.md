@@ -185,7 +185,7 @@ Finally, there is the list of paths to all the bams we want to count.  You can m
 To run this script, we just `sbatch` it, since all values it needs is coded into the script itself
 
 ~~~
-$ sbatch Gm_fcounts.slurm.sh
+$ sbatch -J proj_Gm Gm_fcounts.slurm.sh
 ~~~
 
 ***
