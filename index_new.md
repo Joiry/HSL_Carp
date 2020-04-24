@@ -20,15 +20,20 @@
 * Differential Expression Analysis
     * [Intro - theory?](https://joiry.github.io/HSL_Carp/dummy.html)
     * [Counting: traditional & estimated](https://joiry.github.io/HSL_Carp/dummy.html)
-    * [DESeq Basics & Graphing](https://joiry.github.io/HSL_Carp/deseq2)
+    * [DESeq Basics](https://joiry.github.io/HSL_Carp/deseq2)
+    * [Graphing & Exploring Results](https://joiry.github.io/HSL_Carp/dummy.html)
   
 ***
 
 * ChIP-Seq
+   * peak detection
+   * comparison of control vs treated peaks with DESeq
 
 ***
 
 * Assembly
+   * viral/bacteria
+   * transcriptome
   
 ****
   
