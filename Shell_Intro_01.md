@@ -66,7 +66,7 @@ We can see files and subdirectories are in this directory by running `ls`, which
 $ ls
 ~~~
 
-There shouldn't be anything here yet, unless you've used your scratch space before, like me.  We're going to use the `cp` command, which is short for *copy*.
+There shouldn't be anything here yet, unless you've used your scratch space before, like me.  We're going to use the `cp` command, which is short for *copy*.  The command we're going to use is a bit complicated, so just copy and paste it in - normally we wouldn't jump into the deep end like this, but we need to have some directories to teach with!
 
 `cp` takes two main arguments, the first is where you're copying *from*, and the second where you're copying *to*.  There's also the `-r` in there, this is a special argument referred to as an *comand-line option* , we'll cover these later in the lesson.
 
@@ -99,10 +99,10 @@ which should produce:
 We've just used a few commands.  While `pwd` just works on its own, `cd` required an argument - the destination you wanted to go to.  Most of the basic shell commands typically use 0 to 2 arguments.  You can think of `cd` command in the following way:
 
 ~~~
-$ cd <location you want to go to>
+$ cd [location you want to go to]
 ~~~
 
-In these lessons, code with text between `<some text>` means to fill in that text with an appropriate argument.
+Code with text between `[some text]` means to fill in that text with an appropriate argument.
 
 `ls` prints the names of the files and directories in the current directory in alphabetical order, arranged neatly into columns.
 
@@ -129,10 +129,15 @@ The options to Unix commands are specified with a `-`, or `--` for more complex 
 $ man ls
 ~~~
 
-Some manual files are very long. You can scroll through the file using
-your keyboard's up and down arrows or use the <kbd>Space</kbd> key to go forward one page
-and the <kbd>b</kbd> key to go backwards one page. When you are done reading, hit <kbd>q</kbd>
-to quit.
+You'll note the `Synopsis` line:
+
+~~~
+ls [OPTION]... [FILE]...
+~~~
+
+This is typical documentation, showing the command tags flags/options and then even and argument, which we'll see later below.
+
+Some manual files are very long. You can scroll through the file using your keyboard's up and down arrows or use the <kbd>Space</kbd> key to go forward one page and the <kbd>b</kbd> key to go backwards one page. When you are done reading, hit <kbd>q</kbd> to quit.
 
 > ## Challenge
 > Use the `-l` option for the `ls` command to display more information for each item 
@@ -206,7 +211,7 @@ $ pwd
 ~~~
 
 > ~~~
-> /pine/scr/t/r/tristand/shell_data/untrimmed_fastq
+> /nas/longleaf/home/tristand/shell_data/untrimmed_fastq
 > ~~~
 
 So far, we've always been heading down into the nesting of directories, we can jump up one directory:
@@ -222,7 +227,7 @@ $ pwd
 ~~~
 
 > ~~~
-> /pine/scr/t/r/tristand/shell_data
+> /nas/longleaf/home/tristand/shell_data
 > ~~~
 
 Now, move up one more level on your own, and confirm your location
@@ -294,4 +299,76 @@ pwd         pwd_mkdb    pwhich      pwhich5.16  pwhich5.18  pwpolicy
 
 
 Displays the name of every program that starts with `pw`. 
+
+Tab completion can also follow paths.  Try the following
+
+~~~
+$ ls ../sr<tab>
+~~~
+
+which should autocomplete to:
+
+~~~
+$ ls ../sra_metadata/
+~~~
+
+and hitting enter, you'll see the contents of the `sra_metadata` directory even though we are in the `untrimmed_fastq`
+
+~~~
+SraRunTable.txt
+~~~
+
+One this to note is, everything that the Unix commands act on, ie the arguments you give to the commands, whether files or directories, are to Unix the same thing, a path.  Which 
+
+
+## Paths: Full vs. Relative 
+
+Understanding *paths* is key to understanding the Unix shell.  The path, much like its name suggests, is where to find a file or directory.
+
+For example, the `cd` command takes an argument which is a directory name - but we've combined multiple directories as one argument.  Both are examples of *paths*, which can be either a *relative* path or an *absolute* path, also called the *full* path.  We've seen how the directories on the system are arranged into a hierarchy. 
+
+Imagine the file system as a building.  The front door of the building is like the *root directory*.  To get to a particular room, you could always use the directions from the front door, which floor, which hall, which room.  This would be the absolute path.  You're always navigating from the beginning.
+
+However, if you're already in a room somewhere in the building, you could use directions from that room to another, this is like a relative path.  For example, "go out the door, turn left, go past three doors then take the next door on the right."
+
+The `pwd` command gives you the absolute path to your current directory.  Both of these are absolute paths:
+
+> ~~~
+> /nas/longleaf/home/tristand
+> ~~~
+
+> ~~~
+> /pine/scr/t/r/tristand
+> ~~~
+
+The absolute path starts with `/` and is followed by a valid hierarchy of directories.  Tab completion is very useful when navigating with absolute paths.
+
+Enter the following command (substituting in your own scratch space path)
+
+~~~
+$ cd /pine/scr/t/r/tristand/shell_data/.hidden/
+~~~
+
+This navigates multiple levels to the `.hidden` directory, no matter where you are in the file system.
+
+Now that we are in the `.hidden` directory, we can use a relative path to go to the `untrimmed` directory:
+
+~~~
+$ cd ../untrimmed_fastq/
+~~~
+
+Now try to use a relative path to get to the `sra_metadata`
+
+~~~
+$ cd shell_data/.hidden
+~~~
+
+
+You can usually use either a full path or a relative path
+depending on what is most convenient. If we are moving just a few directory levels,
+it' oftens more convenient to enter the relative path since it involves less typing.
+
+Over time, it will become easier for you to keep a mental note of the
+structure of the directories that you are using and how to quickly
+navigate amongst them.  Always remember the `pwd` command, it can help you figure out the path.
 
