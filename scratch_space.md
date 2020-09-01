@@ -17,6 +17,7 @@ If your onyen was 'zjdown', the location of your scratch space would be:
 
 Once there, use `pwd` to see your new location, which for my account is:
 
+
 > ~~~
 > /pine/scr/t/r/tristand
 > ~~~
