@@ -66,7 +66,7 @@ We can see files and subdirectories are in this directory by running `ls`, which
 $ ls
 ~~~
 
-There shouldn't be anything here yet, unless you've used your scratch space before, like me.  We're going to use the `cp` command, which is short for *copy*.  The command we're going to use is a bit complicated, so just copy and paste it in - normally we wouldn't jump into the deep end like this, but we need to have some directories to teach with!
+There shouldn't be anything here yet, unless you've used your Longleaf account before, like me.  We're going to use the `cp` command, which is short for *copy*.  The command we're going to use is a bit complicated, so just copy and paste it in - normally we wouldn't jump into the deep end like this, but we need to have some directories to teach with!
 
 `cp` takes two main arguments, the first is where you're copying *from*, and the second where you're copying *to*.  There's also the `-r` in there, this is a special argument referred to as an *comand-line option* , we'll cover these later in the lesson.
 
@@ -74,7 +74,7 @@ There shouldn't be anything here yet, unless you've used your scratch space befo
 $ cp -r /proj/seq/data/carpentry/shell_data/ .
 ~~~
 
-In this case, `/proj/seq/data/carpentry/shell_data/` is where we're copying *from*, and `.` the *to*.  '.' is a special shell notation meaning essentially *here*, whichever directory you are currently in.  Once the prompt returns, ie the copying has finished, you can use `ls` again to see the directory you've copied, `shell_data`
+In this case, `/proj/seq/data/carpentry/shell_data/` is where we're copying *from*, and `.` is the *to* location.  '.' is a special shell notation meaning essentially *here*, whichever directory you are currently in.  Once the prompt returns, ie the copying has finished, you can use `ls` again to see the directory you've copied, `shell_data`
 
 The Unix shell uses spaces and whitespace as separators, so we typically use an underscore in naming files with multiple words.
 
@@ -230,7 +230,8 @@ $ pwd
 > /nas/longleaf/home/tristand/shell_data
 > ~~~
 
-Now, move up one more level on your own, and confirm your location
+Now, move up one more level on your own, and confirm your location.
+
 
 ## Shortcut: Tab Completion
 
@@ -338,7 +339,7 @@ The `pwd` command gives you the absolute path to your current directory.  Both o
 > ~~~
 
 > ~~~
-> /pine/scr/t/r/tristand
+> /nas/longleaf/home/tristand/shell_data/untrimmed_fastq
 > ~~~
 
 The absolute path starts with `/` and is followed by a valid hierarchy of directories.  Tab completion is very useful when navigating with absolute paths.
@@ -346,29 +347,21 @@ The absolute path starts with `/` and is followed by a valid hierarchy of direct
 Enter the following command (substituting in your own scratch space path)
 
 ~~~
-$ cd /pine/scr/t/r/tristand/shell_data/.hidden/
+$ cd /nas/longleaf/home/tristand/shell_data/untrimmed_fastq
 ~~~
 
-This navigates multiple levels to the `.hidden` directory, no matter where you are in the file system.
+This navigates multiple levels to the `untrimmed_fastq` directory, no matter where you are in the file system.
 
-Now that we are in the `.hidden` directory, we can use a relative path to go to the `untrimmed` directory:
-
-~~~
-$ cd ../untrimmed_fastq/
-~~~
-
-Now try to use a relative path to get to the `sra_metadata`
+Now that we are in the `untrimmed_fastq` directory, we can use a relative path to go to the `sra_metadata` directory:
 
 ~~~
-$ cd shell_data/.hidden
+$ cd ../sra_metadata/
 ~~~
 
-
-You can usually use either a full path or a relative path
-depending on what is most convenient. If we are moving just a few directory levels,
+You can usually use either a full path or a relative path depending on what is most convenient. If we are moving just a few directory levels,
 it' oftens more convenient to enter the relative path since it involves less typing.
 
 Over time, it will become easier for you to keep a mental note of the
 structure of the directories that you are using and how to quickly
-navigate amongst them.  Always remember the `pwd` command, it can help you figure out the path.
+navigate amongst them.  Always remember the `pwd` command, it can help you figure out the path of your current directory.
 
