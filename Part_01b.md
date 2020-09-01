@@ -127,56 +127,7 @@ This will list the contents of the `shell_data` directory without you needing to
 
 
 
-## Paths: Full vs. Relative 
 
-Understanding *paths* is key to understanding the Unix shell.  The path, much like its name suggests, is where to find a file or directory.
-
-For example, the `cd` command takes an argument which is a directory name - but we've combined multiple directories as one argument.  Both are examples of *paths*, which can be either a *relative* path or an *absolute* path, also called the *full* path.  We've seen how the directories on the system are arranged into a hierarchy. 
-
-Imagine the file system as a building.  The front door of the building is like the *root directory*.  To get to a particular room, you could always use the directions from the front door, which floor, which hall, which room.  This would be the absolute path.  You're always navigating from the beginning.
-
-However, if you're already in a room somewhere in the building, you could use directions from that room to another, this is like a relative path.  For example, "go out the door, turn left, go past three doors then take the next door on the right."
-
-The `pwd` command gives you the absolute path to your current directory.  Both of these are absolute paths:
-
-> ~~~
-> /nas/longleaf/home/tristand
-> ~~~
-
-> ~~~
-> /pine/scr/t/r/tristand
-> ~~~
-
-The absolute path starts with `/` and is followed by a valid hierarchy of directories.  Tab completion is very useful when navigating with absolute paths.
-
-Enter the following command (substituting in your own scratch space path)
-
-~~~
-$ cd /pine/scr/t/r/tristand/shell_data/.hidden/
-~~~
-
-This navigates multiple levels to the `.hidden` directory, no matter where you are in the file system.
-
-Now that we are in the `.hidden` directory, we can use a relative path to go to the `untrimmed` directory:
-
-~~~
-$ cd ../untrimmed_fastq/
-~~~
-
-Now try to use a relative path to get to the `sra_metadata`
-
-~~~
-$ cd shell_data/.hidden
-~~~
-
-
-You can usually use either a full path or a relative path
-depending on what is most convenient. If we are moving just a few directory levels,
-it' oftens more convenient to enter the relative path since it involves less typing.
-
-Over time, it will become easier for you to keep a mental note of the
-structure of the directories that you are using and how to quickly
-navigate amongst them.  Always remember the `pwd` command, it can help you figure out the path.
 
 
 
