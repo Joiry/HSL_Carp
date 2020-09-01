@@ -5,10 +5,11 @@
 * A shell interprets commands you type, it does many of the things you'd normall do with a mouse using a graphical user interface (GUI), such as moving and copying files.
 * Learning to use the shell requires more up front effort, but in the long term can save you time
   * Most of the commands are cryptically short, but are often abbreviations of some sort
-* Many commonly used bioinformatics programs and tools are written on Unix systems
+* Many commonly used bioinformatics programs and tools are written on Unix style systems
   * You'll get the most power out of these tools when you are access them in their native environment
   * Web and GUI interfaces exist for a number of tools, but rarely offer the full range of options available to them
 * The shell is how you access powerful compute clusters like UNC's *Longleaf* system.
+  * The cluster hardware offers more compute power and memory than your local machine
   * You can use the shell to automate some tasks
   * Its through the shell you can submit large computation tasks to the system's queue
 
@@ -53,32 +54,10 @@ Which results in:
 
 This is the location of your home directory, where you will always be when logging in.  Each word separated by a slash is a directory within the directory to its left.  Directories are essentially the same as folders in Windows or MacOS.  So `tristand` is a subdirectory of `home`, which is a subdirectory of `longleaf`, etc.  The first `/` is a special directory, the root directory of the filesystem.
 
-However, there isn't much disk space allocated to individual home directories.  For genomics data sets, you'll have to work in the scratch space or your group's `/proj/<labname>/` directory - we'll talk about the `/proj` space in a future lesson.
+However, there isn't much disk space allocated to individual home directories.  For genomics data sets, you'll want to work in the scratch space or your group's `/proj/<labname>/` directory - we'll talk about the `/proj` space in a future lesson.  All PI's can request a directory in /proj from ITS research computing.
 
 
-Scratch is a special area where you can work with large files, but files are deleted after 36 days.  Let's navigate there using the `cd` command, which stands for *change directory*.  We'll dive in with a slightly complicated command, it requires a few user specific substitutions:
 
-~~~
-cd /pine/scr/<a>/<b>/<onyen>
-~~~
-
-Replacing `<a>` with the first letter of your onyen, `<b>` with the second letter of your onyen, and as before your onyen for `<onyen>`.  For me, the command is:
-
-~~~
-cd /pine/scr/t/r/tristand/
-~~~
-
-If your onyen was 'zjdown', the location of your scratch space would be:
-
-`/pine/scr/z/j/zjdown`
-
-Once there, use `pwd` to see your new location, which for my account is:
-
-> ~~~
-> /pine/scr/t/r/tristand
-> ~~~
-
-We've just used two commands.  While `pwd` just works on its own, `cd` required an argument - the destination you wanted to go to.  Most of the basic shell commands typically use 0 to 2 arguments.
 
 
 We can see files and subdirectories are in this directory by running `ls`, which stands for *listing*:
@@ -117,6 +96,13 @@ which should produce:
 > sra_metadata  untrimmed_fastq
 > ~~~
 
+We've just used a few commands.  While `pwd` just works on its own, `cd` required an argument - the destination you wanted to go to.  Most of the basic shell commands typically use 0 to 2 arguments.  You can think of `cd` command in the following way:
+
+~~~
+$ cd <location you want to go to>
+~~~
+
+In these lessons, code with text between `<some text>` means to fill in that text with an appropriate argument.
 
 `ls` prints the names of the files and directories in the current directory in alphabetical order, arranged neatly into columns.
 
@@ -135,6 +121,7 @@ Anything with a "/" after it is a directory. Things with a "\*" after them are p
 
 A lot of modern terminal applications color different file types, so `-F` isn't as essential as it once was, but it can still be useful.
 
+The options to Unix commands are specified with a `-`, or `--` for more complex options, which makes them slightly different than the regular arguments to a command, such as the location you want to go with the `cd` command.
 
 `ls` has lots of other options. To find out what they are, we can use the `man` command, which was shortened from *manual*.
 
