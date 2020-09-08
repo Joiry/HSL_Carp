@@ -2,14 +2,40 @@
 
 ## More moving around the file system
 
-We've learned how to use `pwd` to find our current location within our file system. 
-We've also learned how to use `cd` to change locations and `ls` to list the contents
-of a directory. Now we're going to learn some additional commands for moving around 
-within our file system.
+In the first lesson, we learned how to use `pwd` to find our current location within our file system, 
+and also how to use `cd` to change locations and `ls` to list the contents of a directory.  Leading up
+to a discussion of paths and how integral they are to thinking in a Unix mindframe.
 
-<intro scratch space here, then segue to the cd to home>
+Now we'll go more in depth in moving around within a file system.  Previously, storage locations other than
+your home directory were mentioned.  We can't teach lesssons with /proj/<lab>/ spaces, since these are private 
+to the individual labs.  But we can look at your scratch space.
+  
+Scratch is a special area where you can work with large files, but files are deleted after 36 days.  We'll dive in with a slightly complicated *absolute path*, it requires a few user specific substitutions:
 
-Let's try using the `cd` command without any arguments
+~~~
+cd /pine/scr/<a>/<b>/<onyen>
+~~~
+
+Replacing `<a>` with the first letter of your onyen, `<b>` with the second letter of your onyen, and as before your onyen for `<onyen>`.  For me, the command is:
+
+~~~
+cd /pine/scr/t/r/tristand/
+~~~
+
+If your onyen was 'zjdown', the location of your scratch space would be:
+
+`/pine/scr/z/j/zjdown`
+
+Once there, use `pwd` to see your new location, which for my account is:
+
+
+> ~~~
+> /pine/scr/t/r/tristand
+> ~~~
+
+If you do an `ls` here, it'll probably be empty unless you've used the scratch space before.
+
+Now, let's try using the `cd` command without any arguments
 
 ~~~
 $ cd
@@ -19,7 +45,7 @@ Where are we now?
 
 ****
 
-The `cd` command without any arguments takes you back to your home directory.  You're no longer in your scratch space and you'll have to navigate back to it.  However, instead of typing out that command again, we can use the shell's *history*.  The history is a log of the commands you've typed in.
+The `cd` command without any arguments takes you back to your home directory.  You're no longer in your scratch space and you'd have to navigate back to it as we did before to use it.  However, instead of typing out that command again, we can use the shell's *history*.  The history is a log of the commands you've typed in.
 
 Use the up arrow key to scroll back through your history until you find:  
 (you can use the down arrow key to scroll forward, in case you skip by the command you want)
@@ -30,7 +56,30 @@ $ cd /pine/scr/t/r/tristand/
 
 Except with your own info.  Hit enter.  You've exectued the command just as if you typed it out.
 
-<below covered rapidly in first, lesson, recast as refresher>
+
+## Conventions
+
+Dealing with the home directory is very common. The tilde character, `~`, is a shortcut for the path to your home directory.  This is similar to how `.` is the shortcut for the current directory, and `..` is a shortcut for the next directory up.
+
+~~~
+$ ls ~
+~~~
+
+Will always list the contents of your home directory.
+
+You'll note the following two commands do the same thing, take you to your home directory.
+
+~~~
+$ cd
+$ cd ~
+~~~
+
+So we see the commands `ls` and `cd` have different behaviors when no argument is supplied.
+
+One of the little secrets of Unix is all these 'commands' we're using are actually just little programs, and the shell is letting you execute them.  And all these commands have been written and modified over many years, by different programmers.
+
+Which leads to another little secret - many things in Unix are simply conventions.  Command options aren't guaranteed to be same between different commands, though often they are - or are thematically very similar.
+****
 
 Often there are multiple ways to do something in the shell.  Say we wanted to navigate to the `untrimmed_fastq` directory, which is in the `shell_data` directory.  We could use two commands (but don't):
 
@@ -135,28 +184,7 @@ This will list the contents of the `shell_data` directory without you needing to
 
 <move this up to after the cd command, also add in using ~/path_in_your_home type usage>
 
-## Conventions
 
-Dealing with the home directory is very common. The tilde character, `~`, is a shortcut for the path to your home directory.  This is similar to how `.` is the shortcut for the current directory, and `..` is a shortcut for the next directory up.
-
-~~~
-$ ls ~
-~~~
-
-Will always list the contents of your home directory.
-
-You'll note the following two commands do the same thing, take you to your home directory.
-
-~~~
-$ cd
-$ cd ~
-~~~
-
-So we see the commands `ls` and `cd` have different behaviors when no argument is supplied.
-
-One of the little secrets of Unix is all these 'commands' we're using are actually just little programs, and the shell is letting you execute them.  And all these commands have been written and modified over many years, by different programmers.
-
-Which leads to another little secret - many things in Unix are simply conventions.  Command options aren't guaranteed to be same between different commands, though often they are - or are thematically very similar.
 
 Let's head back to the `untrimmed` directory and look at a new command, `less`
 
@@ -212,4 +240,4 @@ We can use `less` to look both of these copies and see they are both still just 
 
 <bring in command history and wilcards from 2a to this lesson>
 
-That's all for today.  Next class we'll get into more advanced manipulation of files.
+That's all for today.  Next class we'll get into more advanced manipulation of files with more specialized shell tools.
