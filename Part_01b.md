@@ -139,8 +139,8 @@ Where are we now?
 
 > ## Challenge - Finding hidden directories
 >
-> First navigate to the `shell_data` directory. There is a hidden directory within this directory. Explore the options for `ls` to 
-> find out how to see hidden directories. List the contents of the directory and 
+> First navigate to the `shell_data` directory. There is a hidden directory within this directory.
+> Use `man` to explore the options for `ls` to find out how to see hidden directories. List the contents of the directory and 
 > identify the name of the text file in that directory.
 > 
 > Hint: hidden files and folders in Unix start with `.`, for example `.my_hidden_directory`
@@ -148,55 +148,210 @@ Where are we now?
 
 ****
 
-****
+### Wild cards
 
-
-## Examining the contents of other directories
-
-By default, the `ls` commands lists the contents of the working
-directory (i.e. the directory you are in). You can always find the
-directory you are in using the `pwd` command. However, you can also
-give `ls` the names of other directories to view. Navigate to the top of your scratch space.
-
-Then enter the command:
+Navigate to your `untrimmed_fastq` directory.
 
 ~~~
-$ ls shell_data
+$ cd ~/shell_data/untrimmed_fastq
+~~~
+
+Let's take a quick look at the files since I've added a few:
+
+~~~
+$ ls
 ~~~
 
 > ~~~
-> sra_metadata  untrimmed_fastq
+> Control_A.fastq  Control_SR.fastq  SRR097977.fastq
+> Control_B.fastq  file_sizes.txt    SRR098026.fastq
 > ~~~
 
-This will list the contents of the `shell_data` directory without you needing to navigate there.
+
+We are interested in looking at the FASTQ files in this directory. We can list
+all files with the .fastq extension using the command:
+
+~~~
+$ ls *.fastq
+~~~
+
+You should only see these files (the column placement might be slightly different):
+
+> ~~~
+> Control_A.fastq  Control_SR.fastq  SRR098026.fastq
+> Control_B.fastq  SRR097977.fastq
+> ~~~
+
+The `*` character is a special type of character called a wildcard, which can be used to represent any number of any type of character. Thus, `*.fastq` matches every file that ends with `.fastq`, but not the file ending in `.txt`
+
+This command: 
+
+~~~
+$ ls *977.fastq
+~~~
 
 
-****
+> ~~~
+> SRR097977.fastq
+> ~~~
 
-> ## Listing practice
+
+lists only the file that ends with `977.fastq`.
+
+We can use the command `echo` to see how the wildcard character is intepreted by the
+shell.  (echo just prints whatever comes after the command to the screen)
+
+~~~
+$ echo *.fastq
+~~~
+
+
+> ~~~
+> Control_A.fastq Control_B.fastq Control_SR.fastq SRR097977.fastq SRR098026.fastq
+> ~~~
+
+The `*` is expanded to include any file that ends with `.fastq`.
+
+The `*` can be used anywhere in the expression: beginning, middle, end.
+
+~~~
+$ ls Control_*.fastq
+~~~
+
+> ~~~
+> Control_A.fastq  Control_B.fastq  Control_SR.fastq
+> ~~~
+
+
+`*` works with longer paths as well, let's look in the directory `/usr/bin`
+
+~~~
+$ ls /usr/bin/*.sh
+~~~
+
+
+> ~~~
+> /usr/bin/gettext.sh             /usr/bin/lprsetup.sh
+> /usr/bin/gflags_completions.sh  /usr/bin/rescan-scsi-bus.sh
+> /usr/bin/gvmap.sh               /usr/bin/setup-nsssysinit.sh
+> /usr/bin/lesspipe.sh            /usr/bin/unix-lpr.sh
+> ~~~
+
+
+Lists every file in `/usr/bin` that ends in the characters `.sh`.
+
+
+
+
+> ## Exercise
+> Do each of the following tasks from your current directory using a single
+> `ls` command for each.
 > 
-> Try to list the contents of the `untrimmed_fastq` directory from the top of your scratch space. 
+> 1.  List all of the files in `/usr/bin` that start with the letter 'y'.
+> 2.  List all of the files in `/usr/bin` that end with the letter 'o'. 
+> 3.  List all of the files in `/usr/bin` that contain the letter 'q'.
+
+****
+
+****
+
+****
+
+That last one required a little extra thought.  You can use the wildcard multiple times:
+
+~~~
+$ ls *S*fastq
+~~~
+
+> ~~~
+> Control_SR.fastq  SRR097977.fastq  SRR098026.fastq
+> ~~~
+
+This also demostrates that `*` can match nothing.
+
+The `?` character only matches a single character.
+
+~~~
+$ ls Control_?.fastq
+~~~
+
+> ~~~
+> Control_A.fastq  Control_B.fastq
+> ~~~
+
+`Control_SR.fastq` is not listed, because it contains two letter between `Control_` and `.fastq`
+
+Can you write a pattern to only show files with only 2 characters after `Control_` and before the file extension?
+
+
+
+
+## Command History
+
+If you want to repeat a command that you've run recently, you can access previous
+commands using the up arrow on your keyboard to go back to the most recent
+command. Likewise, the down arrow takes you forward in the command history.
+
+A few more useful shortcuts: 
+
+- <kbd>Ctrl</kbd>+<kbd>C</kbd> will cancel the command you are writing, and give you a 
+fresh prompt.
+- <kbd>Ctrl</kbd>+<kbd>R</kbd> will do a reverse-search through your command history.  This
+is very useful.
+- <kbd>Ctrl</kbd>+<kbd>L</kbd> or the `clear` command will clear your screen.
+
+You can also review your recent commands with the `history` command, by entering:
+
+~~~
+$ history
+~~~
+
+to see a numbered list of recent commands. You can reuse one of these commands
+directly by referring to the number of that command.
+
+For example, if your history looked like this:
+(your numbers will be different)
+
+> ~~~
+> 259  ls *
+> 260  ls /usr/bin/*.sh
+> 261  ls *R1*fastq
+> ~~~
+
+
+then you could repeat command #260 by entering:
+
+~~~
+$ !260
+~~~
+
+Type `!` (exclamation point) and then the number of the command from your history.
+You will be glad you learned this when you need to re-run very complicated commands.
+
+> ## Exercise
+> Find the line number in your history for the command that listed all the .fastq
+> files that contained an 'S'. Rerun that command.
+
+****
 
 ****
 
 ****
 
 > > ## Solution
-> >
-> > ~~~
-> > $ ls shell_data/untrimmed_fastq/
-> > ~~~
-> > 
-> > > ~~~
-> > SRR097977.fastq  SRR098026.fastq 
-> > > ~~~
-> > 
+> > First type `history`. Then use `!` followed by the line number to rerun that command.
+
+
+
+****
 
 
 
 
 
-<move this up to after the cd command, also add in using ~/path_in_your_home type usage>
+
+
+
 
 
 
@@ -252,6 +407,5 @@ $ cp SRR098026.fastq SRR.098026.copy.txt.zongaaa
 
 We can use `less` to look both of these copies and see they are both still just the same text file as the original .fastq file.
 
-<bring in command history and wilcards from 2a to this lesson>
 
 That's all for today.  Next class we'll get into more advanced manipulation of files with more specialized shell tools.
