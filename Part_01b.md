@@ -7,6 +7,8 @@ We've also learned how to use `cd` to change locations and `ls` to list the cont
 of a directory. Now we're going to learn some additional commands for moving around 
 within our file system.
 
+<intro scratch space here, then segue to the cd to home>
+
 Let's try using the `cd` command without any arguments
 
 ~~~
@@ -27,6 +29,8 @@ $ cd /pine/scr/t/r/tristand/
 ~~~
 
 Except with your own info.  Hit enter.  You've exectued the command just as if you typed it out.
+
+<below covered rapidly in first, lesson, recast as refresher>
 
 Often there are multiple ways to do something in the shell.  Say we wanted to navigate to the `untrimmed_fastq` directory, which is in the `shell_data` directory.  We could use two commands (but don't):
 
@@ -129,7 +133,7 @@ This will list the contents of the `shell_data` directory without you needing to
 
 
 
-
+<move this up to after the cd command, also add in using ~/path_in_your_home type usage>
 
 ## Conventions
 
@@ -205,5 +209,7 @@ $ cp SRR098026.fastq SRR.098026.copy.txt.zongaaa
 ~~~
 
 We can use `less` to look both of these copies and see they are both still just the same text file as the original .fastq file.
+
+<bring in command history and wilcards from 2a to this lesson>
 
 That's all for today.  Next class we'll get into more advanced manipulation of files.
