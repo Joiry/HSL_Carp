@@ -3,7 +3,8 @@
 ## More moving around the file system
 
 In the first lesson, we learned how to use `pwd` to find our current location within our file system, 
-and also how to use `cd` to change locations and `ls` to list the contents of a directory.  Leading up
+and also how to use `cd` to change locations and `ls` to list the contents of a directory.  Additionally,
+we learned of the `man` command that gives you detailed information on most shell commands.  All this leading up
 to a discussion of paths and how integral they are to thinking in a Unix mindframe.
 
 Now we'll go more in depth in moving around within a file system.  Previously, storage locations other than
@@ -45,7 +46,7 @@ Where are we now?
 
 ****
 
-The `cd` command without any arguments takes you back to your home directory.  You're no longer in your scratch space and you'd have to navigate back to it as we did before to use it.  However, instead of typing out that command again, we can use the shell's *history*.  The history is a log of the commands you've typed in.
+The `cd` command without any arguments takes you back to your home directory.  You're no longer in your scratch space and you'd have to navigate back to it as we did before to work in it.  However, instead of typing out that command again, we can use the shell's *history*.  The history is a log of the commands you've typed in.
 
 Use the up arrow key to scroll back through your history until you find:  
 (you can use the down arrow key to scroll forward, in case you skip by the command you want)
@@ -59,7 +60,7 @@ Except with your own info.  Hit enter.  You've exectued the command just as if y
 
 ## Conventions
 
-Dealing with the home directory is very common. The tilde character, `~`, is a shortcut for the path to your home directory.  This is similar to how `.` is the shortcut for the current directory, and `..` is a shortcut for the next directory up.
+Dealing with the home directory is very common. The *tilde* character, `~`, is a shortcut for the path to your home directory.  This is similar to how `.` is the shortcut for the current directory, and `..` is a shortcut for the next directory up.
 
 ~~~
 $ ls ~
@@ -82,7 +83,7 @@ Which leads to another little secret - many things in Unix are simply convention
 
 ****
 
-Often there are multiple ways to do something in the shell, but just typing `cd` is easier than adding in the `~`, so why is it useful?  You can use the `~` to create paths.  For example, if you are working in your scratch space and need to see the contents of a directory in your home directory:
+Often there are multiple ways to do something in the shell, but just typing `cd` is easier than adding in the `~`, so why is the tilde useful?  You can use the `~` to create paths.  For example, if you are working in your scratch space and need to see the contents of a directory in your home directory:
 
 ~~~
 $ ls ~/shell_data/untrimmed_fastq
@@ -102,11 +103,13 @@ $ cd shell_data
 $ cd untrimmed_fastq
 ~~~
 
-or do it with one command, using `~` and `/`s to separate each directory in the hierarchy we want to travel.
+or do it with one command, using `~` plus `/`'s to separate each directory in the hierarchy we want to travel.
 
 ~~~
 $ cd ~/shell_data/untrimmed_fastq
 ~~~
+
+As you work more and more in the shell, you'll find how useful the `~` is, and likely using it will become second nature.
 
 What happens if we type `cd shell_data` from here? Try it and see what happens.
 
@@ -137,7 +140,7 @@ Where are we now?
 
 ****
 
-> ## Challenge - Finding hidden directories
+> ### Challenge - Finding hidden directories
 >
 > First navigate to the `shell_data` directory. There is a hidden directory within this directory.
 > Use `man` to explore the options for `ls` to find out how to see hidden directories. List the contents of the directory and 
@@ -145,8 +148,22 @@ Where are we now?
 > 
 > Hint: hidden files and folders in Unix start with `.`, for example `.my_hidden_directory`
 >
-
 ****
+****
+
+You can string multiple command flags together, so long as they are the sort one letter version
+
+~~~
+$ ls -l -a
+~~~
+
+is the same as:
+
+~~~
+$ ls -la
+~~~
+
+
 
 ### Wild cards
 
@@ -156,7 +173,7 @@ Navigate to your `untrimmed_fastq` directory.
 $ cd ~/shell_data/untrimmed_fastq
 ~~~
 
-Let's take a quick look at the files since I've added a few:
+Let's take a quick look at the files again:
 
 ~~~
 $ ls
@@ -168,7 +185,7 @@ $ ls
 > ~~~
 
 
-We are interested in looking at the FASTQ files in this directory. We can list
+What if we are interested in looking at only the FASTQ files in this directory. We can list
 all files with the .fastq extension using the command:
 
 ~~~
@@ -380,6 +397,7 @@ $ less untrimmed_fastq/SRR098026.fastq
 As we saw before, commands that take a file or directory as an argument can use any valid path.  So you can access files all across the filesystem.
 
 
+## Looking at, and copying, files
 
 Finally, let's revisit the `cp`, aka `copy` command.  I had you use it with minimal explanation, but now let's take a deeper look.  Don't re-execute it, we'll just look at what we did:
 
@@ -389,7 +407,7 @@ Hopefully it makes more sense now.  We're copying from the absolute path `/proj/
 
 Here's an extra trick, while in the man page, hit the <kbd>/</kbd> key.  You'll get a cursor in the bottom corner, now type '-r', and voila, you skip to the first time '-r' appears in the man page.  This is a general search feature, not just for the different command options or flags.  If you typed in 'recursively', it would have jumped to the next line down.
 
-`-r`, also often `-R`, is one of the most powerful, and thus **dangerous**, options for commands that use it.
+`-r`, also often `-R` in some commands, is one of the most powerful, and thus **dangerous**, options for commands that use it.
 
 In its basic usage, `cp` copies just one file to a new file.  Let's go back to the `untrimmed` directory and copy one of the files there.
 
