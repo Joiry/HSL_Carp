@@ -212,11 +212,16 @@ $ ls *977.fastq
 > SRR097977.fastq
 > ~~~
 
-
 lists only the file that ends with `977.fastq`.
 
+The `echo` command just prints whatever comes after the command to the screen:
+
+~~~
+$ echo This is just stuff I am typing out
+~~~
+
 We can use the command `echo` to see how the wildcard character is intepreted by the
-shell.  (echo just prints whatever comes after the command to the screen)
+shell.  
 
 ~~~
 $ echo *.fastq
@@ -240,7 +245,7 @@ $ ls Control_*.fastq
 > ~~~
 
 
-`*` works with longer paths as well, let's look in the directory `/usr/bin`
+`*` works with longer paths as well, let's look in the directory `/usr/bin/`
 
 ~~~
 $ ls /usr/bin/*.sh
@@ -258,8 +263,9 @@ $ ls /usr/bin/*.sh
 Lists every file in `/usr/bin` that ends in the characters `.sh`.
 
 
+****
 
-
+****
 > ## Exercise
 > Do each of the following tasks from your current directory using a single
 > `ls` command for each.
@@ -272,7 +278,7 @@ Lists every file in `/usr/bin` that ends in the characters `.sh`.
 
 ****
 
-****
+
 
 That last one required a little extra thought.  You can use the wildcard multiple times:
 
@@ -305,14 +311,14 @@ Can you write a pattern to only show files with only 2 characters after `Control
 
 ## Command History
 
-If you want to repeat a command that you've run recently, you can access previous
+As we saw earlier, you can repeat a command that you've run recently, accessing previous
 commands using the up arrow on your keyboard to go back to the most recent
 command. Likewise, the down arrow takes you forward in the command history.
 
 A few more useful shortcuts: 
 
-- <kbd>Ctrl</kbd>+<kbd>C</kbd> will cancel the command you are writing, and give you a 
-fresh prompt.
+- <kbd>Ctrl</kbd>+<kbd>C</kbd> will cancel the command you are executing, and give you a 
+fresh prompt.  *This is very useful if you've accidently entered a command that takes up too many resources for the login node*
 - <kbd>Ctrl</kbd>+<kbd>R</kbd> will do a reverse-search through your command history.  This
 is very useful.
 - <kbd>Ctrl</kbd>+<kbd>L</kbd> or the `clear` command will clear your screen.
@@ -345,6 +351,8 @@ $ !260
 Type `!` (exclamation point) and then the number of the command from your history.
 You will be glad you learned this when you need to re-run very complicated commands.
 
+****
+
 > ## Exercise
 > Find the line number in your history for the command that listed all the .fastq
 > files that contained an 'S'. Rerun that command.
@@ -358,19 +366,10 @@ You will be glad you learned this when you need to re-run very complicated comma
 > > ## Solution
 > > First type `history`. Then use `!` followed by the line number to rerun that command.
 
-
-
 ****
 
 
-
-
-
-
-
-
-
-
+## Examining files
 
 Let's head back to the `untrimmed` directory and look at a new command, `less`
 
@@ -397,7 +396,7 @@ $ less untrimmed_fastq/SRR098026.fastq
 As we saw before, commands that take a file or directory as an argument can use any valid path.  So you can access files all across the filesystem.
 
 
-## Looking at, and copying, files
+## More on copying files
 
 Finally, let's revisit the `cp`, aka `copy` command.  I had you use it with minimal explanation, but now let's take a deeper look.  Don't re-execute it, we'll just look at what we did:
 
@@ -407,7 +406,13 @@ Hopefully it makes more sense now.  We're copying from the absolute path `/proj/
 
 Here's an extra trick, while in the man page, hit the <kbd>/</kbd> key.  You'll get a cursor in the bottom corner, now type '-r', and voila, you skip to the first time '-r' appears in the man page.  This is a general search feature, not just for the different command options or flags.  If you typed in 'recursively', it would have jumped to the next line down.
 
-`-r`, also often `-R` in some commands, is one of the most powerful, and thus **dangerous**, options for commands that use it.
+`-r`, also often `-R` in some commands, is one of the most powerful, and thus **dangerous**, options for commands that use it.  For example, look at the manual page of `ls`
+
+~~~
+$ man ls
+~~~
+
+Hit `space` bar a few times to scroll down, and see the different meanings of `-r` and `-R`, which aren't quite the same as the `cp` command.
 
 In its basic usage, `cp` copies just one file to a new file.  Let's go back to the `untrimmed` directory and copy one of the files there.
 
@@ -424,6 +429,17 @@ $ cp SRR098026.fastq SRR.098026.copy.txt.zongaaa
 ~~~
 
 We can use `less` to look both of these copies and see they are both still just the same text file as the original .fastq file.
+
+****
+
+## What we learned today
+
+ * The main takeaway is that much of how the shell works is based on conventions, and not hard and fast rules
+   * all the shell 'commands' are just little programs, written and modified by different programmers over the years
+   * similar inputs to different commands don't always produce logically similar behavior
+ * `~`, `.`, `..` are all shorthands for various paths
+ * `*` and `?` are *wildcards*, they match, respectively, any/no characters or just a single one.
+ * The shell keeps a log of all the commands you type, known as your *history*.
 
 
 That's all for today.  Next class we'll get into more advanced manipulation of files with more specialized shell tools.
