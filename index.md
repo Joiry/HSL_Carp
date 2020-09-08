@@ -2,7 +2,7 @@
 
 * Introduction to Unix Shell
   * [Part 1A, Intro to the Shell](https://joiry.github.io/HSL_Carp/Shell_Intro_01)
-  * [Part 1B, More Intro to the Shell]<!--(https://joiry.github.io/HSL_Carp/Part_01b)-->
+  * [Part 1B, More Intro to the Shell](https://joiry.github.io/HSL_Carp/Shell_Intro_02)
   * [Part 2A, Working with Files]<!--(https://joiry.github.io/HSL_Carp/Part_02a)-->
   * [Part 2B, Useful Tools and Pipes]<!--(https://joiry.github.io/HSL_Carp/Part_02b)-->
   * [Part 3A, Loops and Scripts]<!--(https://joiry.github.io/HSL_Carp/var_loop_script)-->
