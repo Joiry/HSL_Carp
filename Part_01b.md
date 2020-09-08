@@ -67,7 +67,7 @@ $ ls ~
 
 Will always list the contents of your home directory.
 
-You'll note the following two commands do the same thing, take you to your home directory.
+You'll note the following two commands do the same thing, take you to your home directory (don't do these yet, however).
 
 ~~~
 $ cd
@@ -79,19 +79,33 @@ So we see the commands `ls` and `cd` have different behaviors when no argument i
 One of the little secrets of Unix is all these 'commands' we're using are actually just little programs, and the shell is letting you execute them.  And all these commands have been written and modified over many years, by different programmers.
 
 Which leads to another little secret - many things in Unix are simply conventions.  Command options aren't guaranteed to be same between different commands, though often they are - or are thematically very similar.
+
 ****
 
-Often there are multiple ways to do something in the shell.  Say we wanted to navigate to the `untrimmed_fastq` directory, which is in the `shell_data` directory.  We could use two commands (but don't):
+Often there are multiple ways to do something in the shell, but just typing `cd` is easier than adding in the `~`, so why is it useful?  You can use the `~` to create paths.  For example, if you are working in your scratch space and need to see the contents of a directory in your home directory:
 
 ~~~
+$ ls ~/shell_data/untrimmed_fastq
+~~~
+
+Tab completion also works with paths using `~`:
+
+~~~
+$ ls ~/shell_data/un<tab>
+~~~
+
+Say we wanted to navigate to the `untrimmed_fastq` directory, which is in the `shell_data` directory.  We could do it with three commands (but don't):
+
+~~~
+$ cd
 $ cd shell_data
 $ cd untrimmed_fastq
 ~~~
 
-or do it with one command, using `/` to separate each directory in the hierarchy we want to travel.
+or do it with one command, using `~` and `/`s to separate each directory in the hierarchy we want to travel.
 
 ~~~
-$ cd shell_data/untrimmed_fastq
+$ cd ~/shell_data/untrimmed_fastq
 ~~~
 
 What happens if we type `cd shell_data` from here? Try it and see what happens.
