@@ -1,12 +1,12 @@
 ****
 
 * Introduction to Unix Shell
-  * [Part 1A, Intro to the Shell](https://joiry.github.io/HSL_Carp/Shell_Intro_01)
-  * [Part 1B, More Intro to the Shell](https://joiry.github.io/HSL_Carp/Shell_Intro_02)
-  * [Part 2A, Working with Files]<!--(https://joiry.github.io/HSL_Carp/Part_02a)-->
-  * [Part 2B, Useful Tools and Pipes]<!--(https://joiry.github.io/HSL_Carp/Part_02b)-->
-  * [Part 3A, Loops and Scripts]<!--(https://joiry.github.io/HSL_Carp/var_loop_script)-->
-  * [Part 3B, Introduction to Slurm]<!--(https://joiry.github.io/HSL_Carp/slurm)-->
+  * [Part 1, Intro to the Shell](https://joiry.github.io/HSL_Carp/Shell_Intro_01)
+  * [Part 2, More Intro to the Shell](https://joiry.github.io/HSL_Carp/Shell_Intro_02)
+  * [Part 3, Working with Files]<!--(https://joiry.github.io/HSL_Carp/Part_02a)-->
+  * [Part 4, Useful Tools and Pipes]<!--(https://joiry.github.io/HSL_Carp/Part_02b)-->
+  * [Part 5, Loops and Scripts]<!--(https://joiry.github.io/HSL_Carp/var_loop_script)-->
+  * [Part 6, Introduction to Slurm]<!--(https://joiry.github.io/HSL_Carp/slurm)-->
   
 ****
   
@@ -20,7 +20,7 @@
   * Part 2 - Differential Expression Analysis
     * [Intro and Counting]<!--(https://joiry.github.io/HSL_Carp/counting)-->
     * [DESeq Basics]<!--(https://joiry.github.io/HSL_Carp/deseq2)-->
-    * Intermediate DESeq & RStudio  
+    * [Intermediate DESeq & RStudio]  
   
   
 ****
