@@ -8,20 +8,15 @@ In today's lesson:
 
 ## Examining Files
 
-We now know how to switch directories, run programs, and look at the
-contents of directories, but how do we look at the contents of files?
+We now know how to switch directories and look at the contents of directories.  And briefly how we can look at the contents of files.
 
-
-
-
-`cat` is a terrific program, but when the file is really big, it can be annoying to use, but can serve several purposes once you've learned a few more advanced techniques. 
-
-Let's review the `less` command:
+Let's review the `less` command, first returning to a directory with some files:
 
 ~~~
+$ cd cd shell_data/untrimmed_fastq/
+$ ls
 $ less SRR097977.fastq
 ~~~
-
 
 Some navigation commands in `less`
 
@@ -33,10 +28,8 @@ Some navigation commands in `less`
 |  <kbd>G</kbd>    | to go to the end |
 |  <kbd>q</kbd>    | to quit |
 
-`less` also gives you a way of searching through files. Use the
-"/" key to begin a search. Enter the word you would like
-to search for and press `enter`. The screen will jump to the next location where
-that word is found. 
+`less` also gives you a way of searching through files. Use the "/" key to begin a search. Enter the word you would like
+to search for and press `enter`. The screen will jump to the next location where that word is found. 
 
 **Shortcut:** If you hit "/" then "enter", `less` will  repeat
 the previous search. `less` searches from the current location and
@@ -51,18 +44,36 @@ and where it is in the file. If you continue to type `/` and hit return, you wil
 forward to the next instance of this sequence motif. If you instead type `?` and hit 
 return, you will search backwards and move up the file to previous examples of this motif.
 
+****
+
+****
+
 > ## Exercise
 >
-> What are the next three nucleotides (characters) after the first instance of the sequence quoted above?
+> From the beginning of the file, search for TCAAAT, then keep repeating the search and count the total number of occurences
 
 ****
 
 ****
 
+A very useful command line option for `less` is `-S`, which makes it much easier to view text data arranged in columns.
+
+Compare using the `-S` with not using it on the `SraRunTable.txt` file one directory over:
+
+~~~
+$ less ../sra_metadata/SraRunTable.txt
+~~~
+
+You can kind of see that there are columns, but the line wrapping makes it hard to see.
+
+~~~
+$ less -S ../sra_metadata/SraRunTable.txt
+~~~
+
+
 ****
 
-One way to examine a file is to print out all of the
-contents using the program `cat`. 
+Another way to examine a file is to print out all of the contents using the program `cat`. 
 
 Enter the following command from within the `untrimmed_fastq` directory: 
 
@@ -70,9 +81,9 @@ Enter the following command from within the `untrimmed_fastq` directory:
 $ cat SRR098026.fastq
 ~~~
 
-This will print out all of the contents of the `SRR098026.fastq` to the screen.
+This will print out all of the contents of the `SRR098026.fastq` to the screen. When the file is really big, `cat` can be annoying to use.   
 
-
+However, it may not seem like it at first, but `cat` is a useful program.  `cat` is short for concatenate, and its primary function is to join files together, but you will often see it used to just stream out individual file.  Next lesson we'll see it can serve several purposes once you've learned a few more advanced techniques. 
 
 
 There's another way that we can look at files, and in this case, just
@@ -136,10 +147,22 @@ $ head -n 1 SRR098026.fastq
 $ tail -n 1 SRR098026.fastq
 ~~~
 
-
 > ~~~
 > A!@B!BBB@ABAB#########!!!!!!!######
 > ~~~
+
+When you know a file has special information at its beginning, such as meta data headers or column names, head can be especially useful:
+
+~~~
+$ head -n 1 ../sra_metadata/SraRunTable.txt
+~~~
+
+As with all these commands/programs, we can see it has several options listed on its man page:
+
+~~~
+$ man tail
+~~~
+
 
 
 ## Creating, moving, copying, and removing
