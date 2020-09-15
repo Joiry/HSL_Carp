@@ -234,8 +234,26 @@ $ ls
 > SRR098026_backup.fastq
 > ~~~
 
+### Multi copy
 
-### File Permissions
+We've seen how using the recursive option, `-r` allows you to copy an entire directory and all the subdirectories.  `cp` can also copy multiple files, so long as the destination path given is a directory, and not a filename.
+
+Move back out of the `backup` directory with `cd ..` and try the following command:
+
+~~~
+> cp Control*fastq backup/
+> ls backup/
+~~~
+
+Remember, the wildcard expands out to a list that is passed to `cp`, so the names of all three of those files was used by `cp` - you'll note this line the man page for `cp`
+
+> Copy SOURCE to DEST, or multiple SOURCE(s) to DIRECTORY.
+
+
+
+****
+
+## File Permissions
 
 We've now made a backup copy of our file, but just because we have two copies doesn't make us safe. We can still accidentally delete or 
 overwrite both copies. To make sure we can't accidentally mess up this backup file, we're going to change the permissions on the file so
@@ -364,10 +382,33 @@ $ ls -la
 
 See the new `w` has popped up in the third set of three.
 
-After that aside, delete the file and the directory:
+After that aside, delete the file:
 
 ~~~
 $ rm SRR098026_backup.fastq 
+~~~
+
+We also need to delete the control files.  Much like how we copied these files, we can use a wildcard, but **be warned this is also very dangerous**
+When deleting using some wildcard pattern, it is best to check what will be deleted using the same pattern with `ls`
+
+~~~
+$ ls Control*fastq
+~~~
+
+~~~
+> Control_A.fastq  Control_B.fastq  Control_SR.fastq
+~~~
+
+Now we know what the pattern matches, we can delete these with peace of mind.  This is a good time to use your history to up arrow and modify the `ls` command
+into `rm`, instead of retyping the pattern.
+
+~~~
+$ rm Control*fastq
+~~~
+
+And now we can delete the directory safely:
+
+~~~
 $ cd ..
 $ rmdir backup/
 ~~~
@@ -379,8 +420,6 @@ This time `rmdir` should work without any complaints from the system.
 >
 > Starting in the `shell_data/untrimmed_fastq/` directory, do the following:
 > 1. Make sure that you have deleted your backup directory and all files it contains.  
-> 2. Create a copy of each of your FASTQ files. (Note: You'll need to do this individually for each of the FASTQ files. We haven't 
-> learned yet how to do this
-> with a wild-card.)  
+> 2. Create a copy of each of your FASTQ files. (Note: You'll either need to do this individually for each of the FASTQ files or use a wildcard pattern copy)  
 > 3. Use a wildcard to move all of your backup files to a new backup directory.   
 > 4. Change the permissions on all of your backup files to be write-protected.  
