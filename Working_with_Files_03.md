@@ -13,8 +13,13 @@ We now know how to switch directories and look at the contents of directories.  
 Let's review the `less` command, first returning to a directory with some files:
 
 ~~~
-$ cd cd shell_data/untrimmed_fastq/
+$ cd shell_data/untrimmed_fastq/
 $ ls
+~~~
+
+Let's invoke less again on one of the fastq files:
+
+~~~
 $ less SRR097977.fastq
 ~~~
 
