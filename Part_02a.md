@@ -1,22 +1,9 @@
 # Working with Files
-
-
-We're going to simplify a bit and work out of our home directory today, since the sample files we're using are fairly small.
-So login as we did last week and we're going to recopy the sample data again - but we're doing this in our home directory and not the scratch space.  This will allow us to use the `~` shortcut more.
-
-~~~
-$ cp -r /proj/seq/data/carpentry/shell_data/ .
-~~~
-
-I've also added a few files to make some of the examples more clear and this will give us a clean copy
-
-
-### Our data set: FASTQ files
-
-Now that we know how to navigate around our directory structure, lets
-start working with our sequencing files. We did a sequencing experiment and 
-have two results files, which are stored in our `untrimmed_fastq` directory. 
-
+In today's lesson:
+ * Learn more about using `less` and some other tools for looking at files.
+ * Go into more depth in copying files, as well as creating directories and moving files around
+ * Learn about file permissions and how to change them
+ * See how to delete files
 
 
 ## Examining Files
@@ -24,34 +11,8 @@ have two results files, which are stored in our `untrimmed_fastq` directory.
 We now know how to switch directories, run programs, and look at the
 contents of directories, but how do we look at the contents of files?
 
-One way to examine a file is to print out all of the
-contents using the program `cat`. 
-
-Enter the following command from within the `untrimmed_fastq` directory: 
-
-~~~
-$ cat SRR098026.fastq
-~~~
-
-This will print out all of the contents of the `SRR098026.fastq` to the screen.
 
 
-> ## Exercise
-> 
-> 1. Print out the contents of the `~/shell_data/untrimmed_fastq/SRR097977.fastq` file. What is the last line of the file? 
-> 2.  From your home directory, and without changing directories,
-> use one short command to print the contents of all of the files in
-> the `~/shell_data/untrimmed_fastq` directory.
-
-****
-
-****
-
-****
-
-> > ## Solution
-> > 1. The last line of the file is `TC:CCC::CCCCCCCC<8?6A:C28C<608'&&&,'$`.
-> > 2. `cat ~/shell_data/untrimmed_fastq/*`
 
 `cat` is a terrific program, but when the file is really big, it can be annoying to use, but can serve several purposes once you've learned a few more advanced techniques. 
 
@@ -100,6 +61,16 @@ return, you will search backwards and move up the file to previous examples of t
 
 ****
 
+One way to examine a file is to print out all of the
+contents using the program `cat`. 
+
+Enter the following command from within the `untrimmed_fastq` directory: 
+
+~~~
+$ cat SRR098026.fastq
+~~~
+
+This will print out all of the contents of the `SRR098026.fastq` to the screen.
 
 
 
@@ -385,7 +356,7 @@ This time `rmdir` should work without any complaints from the system.
 >
 > Starting in the `shell_data/untrimmed_fastq/` directory, do the following:
 > 1. Make sure that you have deleted your backup directory and all files it contains.  
-> 2. Create a copy of each of your FASTQ files. (Note: You'll need to do this individually for each of the two FASTQ files. We haven't 
+> 2. Create a copy of each of your FASTQ files. (Note: You'll need to do this individually for each of the FASTQ files. We haven't 
 > learned yet how to do this
 > with a wild-card.)  
 > 3. Use a wildcard to move all of your backup files to a new backup directory.   
