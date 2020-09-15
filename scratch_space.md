@@ -104,3 +104,38 @@ This will list the contents of the `shell_data` directory without you needing to
 > > SRR097977.fastq  SRR098026.fastq 
 > > > ~~~
 > > 
+
+
+We're going to simplify a bit and work out of our home directory today, since the sample files we're using are fairly small.
+So login as we did last week and we're going to recopy the sample data again - but we're doing this in our home directory and not the scratch space.  This will allow us to use the `~` shortcut more.
+
+~~~
+$ cp -r /proj/seq/data/carpentry/shell_data/ .
+~~~
+
+I've also added a few files to make some of the examples more clear and this will give us a clean copy
+
+
+### Our data set: FASTQ files
+
+Now that we know how to navigate around our directory structure, lets
+start working with our sequencing files. We did a sequencing experiment and 
+have two results files, which are stored in our `untrimmed_fastq` directory. 
+
+> ## Exercise
+> 
+> 1. Print out the contents of the `~/shell_data/untrimmed_fastq/SRR097977.fastq` file. What is the last line of the file? 
+> 2.  From your home directory, and without changing directories,
+> use one short command to print the contents of all of the files in
+> the `~/shell_data/untrimmed_fastq` directory.
+
+****
+
+****
+
+****
+
+> > ## Solution
+> > 1. The last line of the file is `TC:CCC::CCCCCCCC<8?6A:C28C<608'&&&,'$`.
+> > 2. `cat ~/shell_data/untrimmed_fastq/*`
+
