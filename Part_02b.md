@@ -354,85 +354,7 @@ efficiently. Let's take a few minutes to practice.
 >>> ~~~
 
 
-## Writing for loops
 
-Loops are key to productivity improvements through automation as they allow us to execute commands repeatedly. 
-Similar to wildcards and tab completion, using loops also reduces the amount of typing (and typing mistakes). 
-Loops are helpful when performing operations on groups of sequencing files, such as unzipping or trimming multiple
-files. We will use loops for these purposes in subsequent analyses, but will cover the basics of them for now.
-
-When the shell sees the keyword `for`, it knows to repeat a command (or group of commands) once for each item in a list. 
-Each time the loop runs (called an iteration), an item in the list is assigned in sequence to the **variable**, and 
-the commands inside the loop are executed, before moving on to  the next item in the list. Inside the loop, we call for 
-the variable's value by putting `$` in front of it. The `$` tells the shell interpreter to treat the **variable**
-as a variable name and substitute its value in its place, rather than treat it as text or an external command. 
-
-Let's write a for loop to show us the first two lines of the fastq files we downloaded earlier. You will notice shell prompt changes from `$` to `>` and back again as we were typing in our loop. The second prompt, `>`, is different to remind us that we haven’t finished typing a complete command yet. A semicolon, `;`, can be used to separate two commands written on a single line.
-
-~~~
-$ cd ../untrimmed_fastq/
-~~~
-
-~~~
-$ for filename in *.fastq
-> do
-> head -n 2 ${filename}
-> done
-~~~
-
-The for loop begins with the formula `for <variable> in <group to iterate over>`. In this case, the word `filename` is designated 
-as the variable to be used over each iteration. In our case `SRR097977.fastq` and `SRR098026.fastq` will be substituted for `filename` 
-because they fit the pattern of ending with .fastq in directory we've specified. The next line of the for loop is `do`. The next line is 
-the code that we want to excute. We are telling the loop to print the first two lines of each variable we iterate over. Finally, the 
-word `done` ends the loop.
-
-After executing the loop, you should see the first two lines of both fastq files printed to the terminal. Let's create a loop that 
-will save this information to a file.
-
-~~~
-$ for filename in *.fastq
-> do
-> head -n 2 ${filename} >> seq_info.txt
-> done
-~~~
-
-Note that we are using `>>` to append the text to our `seq_info.txt` file. If we used `>`, the `seq_info.txt` file would be rewritten
-every time the loop iterates, so it would only have text from the last variable used. Instead, `>>` adds to the end of the file.
-
-### Using Basename in for loops
-
-Basename is a function in UNIX that is helpful for removing a uniform part of a name from a list of files. In this case, we will use
-basename to remove the `*.fastq` from the files that we've been working with. Inside our for loop, we create a new `name` variable.
-We call the `basename` function inside the parenthesis, then give our variable name from the for loop, in this case `$filename`, 
-and finally state that `.fastq` should be removed from the file name. It's important to note that we're not changing the actual files,
-we're creating and manipulating a new variable called `name`. The line `> echo $name` will print to the terminal the variable `name`
-each time the for loop runs. Because we are iterating over two files, we expect to see two lines of output.
-
-~~~
-$ for filename in *.fastq
-> do
-> name=$(basename ${filename} .fastq)
-> echo ${name}
-> done
-~~~
-
-Let's up arrow through our history to either of these for loops.  What do you notice?
-
-All the commands for the loop are on one line, separated by `;` - which is a separator to indicate different commands are being issues, as if you hit <kbd>Enter</kbd> after each on.
-
-~~~
-$ cd ..; ls
-~~~
-
-Takes us up one level, then executes a listing of the directory.
-
-From here, use the history to slightly modify our previous `for` loop to add `*/` before `in` - what is this causing the loop to do?
-
-~~~
-$ for filename in */*.fastq; do name=$(basename ${filename} .fastq); echo ${name}; done
-~~~
-
-Now, what happens if we modify the loop further to remove the use of `basename` and only echo out `$filename`
   
 
 ## Combining multiple commands with more piping
@@ -497,7 +419,102 @@ $ less basename_uses.txt
 ~~~
 
   
-  
+## Variables
+
+As we saw before, a variable simply stores a value:
+
+~~~
+$ id=sample01
+$ echo $id
+~~~
+
+~~~
+sample01
+~~~
+
+If we use a space, the shell is not happy:
+
+~~~
+$ id=sample 01
+~~~
+
+~~~
+-bash: 01: command not found
+~~~
+
+Instead, we need to use quotes
+
+~~~
+$ id="sample 01"
+$ echo $id
+~~~
+
+~~~
+sample 01
+~~~
+
+However, in general, its not a good idea to have spaces unless you have a specific need.
+
+There are a number of predefined variables in the shell.  For example, I've talked a lot about paths, and there is a predefined set of paths the shell looks through when you try to execute a command.
+
+~~~
+$ echo $PATH
+~~~
+
+~~~
+/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/ifs/sec/cpc/addhealth/apps/bin:/nas/longleaf/home/tristand/.local/bin:/nas/longleaf/home/tristand/bin
+~~~
+
+Each path the shell looks through is separated by `:`, and it looks for the command you type in order from the first until the last.  If the command wasn't found, then you get the error message
+
+By convention, the predefined shell variables use all CAPS to distinguish them.  For now, you probably shouldn't mess with any of them.  But the fact you can modify these shows that Unix is very customizable - and dangerous.  If you overwrite your `$PATH` you won't be able to easily use the basic commands.
+
+You can see all the preset shell variable with
+
+~~~
+$ env
+~~~
+
+One use of shell variables is to simplify our navigation of the file system.  You could for example record the path to your scratch space:
+
+~~~
+$ scr_path=/pine/scr/t/r/tristand
+~~~
+
+Again, substituting in your own scratch space.  We can now easily move to our scratch space, or include it in a longer path
+
+~~~
+$ pwd
+$ cd $scr_path
+$ pwd
+~~~
+
+If you still have a `shell_data` directory in your scratch space, you could include it to extend the path
+
+~~~
+$ cd ~
+$ pwd
+$ cd $scr_path/shell_data
+$ pwd
+~~~
+
+The shell can resolve variable names if you are separating them out with `.` or `/`, but it is safest if you enclose the variable like this `${<variable_name}`
+
+~~~
+$ name=shell
+$ echo $name
+$ echo $name_data
+$ echo ${name}_data
+~~~
+
+The shell interprets `$name_data` as a variable named 'name_data', not the variable 'name', to have its value appended with '_data'
+
+****
+
+
+
+
+
 ## Optional: File manipulation with `cut`, `sort`, and `uniq`
 (and yet more practice with pipes)
 
