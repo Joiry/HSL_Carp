@@ -103,7 +103,7 @@ we are taking what would ordinarily be printed to the terminal screen and redire
 In our case, we want to stream this information into a file so that we can look at it later and 
 use other commands to analyze this data.
 
-The command for redirecting output to a file is `>`.
+The operator for redirecting output to a file is `>`.
 
 Let's try out this command and copy all the records (including all four lines of each record) 
 in our FASTQ files that contain 'NNNNNNNNNN' to another file called `bad_reads.txt`.
@@ -421,7 +421,7 @@ $ less basename_uses.txt
   
 ## Variables
 
-As we saw before, a variable simply stores a value:
+A variable is a way of storing a value.  Let's assign a variable a value and then look at it with the `echo` command.
 
 ~~~
 $ id=sample01
@@ -431,6 +431,14 @@ $ echo $id
 ~~~
 sample01
 ~~~
+
+Assigning a value to a variable in the the bash shell takes the form of:
+
+<variable_name>=<value>
+
+However, in the example above, you access the value in the variable using `$` operator in front of the variable.  This may seem a bit odd since the bash
+shell also uses `$` as the command prompt.  Try echoing the value stored in `id` without the `$`
+
 
 If we use a space, the shell is not happy:
 
@@ -442,7 +450,7 @@ $ id=sample 01
 -bash: 01: command not found
 ~~~
 
-Instead, we need to use quotes
+Instead, we need to use quotes to include spaces in the variable assignment
 
 ~~~
 $ id="sample 01"
