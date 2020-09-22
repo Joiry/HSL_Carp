@@ -139,3 +139,11 @@ have two results files, which are stored in our `untrimmed_fastq` directory.
 > > 1. The last line of the file is `TC:CCC::CCCCCCCC<8?6A:C28C<608'&&&,'$`.
 > > 2. `cat ~/shell_data/untrimmed_fastq/*`
 
+
+> ## Nucleotide abbreviations
+> 
+> The four nucleotides that appear in DNA are abbreviated `A`, `C`, `T` and `G`. 
+> Unknown nucleotides are represented with the letter `N`. An `N` appearing
+> in a sequencing file represents a position where the sequencing machine was not able to 
+> confidently determine the nucleotide in that position. You can think of an `N` as a `NULL` value
+> within a DNA sequence. 
