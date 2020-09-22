@@ -434,7 +434,7 @@ sample01
 
 Assigning a value to a variable in the the bash shell takes the form of:
 
-<variable_name>=<value>
+variable_name=[value]
 
 However, in the example above, you access the value in the variable using `$` operator in front of the variable.  This may seem a bit odd since the bash
 shell also uses `$` as the command prompt.  Try echoing the value stored in `id` without the `$`
