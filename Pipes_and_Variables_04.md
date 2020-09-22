@@ -1,27 +1,28 @@
-# Getting the Most out of Files
+# Pipes and Variables
+
+In this lesson, we will learn about a powerful search tool, how to use redirection of streams, and assigning and using variables
+
 
 ## Searching files
 
-We discussed in a previous episode how to search within a file using `less`. We can also
+We discussed in a previous lesson how to search within a file using `less`. We can also
 search within files without even opening them, using `grep`. `grep` is a command-line
-utility for searching plain-text files for lines matching a specific set of 
+utility for searching plain text files for lines matching a specific set of 
 characters (sometimes called a string) or a particular pattern 
 (which can be specified using something called regular expressions). We're not going to work with 
-regular expressions in this lesson, and are instead going to specify the strings 
-we are searching for.
-Let's give it a try!
-
-> ## Nucleotide abbreviations
-> 
-> The four nucleotides that appear in DNA are abbreviated `A`, `C`, `T` and `G`. 
-> Unknown nucleotides are represented with the letter `N`. An `N` appearing
-> in a sequencing file represents a position where the sequencing machine was not able to 
-> confidently determine the nucleotide in that position. You can think of an `N` as a `NULL` value
-> within a DNA sequence. 
+regular expressions in this lesson, and instead will use specific strings or with shell wildcards.
 
 
-We'll search for strings inside of our fastq files. Let's first make sure we are in the correct 
-directory.
+> Fastq Format
+> There are 4 lines per read in a fastq file:
+>
+> @ *a line starting with @ has header info, usually technical info about the sequencer and the read itself*
+> ATCGCG... *the read sequence
+> + *a line starting with +, that in older fastq files duplicated the @ line, but now is usually blank
+> !!!#@$+$ *a line with numbers and symbols that are a code for the quality scores of each base above
+
+
+We'll search for strings inside of our fastq files. Let's first make sure we are in the correct directory.
 
 ~~~
 $ cd ~/shell_data/untrimmed_fastq
@@ -94,19 +95,18 @@ One of the sets of lines returned by this command is:
 
 `grep` allowed us to identify sequences in our FASTQ files that match a particular pattern. 
 All of these sequences were printed to our terminal screen, but in order to work with these 
-sequences and perform other opperations on them, we will need to capture that output in some
+sequences and perform other opperations on them, we may need to capture that output in some
 way. 
 
 We can do this with something called "redirection". The idea is that
 we are taking what would ordinarily be printed to the terminal screen and redirecting it to another location. 
-In our case, we want to print this information to a file so that we can look at it later and 
+In our case, we want to stream this information into a file so that we can look at it later and 
 use other commands to analyze this data.
 
 The command for redirecting output to a file is `>`.
 
 Let's try out this command and copy all the records (including all four lines of each record) 
-in our FASTQ files that contain 
-'NNNNNNNNNN' to another file called `bad_reads.txt`.
+in our FASTQ files that contain 'NNNNNNNNNN' to another file called `bad_reads.txt`.
 
 ~~~
 $ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
