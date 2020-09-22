@@ -16,10 +16,10 @@ regular expressions in this lesson, and instead will use specific strings or wit
 > Fastq Format
 > There are 4 lines per read in a fastq file:
 >
-> @ *a line starting with @ has header info, usually technical info about the sequencer and the read itself*
-> ATCGCG... *the read sequence
-> + *a line starting with +, that in older fastq files duplicated the @ line, but now is usually blank
-> !!!#@$+$ *a line with numbers and symbols that are a code for the quality scores of each base above
+> @ *a line starting with @ has header info, usually technical info about the sequencer and the read itself*  
+> ATCGCG... *the read sequence  
+> + *a line starting with +, that in older fastq files duplicated the @ line, but now is usually blank  
+> !!!#@$+$ *a line with numbers and symbols that are a code for the quality scores of each base above  
 
 
 We'll search for strings inside of our fastq files. Let's first make sure we are in the correct directory.
