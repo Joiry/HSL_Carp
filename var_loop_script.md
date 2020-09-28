@@ -2,7 +2,7 @@
 
 ## What is a loop
 
-A loop is a repeated set of commands, with some variable or variables changes during each time through the loop, called an iteration.
+A loop is a repeated set of commands, with some variable or variables that changes for each time through the loop. Each of these times is called an iteration of the loop.
 
 There are usually two main parts to a loop, a condition, and then a set of commands.  The first is called a loop header and the second the loop body
 
@@ -15,9 +15,8 @@ There are usually two main parts to a loop, a condition, and then a set of comma
 ~~~
 
 Since they allow us to execute commands repeatedly, loops provide productivity improvements through automation. 
-Similar to wildcards and tab completion, using loops also reduces the amount of typing and potential typing mistakes. 
-For example,  when performing operations on groups of sequencing files, such as moving or running analyses on multiple
-files. We will use loops for these purposes in subsequent analyses, but will cover the basics of them for now.
+Using loops reduces the amount of typing and consequently potential typing mistakes. 
+Loops are best used when performing the same set operations on groups of files, such as moving or running analyses.  For now, we will use loops for some basic commands, but will cover the use of them with analyses in later lessons.
 
 Here, we're going to learn about *for* loops, which iterate over a list of values.  There are other kinds of loops, such as *while* loops that execute until a certain condition is met.  
 
@@ -30,7 +29,7 @@ the commands inside the loop are executed, before moving on to the next item in 
 the variable's value by putting `$` in front of it just like any other **variable**. Recall, the `$` tells the shell interpreter to treat the **variable**
 as a variable name and substitute its value in its place, rather than treat it as text or an external command. 
 
-Let's write a for loop to show us the first two lines of the fastq files we downloaded earlier. You will notice shell prompt changes from `$` to `>` and back again as we were typing in our loop. The second prompt, `>`, is different to remind us that we haven’t finished typing a complete command yet. A semicolon, `;`, can be used to separate two commands written on a single line.
+Let's write a for loop to show us the first two lines of the fastq files we downloaded earlier. You will notice shell prompt changes from `$` to `>` and back again as we were typing in our loop. The second prompt, `>`, is different to remind us that we haven’t finished typing a complete command yet.
 
 ~~~
 $ cd ../untrimmed_fastq/
@@ -62,7 +61,7 @@ $ for filename in *.fastq
 Note that we are using `>>` to append the text to our `seq_info.txt` file. If we used `>`, the `seq_info.txt` file would be rewritten
 every time the loop iterates, so it would only have text from the last variable used. Instead, `>>` adds to the end of the file.
 
-### Using Basename in for loops
+### More complex for loops
 
 Basename is a function in UNIX that is helpful for removing a uniform part of a name from a list of files. In this case, we will use
 basename to remove the `*.fastq` from the files that we've been working with. Inside our for loop, we create a new `name` variable.
@@ -81,7 +80,7 @@ $ for filename in *.fastq
 
 Let's up arrow through our history to either of these for loops.  What do you notice?
 
-All the commands for the loop are on one line, separated by `;` - which is a separator to indicate different commands are being issues, as if you hit <kbd>Enter</kbd> after each on.
+All the commands for the loop are on one line, separated by `;` - which is a separator to indicate different commands are being issued, as if you hit <kbd>Enter</kbd> after each on. Thus a semicolon, `;`, is used to separate two commands written on a single line, eg:
 
 ~~~
 $ cd ..; ls
@@ -89,7 +88,7 @@ $ cd ..; ls
 
 Takes us up one level, then executes a listing of the directory.
 
-From here, use the history to slightly modify our previous `for` loop to add `*/` before `in` - what is this causing the loop to do?
+From here, one directory up from `untrimmed`, use the history to slightly modify our previous `for` loop to add `*/` before `in` - what is this causing the loop to do?
 
 ~~~
 $ for filename in */*.fastq; do name=$(basename ${filename} .fastq); echo ${name}; done
@@ -103,7 +102,7 @@ Now, what happens if we modify the loop further to remove the use of `basename` 
 
 Loops were quickly introduced in the last lesson, let's look at them in a bit more depth.
 
-Conceptually, this is what is happening in a loop
+At the beginning of the lesson, we had a very general conceptualization of what is happening in a loop.  Let's look at a generalizaton of the Unix *for* loop:
 
 ~~~
 for <item> in <some_set_of_things>
