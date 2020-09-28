@@ -1,16 +1,33 @@
-# More on Variables and Loops, and then finally Scripts!
+# Loops, and then, finally Scripts!
 
-## Writing for loops
+## What is a loop
 
-Loops are key to productivity improvements through automation as they allow us to execute commands repeatedly. 
-Similar to wildcards and tab completion, using loops also reduces the amount of typing (and typing mistakes). 
-Loops are helpful when performing operations on groups of sequencing files, such as unzipping or trimming multiple
+A loop is a repeated set of commands, with some variable or variables changes during each time through the loop, called an iteration.
+
+There are usually two main parts to a loop, a condition, and then a set of commands.  The first is called a loop header and the second the loop body
+
+~~~
+<some loop condition or range>  # the loop header
+   <command>                      # loop body
+   <command>                      # loop body
+   ...                            # loop body
+   <command>                      # loop body
+~~~
+
+Since they allow us to execute commands repeatedly, loops provide productivity improvements through automation. 
+Similar to wildcards and tab completion, using loops also reduces the amount of typing and potential typing mistakes. 
+For example,  when performing operations on groups of sequencing files, such as moving or running analyses on multiple
 files. We will use loops for these purposes in subsequent analyses, but will cover the basics of them for now.
 
+Here, we're going to learn about *for* loops, which iterate over a list of values.  There are other kinds of loops, such as *while* loops that execute until a certain condition is met.  
+
+
+## Writing a for loop in the Unix shell
+
 When the shell sees the keyword `for`, it knows to repeat a command (or group of commands) once for each item in a list. 
-Each time the loop runs (called an iteration), an item in the list is assigned in sequence to the **variable**, and 
-the commands inside the loop are executed, before moving on to  the next item in the list. Inside the loop, we call for 
-the variable's value by putting `$` in front of it. The `$` tells the shell interpreter to treat the **variable**
+Each time the loop runs an iteration, an item in the list is assigned in sequence to the loop **variable**, and 
+the commands inside the loop are executed, before moving on to the next item in the list. Inside the loop, we call for 
+the variable's value by putting `$` in front of it just like any other **variable**. Recall, the `$` tells the shell interpreter to treat the **variable**
 as a variable name and substitute its value in its place, rather than treat it as text or an external command. 
 
 Let's write a for loop to show us the first two lines of the fastq files we downloaded earlier. You will notice shell prompt changes from `$` to `>` and back again as we were typing in our loop. The second prompt, `>`, is different to remind us that we haven’t finished typing a complete command yet. A semicolon, `;`, can be used to separate two commands written on a single line.
@@ -114,7 +131,7 @@ Produces
 5
 ~~~
 
-Last week, we used this loop header:
+Above, we used this loop header:
 
 ~~~
 for filename in *.fastq
@@ -130,7 +147,7 @@ $ echo *.fastq
 Control_A.fastq Control_B.fastq Control_SR.fastq SRR097977.fastq SRR098026.fastq
 ~~~
 
-There are a few ways we could supply this list or set of items to loop over.  `{X..Y}` will produce a range of values incrementing from X to Y
+There are a few ways we could supply this list or set of items to loop over.  The syntax `{X..Y}` will produce a range of values incrementing from X to Y
 
 ~~~
 $ echo {3..7}
@@ -154,7 +171,7 @@ $ for num in {3..7}; do echo $num; done
 7
 ~~~
 
-Also, if we want to use the output of a shell command as the list, we would surround the command with $()
+Also, if we want to use the output of a shell command as the list, we would surround the command with $(<shell command>)
 
 (make sure to be in the untrimmed_fastq directory, eg `cd ~/shell_data/untrimmed_fastq/`)
 
