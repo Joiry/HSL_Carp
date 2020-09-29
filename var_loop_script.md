@@ -14,19 +14,18 @@ There are usually two main parts to a loop, a condition, and then a set of comma
    <command>                      # loop body
 ~~~
 
-Since they allow us to execute commands repeatedly, loops provide productivity improvements through automation. 
-Using loops reduces the amount of typing and consequently potential typing mistakes. 
-Loops are best used when performing the same set operations on groups of files, such as moving or running analyses.  For now, we will use loops for some basic commands, but will cover the use of them with analyses in later lessons.
+Since they allow us to execute commands repeatedly, loops provide a means of automation and reduces the amount of typing and consequently potential typing mistakes. 
+Loops are often used when performing the same set of operations on groups of files, such as moving or running analyses.  For now, we will use loops with some basic commands, but will cover the use of them with analyses in later lessons.
 
 Here, we're going to learn about *for* loops, which iterate over a list of values.  There are other kinds of loops, such as *while* loops that execute until a certain condition is met.  
 
 
 ## Writing a for loop in the Unix shell
 
-When the shell sees the keyword `for`, it knows to repeat a command (or group of commands) once for each item in a list. 
+When the shell sees the keyword `for`, it knows to repeat a command (or group of commands) once for each item in a provided **list**. 
 Each time the loop runs an iteration, an item in the list is assigned in sequence to the loop **variable**, and 
 the commands inside the loop are executed, before moving on to the next item in the list. Inside the loop, we call for 
-the variable's value by putting `$` in front of it just like any other **variable**. Recall, the `$` tells the shell interpreter to treat the **variable**
+the variable's value by putting `$` in front of it just like any other variable. Recall, the `$` tells the shell interpreter to treat the variable
 as a variable name and substitute its value in its place, rather than treat it as text or an external command. 
 
 Let's write a for loop to show us the first two lines of the fastq files we downloaded earlier. You will notice shell prompt changes from `$` to `>` and back again as we were typing in our loop. The second prompt, `>`, is different to remind us that we haven’t finished typing a complete command yet.
@@ -43,10 +42,8 @@ $ for filename in *.fastq
 ~~~
 
 The for loop begins with the formula `for <variable> in <group to iterate over>`. In this case, the word `filename` is designated 
-as the variable to be used over each iteration. In our case `SRR097977.fastq` and `SRR098026.fastq` will be substituted for `filename` 
-because they fit the pattern of ending with .fastq in directory we've specified. The next line of the for loop is `do`. The next line is 
-the code that we want to excute. We are telling the loop to print the first two lines of each variable we iterate over. Finally, the 
-word `done` ends the loop.
+as the variable to be used over each iteration. In our case `SRR097977.fastq`, `SRR098026.fastq` and the other files ending in `.fastq` will be substituted for `filename` 
+because they fit the pattern of ending with .fastq in directory we've specified. The next line of the for loop is `do`, which is the keyword telling the shell we're in the loop body. The next line is the code that we want to excute. We are telling the loop to print the first two lines of each variable we iterate over. Finally, the word `done` ends the loop body, and thus the whole loop specification.
 
 After executing the loop, you should see the first two lines of both fastq files printed to the terminal. Let's create a loop that 
 will save this information to a file.
@@ -80,7 +77,7 @@ $ for filename in *.fastq
 
 Let's up arrow through our history to either of these for loops.  What do you notice?
 
-All the commands for the loop are on one line, separated by `;` - which is a separator to indicate different commands are being issued, as if you hit <kbd>Enter</kbd> after each on. Thus a semicolon, `;`, is used to separate two commands written on a single line, eg:
+All the commands for the loop are on one line, separated by `;` - which is a separator to indicate different commands are being issued, as if you hit <kbd>Enter</kbd> after each one. Thus a semicolon, `;`, is used to separate two commands written on a single line, eg:
 
 ~~~
 $ cd ..; ls
@@ -98,9 +95,7 @@ Now, what happens if we modify the loop further to remove the use of `basename` 
 
 ****
 
-## More on Looping
-
-Loops were quickly introduced in the last lesson, let's look at them in a bit more depth.
+## Looping over different lists
 
 At the beginning of the lesson, we had a very general conceptualization of what is happening in a loop.  Let's look at a generalizaton of the Unix *for* loop:
 
