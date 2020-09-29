@@ -14,8 +14,7 @@ There are usually two main parts to a loop, a condition, and then a set of comma
    <command>                      # loop body
 ~~~
 
-Since they allow us to execute commands repeatedly, loops provide a means of automation and reduces the amount of typing and consequently potential typing mistakes. 
-Loops are often used when performing the same set of operations on groups of files, such as moving or running analyses.  For now, we will use loops with some basic commands, but will cover the use of them with analyses in later lessons.
+Since they allow us to execute commands repeatedly, loops provide a means of automation and reduces the amount of typing and consequently potential typing mistakes. Loops are often used when performing the same set of operations on groups of files.  For now, we will use loops with some basic commands, but will cover the use of them with analyses in later lessons.
 
 Here, we're going to learn about *for* loops, which iterate over a list of values.  There are other kinds of loops, such as *while* loops that execute until a certain condition is met.  
 
@@ -58,7 +57,7 @@ $ for filename in *.fastq
 Note that we are using `>>` to append the text to our `seq_info.txt` file. If we used `>`, the `seq_info.txt` file would be rewritten
 every time the loop iterates, so it would only have text from the last variable used. Instead, `>>` adds to the end of the file.
 
-### More complex for loops
+### Multi-command for loops
 
 Basename is a function in UNIX that is helpful for removing a uniform part of a name from a list of files. In this case, we will use
 basename to remove the `*.fastq` from the files that we've been working with. Inside our for loop, we create a new `name` variable.
@@ -214,9 +213,9 @@ $ nano
 
 Like less, `nano` basically takes over the screen and has its own set of commands.  A quick guide to them is along the bottom two lines of the screen.  The notation here is `^G` means press the `control` key and the `g` key at the same time (you do not need to press shift for a capital 'G')
 
-We can type stuff, and use `^O` to save it.  Then quit out and use `less <filename>` to see what you wrote is in fact in the file.
+We can type stuff, and use `^O` to save it (the letter 'o', not zero '0').  Then quit out and use `less <filename>` to see what you wrote is in fact in the file.
 
-Now, we'll slowly build up a script we can use.  Run nano again and copy in our old grep search from last class.
+Now, we'll slowly build up a script we can use.  We'll start by copy in our old grep search from last class.
 
 Before, we just ran nano and named the file when we first saved, but we could also name a new file when we run nano
 
@@ -224,9 +223,11 @@ Before, we just ran nano and named the file when we first saved, but we could al
 $ nano bad_reads_script.sh
 ~~~
 
+You can either copy and paste from this lesson, or search through your history to copy and paste the grep command we used previously.  
+
 `grep -B1 -A2 NNNNNNNNNN *.fastq > scripted_bad_reads.txt`
 
-Save and exit.  Let's call the file 
+Save and exit.  Let's call the file `bad_reads_script.sh`
 
 We can execute the script like this:
 
@@ -249,7 +250,7 @@ $ pattern=blah
 $ bash test.sh
 ~~~
 
-Hmmm, nothing happened?  This is because invoking the shell with the `bash` command creatures a new temporary environment, and the `pattern` variable is not defined.  A different way of running a script is with the command `source`, which runs the script in the current environment:
+Hmmm, nothing happened?  This is because invoking the shell with the `bash` command creates a new temporary environment, and the `pattern` variable is not defined.  A different way of running a script is with the command `source`, which runs the script in the current environment:
 
 ~~~
 $ source test.sh
