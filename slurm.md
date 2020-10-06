@@ -316,7 +316,9 @@ The construction `$(ls -1 *fastq)` takes the output of listing all the files end
 
 Here we use `echo` to get some feedback on all the files the loop is going through.  The sbatch commands sends each job submission to our screen right after the echo.
 
+****
 
+You've now learned all the Unix basics for doing bioinformatics analyses on UNC's compute clusters.  There is tons more Unix to learn, some of it more useful and some less, depending on your needs.  Even experienced Unix users tend to use only a small subset of all the possible commands and options the shell provides.
 
 
 
