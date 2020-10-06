@@ -6,7 +6,7 @@
   * [Part 3, Working with Files](https://joiry.github.io/HSL_Carp/Working_with_Files_03)
   * [Part 4, Pipes and Variables](https://joiry.github.io/HSL_Carp/Pipes_and_Variables_04)
   * [Part 5, Loops and Scripts](https://joiry.github.io/HSL_Carp/loop_script_05)
-  * [Part 6, Introduction to Slurm]<!--(https://joiry.github.io/HSL_Carp/slurm)-->
+  * [Part 6, Introduction to Slurm](https://joiry.github.io/HSL_Carp/slurm)
   
 ****
   
