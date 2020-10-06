@@ -118,6 +118,12 @@ $ sinfo
 
 ****
 
+We can also submit a series of commands:
+
+~~~
+$ sbatch --wrap="date; gzip Control_B.fastq; date"
+~~~
+
 Let's look at what's in our directory now
 
 ~~~
@@ -130,10 +136,13 @@ We can also look at file sizes, to see how the compression is doing:
 $ du -shc *
 ~~~
 
-What's this slurm file, is it useful?  Take a look in it
+What are these slurm files, are they useful?  Let's take a look at them with `less`.
 
-We can tell slurm to save the standard out and standard error to a specific filename
-Note we're adding in the -v option to gzip to get some additional output for logging purposes.
+These are the default files that slurm writes any standard out or error data to, essentially redirecting the output to this file.
+
+
+We can tell slurm to save the standard out and standard error to a specific filename.
+Note we're adding in the -v option to gzip to get some additional output for logging purposes.  '-v' in many Unix commands tends to mean "verbose", that the program should output more info on what its doing than usual.
 
 ~~~
 $ sbatch -o compress.out -e compress.err --wrap="gzip -v Exp_1.fastq"
