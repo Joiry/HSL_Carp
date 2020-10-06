@@ -227,9 +227,9 @@ We can see options we've already used, plus some extra
 
 There are some defaults that Research Computing has set, so no all the options need be specified:  
 
-[https://help.unc.edu/help/getting-started-on-longleaf/](https://help.unc.edu/help/getting-started-on-longleaf/)
+[Getting started on Longleaf](https://its.unc.edu/research-computing/techdocs/getting-started-on-longleaf/)
 
-[https://help.unc.edu/help/longleaf-slurm-examples/](https://help.unc.edu/help/longleaf-slurm-examples/)
+[Longleaf Slurm examples/](https://its.unc.edu/research-computing/techdocs/longleaf-slurm-examples/)
 
 ~~~
 $ sbatch slurm_gzip.sh Exp_011
