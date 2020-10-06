@@ -1,13 +1,14 @@
+## Introduction to Slurm
+
+**Slurm** is a job scheduling system.  You pass slurm a command or shell script, and it will put enter this job into its queue.  Slurm manages the compute nodes on the cluster, farming out jobs as resources become available.  The resources are cpus and memory, which are some of the parameters you pass to slurm.  For today's lesson, we'll be using most of slurm's defaults, but once we get into bioinformatics tools in the next set of lessons, we'll need to request more compute and memory resources for the jobs to complete in a reasonable amount of time.
 
 
-
-## Introduction to Slurm and compressed files
-
+### Compressed files
 Usually data is deliver in compressed files, with a `.gz` extension.  
-Its usually fine to keep these compressed, because most bioinformatics tools now can work with compressed files
+Its usually fine to keep these compressed, because most bioinformatics tools can now work with compressed files.  
 Let's compress these as an exercise in how to use slurm, the job scheduler
 
-First, let's get some new data - you can do this in your home directory or scratch space.
+First, let's get some new data - you can do this in your home directory or scratch space.  These files are a bit larger, but should still fit in your home directory.
 
 ~~~
 $ cp -r /proj/seq/data/carpentry/data_exp .
@@ -63,7 +64,7 @@ These are small files, not typical of fastq data files you'll get from sequencin
 
 This is very important, never run anything processor intensive on the head nodes!
 
-On an individual unix system you'd use a command like below (don't do this), but instead we should submit the command to the queue
+On an individual unix system you'd use a command like below (**don't execute this command**), but instead we should submit the command to the queue
 
 `date; gzip Control_A.fastq; date`
 
@@ -75,7 +76,7 @@ The queueing system on Longleaf is called Slurm, and `sbatch` is the main way to
 Most of the slurm commands start with 's'
 
 ~~~
-$ sbatch --wrap="gzip Control_B.fastq"
+$ sbatch --wrap="gzip Control_A.fastq"
 ~~~
 
 If you're really fast, you may even see this short job in the queue using `squeue`
@@ -95,11 +96,27 @@ $ squeue -u <your_onyen>
 `sbatch` is the command to submit a job, and `squeue` let's us see what's in the queue
 if you don't specify a user with -u, you'll see all the jobs from everyone currently running
 
-Warning, if you type this, a lot of stuff will spew across your screen:
+**Warning**, if you type this, a lot of stuff will spew across your screen:
 
 ~~~
 $ squeue
 ~~~
+
+You can also check specific partitions:
+(again, this is still likely to fill your screen)
+
+~~~
+$ squeue -p general
+~~~
+
+We can get a briefer summary of how full the various partitions are with this command:
+
+~~~
+$ sinfo
+~~~
+
+
+****
 
 Let's look at what's in our directory now
 
@@ -168,6 +185,7 @@ $ ls -1
 
 Note, I replaced "compress" with "gzip" - this isn't necessary, but I like to include what command, program or script I used in the name of the log files
 
+## More on compressed files
 
 Before moving to the next part of the slurm lesson, let's take a look at these compressed files  
 Some commands and programs can decompress gzip files on the fly
@@ -257,7 +275,10 @@ We can also stop a job with the `scancel` command:
 $ scancel <jobid>
 ~~~
 
-We can look up its info still with the sacct command above
+We can look up its info still with the sacct command above.
+
+
+
 
 
 
