@@ -287,6 +287,39 @@ $ scancel <jobid>
 We can look up its info still with the sacct command above.
 
 
+## Looping with slurm submissions
+
+There are two ways you could introduce looping into your use of slurm.  One would be to put the loop inside the script you submit to slurm.  But be aware each time through the loop within that script will be run linearly within the slurm job.  Ideally, you want to submit multiple jobs.
+
+Let's see how we can use the `slurm_gzip.sh` script with what we've learned about loops in the previous lesson.  
+
+First, let's make a new copy of our practice files from the backup director we made.
+
+~~~
+$ cp -r backup/ loop_practice
+$ ls
+~~~
+
+Go into the `loop_practice' directory.  We can either recopy the slurm script, or move it from the practice diretory here:
+
+~~~
+$ mv ../practice/slurm_gzip.sh .
+~~~
+
+Once you start making a lot of general purpose scripts, you may want to create a scripts directory at the top level of your home directory.  Thus you could easily access your scripts from anywhere with the path `~/scripts/my_script.sh`.
+
+~~~
+$ for fq_file in $(ls -1 *fastq); do echo $fq_file; sbatch slurm_gzip.sh $fq_file; done
+~~~
+
+The construction `$(ls -1 *fastq)` takes the output of listing all the files ending in 'fastq', listing them one per line, and uses it as the list to loop over.  
+
+Here we use `echo` to get some feedback on all the files the loop is going through.  The sbatch commands sends each job submission to our screen right after the echo.
+
+
+
+
+
 
 
 
