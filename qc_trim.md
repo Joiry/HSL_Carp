@@ -1,4 +1,10 @@
-# QC and trimming of your data
+# QC and trimming of data
+
+***
+
+In this lesson we'll learn the basics of doing *quality control* on sequencing data, and how to clean up data with low quality reads.  
+
+First, though, we need to use the *modules* system on the compute cluster so we can access more complex applications.
 
 ***
 
@@ -41,6 +47,7 @@ $ module load fastqc<tab><tab>
 By hitting tab, you can see the other versions available.  Why are these other versions there - the short answer is you should treat version numbers of software the same as you might lot numbers of reagents.
 
 Updates to packages may fix earlier bugs, improve an algorithm, or introduce new bugs or behaviors.  Its important to document which version you're using.  
+
 Sometimes you may do an analysis months or years after an initial analysis - you will have to decide if you want to rerun the originals with a newer version of the software, or run the newer data with the older version of the software.
 
 Also, if comparing to results from another lab's paper, you may want to use the same version of the program - which is hopefully documented in their methods section or supplemental information.
@@ -122,7 +129,7 @@ Both contain essentially the same information.  The `.html` file is an embedded 
 
 Let's transfer the `.html` file to our local computer and take a look at it.  Some terminal programs provide a GUI interface to do this, or you could use a program like Filezilla.  Also, if you have a native terminal, like on MacOS X, you could transfer it using scp
 
-(note, you'd be using this command from a terminal window that is not logged into longleaf, ie operating on your own computer)
+*(note, you'd be using this command from a terminal window that is not logged into longleaf, ie operating on your own computer)*
 
 ~~~
 $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/ecoli_ref-5m_fastqc.html .
@@ -159,7 +166,7 @@ The simplest method is to set a hard quality cutoff.
 $ sbatch -o bbduk.%j.out --wrap="bbduk.sh -Xmx1g in=ecoli_ref-5m.fastq.gz out=ecoli_ref-5m.trim_q20.fastq.gz qtrim=rl trimq=20"
 ~~~
 
-Don't worry too much about the `-Xmx1g` for the moment, these are parameters for java, which the bbmap programs are written in.  Most important is `1g` means use 1 gig of memory - this will become more important for alignment.
+Don't worry too much about the `-Xmx1g` for the moment, these are parameters for java, which the bbmap programs are written in.  Most important is `1g` tells java use 1 gig of memory.  As we'll see in the next lesson, this will become more important for an alignment program written in java.
 
 `in=` is the file you want to trim reads from 
 `out=` specifies the name of the file to write the trimmed to
@@ -175,7 +182,7 @@ $ sbatch -o bbduk.%j.out --wrap="bbduk.sh -Xmx1g in=ecoli_ref-5m.fastq.gz out=ec
 ~~~
 
 
-As stated above, the main need for trimming is to remove adapter content, and we tend to be less concerned with quality scores these days.  There are still cases where quality trimming is needed.
+As stated above, the main need for trimming is to remove adapter content, and we tend to be less concerned with quality scores these days.  There are still cases where quality trimming is needed - for example transcriptome assembly.
 
 ~~~
 $ sbatch -o bbduk.%j.out --wrap="bbduk.sh -Xmx1g in=ecoli_ref-5m.fastq.gz out=ecoli_ref-5m.trim.adapt.fastq.gz minlen=50 ref=adapters.fa ktrim=r k=23 mink=11 hdist=1 tpe tbo"
@@ -228,7 +235,7 @@ $ pwd
 
 If using `scp` from a local terminal, this helps me build a path to specify the download target.
 
-(remember, this is for use on your local terminal)
+*(remember, this is for use on your local terminal)*
 
 ~~~
 $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/fastqc/*.html .
@@ -258,5 +265,7 @@ $ less multiqc.14274947.out
 Now let's download the `multiqc_report.html` file and take a look at it.
 
 In this case, we're looking at the same data in multiple trimming states.  But typically you'd fastqc an entire folder and run MultiQC on them all.  You can look at the combined report to get an overall view, and then decide which specific Fastqc reports you want to look at in detail.
+
+***
 
 
