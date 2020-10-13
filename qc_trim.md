@@ -77,7 +77,8 @@ $ echo $PATH
 
 ## Using FastQC
 
-The following can be done in your home directory, or we can work in the scratch space `/pine/scr/<a>/<b>/<onyen>`
+The following can be done in your home directory.   
+(or you can work in the scratch space `/pine/scr/<a>/<b>/<onyen>`)
 
 We'll make a trimming folder and enter it.
 
@@ -131,8 +132,15 @@ Let's transfer the `.html` file to our local computer and take a look at it.  So
 
 *(note, you'd be using this command from a terminal window that is not logged into longleaf, ie operating on your own computer)*
 
+If working in your scratch space (replacing with your own onyen and scratch path:  
 ~~~
 $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/ecoli_ref-5m_fastqc.html .
+~~~
+
+...or, somewhat simpler, from your home directory:
+
+~~~
+$ scp tristand@longleaf.unc.edu:trim/ecoli_ref-5m_fastqc.html .
 ~~~
 
 This operates like the `cp` command, only you're copying across a network, and you'll have to enter your onyen password when requested.  You are essentially doing a temporary login, copying the files specified, and then logging out.  On Macs, using `pwd` and the native copy/paste is very useful if you have long paths you need to enter.  Note that by default `scp` begins in your home directory, so you need to supply it the correct relative path or give it an absolute path (which is usually safer, since you can't tab complete).
@@ -155,7 +163,7 @@ trimmomatic/0.36
 ~~~
 
 ~~~
-module load bbmap
+$ module load bbmap
 ~~~
 
 BBmap's trimming utility is `bbduk`, and its primary purpose is to trim adapter content, which tends to be the major purpose of trimming nowadays.  However, as an exercise we'll use it to do simpler quality trimming first.
@@ -166,7 +174,7 @@ The simplest method is to set a hard quality cutoff.
 $ sbatch -o bbduk.%j.out --wrap="bbduk.sh -Xmx1g in=ecoli_ref-5m.fastq.gz out=ecoli_ref-5m.trim_q20.fastq.gz qtrim=rl trimq=20"
 ~~~
 
-Don't worry too much about the `-Xmx1g` for the moment, these are parameters for java, which the bbmap programs are written in.  Most important is `1g` tells java use 1 gig of memory.  As we'll see in the next lesson, this will become more important for an alignment program written in java.
+Don't worry too much about the `-Xmx1g` for the moment, these are parameters for java, which the bbmap programs are written in.  Most important is `1g` tells java use 1 gig of memory.  As we'll see in the next lesson, this will become more important for bbmap's alignment program.
 
 `in=` is the file you want to trim reads from 
 `out=` specifies the name of the file to write the trimmed to
@@ -175,7 +183,7 @@ Don't worry too much about the `-Xmx1g` for the moment, these are parameters for
 
 Its important to note the trimming proceeds from whichever side until it reaches a bp about the cutoff, and stops there.  Potentially one good read could protect worse reads further in, so another strategy is to use a window, where the cutoff is triggered based on the average quality of several reads.
 
-*(tho, in the case of bbduk, the basic side trimming is a bit more sophisticated already than other trimmers)*
+*(in the case of bbduk, the basic side trimming is a bit more sophisticated already than other trimmers)*
 
 ~~~
 $ sbatch -o bbduk.%j.out --wrap="bbduk.sh -Xmx1g in=ecoli_ref-5m.fastq.gz out=ecoli_ref-5m.trim_win20.fastq.gz qtrim=w trimq=20 minlen=50"
@@ -188,7 +196,13 @@ As stated above, the main need for trimming is to remove adapter content, and we
 $ sbatch -o bbduk.%j.out --wrap="bbduk.sh -Xmx1g in=ecoli_ref-5m.fastq.gz out=ecoli_ref-5m.trim.adapt.fastq.gz minlen=50 ref=adapters.fa ktrim=r k=23 mink=11 hdist=1 tpe tbo"
 ~~~
 
-What do these new options mean?  Use bbduk's help to figure them out as a quick exercise - perhaps pipe the help through less to help you search.
+What do these new options mean?  Use bbduk's help to figure them out as a quick exercise:
+
+~~~
+$ bbduk.sh --help | less
+~~~
+
+We're in `less`, and if you recall, there's a way to search...
 
 ~~~
 ref=adapters.fa
@@ -237,8 +251,16 @@ If using `scp` from a local terminal, this helps me build a path to specify the 
 
 *(remember, this is for use on your local terminal)*
 
+From scratch space:
+
 ~~~
 $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/fastqc/*.html .
+~~~
+
+or home directory:
+
+~~~
+$ scp tristand@longleaf.unc.edu:trim/fastqc/*html .
 ~~~
 
 ***
