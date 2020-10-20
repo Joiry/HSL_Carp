@@ -42,9 +42,9 @@ $ module purge
 $ module list
 ~~~
 
-`purge` will remove all currently loaded modules.  We could also use `module unload` to remove a specific module.
+`module purge` removes all currently loaded modules.  We could also use `module unload` or `module remove` to remove a specific module.
 
-Now let's cleanly reload `bbmap`:
+Now let's cleanly load `bbmap`:
 
 ~~~
 $ module load bbmap
@@ -204,9 +204,10 @@ $ cp ecoli_ref-5m.fastq.gz ecoli_test.fastq.gz
 $ sbatch slurm_bbmap_basic.sh ecoli_test $ecoli_index
 ~~~
 
-*wait for at least one run from everyone to finish*
+*We'll wait for at least one run from everyone to finish*
 
-The `bbmap` log files are very useful (not all aligners make such convenient summaries), it reports all sorts of info on how well the alignments we to standard out:
+The `bbmap` log files are very useful (not all aligners make such convenient summaries), it reports all sorts of info on how well the alignments we to standard out:  
+*(note the job number will differ for everyone, so try using tab completion)*
 
 ~~~
 $ less bbmap.14281627.err
