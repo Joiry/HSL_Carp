@@ -13,7 +13,7 @@
 * [Workflow Overview](https://joiry.github.io/HSL_Carp/workflow)
 * Part 1 - Introduction to Bioinformatics Basics
     * [Quality Control and Trimming](https://joiry.github.io/HSL_Carp/qc_trim)
-    * [Alignment]<!--(https://joiry.github.io/HSL_Carp/align)-->
+    * [Alignment](https://joiry.github.io/HSL_Carp/align)
     
 ***
 
