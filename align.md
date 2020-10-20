@@ -4,13 +4,13 @@
 
 ## What is Alignment?
 
-The typical Illumina 'HiSeq' style run produces millions, now 100s of millions, of reads usually from 50-150bp long.  These reads are from the ends of DNA fragments the majority of which are typically 400-600bp long.  These fragments either came directly from harvesting genomic DNA, or the conversion of RNA from cells into cDNA.
+The typical Illumina HiSeq type run can produce 100s of millions of reads, usually from 50-150bp long.  These reads are from the ends of DNA fragments which are typically 400-600bp long.  These fragments either came directly from harvesting genomic DNA, or the conversion of RNA from cells into cDNA.
 
-Alignment is the task of figuring out where these reads, and consequently the fragments they were sequenced from, originated in the original cells' genome.  This is the gateway step for many types of analyses, from ChIP-seq, RNA-seq, variant calling, and more exotic types of <something>-seq.
+Alignment is the task of figuring out where these reads, and consequently the fragments they were sequenced from, originated in the original cells' genome.  This is the gateway step for many types of analyses, from ChIP-seq, RNA-seq, variant calling, and more specialized types of <something>-seq.
 
 ### Complications
 
-The task of locating these reads in the genome faces a number of difficulties.
+The task of locating these reads in the genome faces a number of difficulties, major ones include:
 
 * Sequencing errors - a sequencing quality score of 30 corresponds to an estimated error of 1 in 1000, q40 1 in 10000.  A typical run has average quality scores in the mid 30s, but over millions of reads statisically they will crop up.
 
@@ -23,19 +23,19 @@ The task of locating these reads in the genome faces a number of difficulties.
 
 ### Indexing
 
-Most alignment algorithms use some form of indexing - a way to quickly 'bookmark' sections of a genome.
+Most alignment algorithms use some form of indexing - essentially a way to quickly 'bookmark' sections of a genome.  
 
-A commonly used technique is the Burrows-Wheeler algorithm.  This algorithm is used in lossless compression.  It is particularly good at finding reoccurring substrings in text and reducing the data to simpler representions.  It was adapted for use in alignment, but essentially reversing its usual usage.  The *index* created by B-W aligners is a reduced representation of the genome, which the program can quickly check parts of a read against.
+A commonly used technique is the Burrows-Wheeler algorithm.  This algorithm is used in lossless compression.  It is particularly good at finding reoccurring substrings in text and reducing the data to simpler representions.  It was adapted for use in alignment, but essentially reversing its usual usage.  The *index* created by B-W aligners is a reduced representation of the genome, which the program can quickly check parts of a read against.  
 
-Burrows-Wheeler is used in a number of common alignment programs, like BWA and Bowtie (the B and W reference the algorithm name).
+Burrows-Wheeler is used in a number of common alignment programs, like BWA and Bowtie (the B and W reference the algorithm name).  
 
-However, we'll be using bbmap, which has a slightly different algorithm which rapidly finds k-mer matches.  But it too needs to create and index to run.
+However, we'll be using bbmap, which has a slightly different algorithm which rapidly finds k-mer matches.  But it too needs to create an index, which is used in a similar manner.  
 
-These days, which aligner you use will probably depend more on external factors than "how good" a particular aligner is.  Nearly all the major ones differ in various comparisons by a few percent.  And this is a good time to introduce a good bioinformatics rule of thumb:
+These days, which aligner you use will probably depend more on external factors than "how good" a particular aligner is.  Nearly all the major ones differ in various comparisons by a few percent.  And this is a good time to introduce a bioinformatics rule of thumb:
 
-*Most algorithms agree on the obvious stuff and tend to only differ in edge cases*
+*Most algorithms tend to agree on the obvious stuff and tend to only differ in edge cases*
 
-Now, those edge cases may be important to your particular experiment, so that is one reason you find certain analyses using one aligner over another.  The other major reason is simply a lab standardized on the aligner the first person in the lab used to align sequencing data, or to use the same aligner used in a paper that does the same or similar experiment you are conducting.
+Now, those edge cases may be important to your particular experiment, so that is one reason you find certain analyses using one aligner over another.  Another major reason is simply a lab standardized on the aligner the first person in the lab used to align sequencing data. You may also want to use the same aligner used in a paper that does the same or similar experiment you are conducting if you wish to compare results.
 
 
 
