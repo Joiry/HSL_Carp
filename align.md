@@ -10,8 +10,8 @@
 
 As we've seen, things can get quite messy once you start processing and analyzing a lot of files.  Once you get more comfortable with paths you can start to have your commands and programs access data from different directories and write out results to a different set of directories.  For now we'll just continue to use the approach of accessing and writing to the current directory, then sort out files afterwards.
 
-Let's move all our fastq files to a new directory  
-(normally we might just move only the trimmed ones to align, but we're going to use the original for our alignment practice and demostration).
+Let's look at the fastq files we produced last lesson in the `trim` directory, and then move all these files to a new directory.    
+(normally we might just move only the trimmed ones to align, but we're going to use the original for our alignment practice and demostration)
 
 ~~~
 $ mkdir align
@@ -28,7 +28,14 @@ In the last three commands, we move the new `align` directory up one level and t
 
 ## Making a reference with BBmap
 
-Let's pretend we logged out, or we just loaded so many modules we're worried there may be a conflict:
+Let's pretend we have loaded so many modules we're worried there may be a conflict:
+
+~~~
+$ module load bowtie
+$ module list
+~~~
+
+Now we'll clear all loaded modules:
 
 ~~~
 $ module purge
@@ -60,13 +67,29 @@ First let's get a genome to use - usually these aren't just sitting around but I
 $ cp /proj/seq/data/carpentry/ref_genome/ecoli_rel606.fasta .
 ~~~
 
-BBmap will by default write its indexing files to a directory called `ref` in the current directory.  In fact, when aligning, if you don't specify a reference, it will look for the `ref` by default.
+We can look at bbmap's help to get a basic idea of its use:
+(here we are piping the output to `less` to make it easier to look over)
+
+~~~
+$ bbmap.sh -h | less
+~~~
+
+From the help, we can see the instructions for creating an index are:  
+`To index:     bbmap.sh ref=<reference fasta>`
+
+So, we can construction this slurm submission:
+
+~~~
+$ sbatch -o ecoli_indexing.out --wrap="bbmap.sh ref=ecoli_rel606.fasta"
+~~~
+
+As we saw with its bbduk trimming sister program, bbmap provides useful information in its logging:
 
 ~~~
 $ less ecoli_indexing.out
 ~~~
 
-Because I've setup the alignment script to point to a directory containing a `ref` directory, let's move the index we just made into a newly made directory.  Why we do this will hopefully become clear later.
+BBmap will by default write its indexing files to a directory called `ref` in the current directory.  In fact, when aligning, if you don't specify a reference, bbmap will look for the `ref` by default.  Because I've setup the alignment script to point to a directory containing a `ref` directory, let's move the index we just made into a newly made directory.  Why we do this will hopefully become clear later.
 
 ~~~
 $ mkdir index_ecoli
