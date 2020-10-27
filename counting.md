@@ -6,19 +6,26 @@
 
 ## Motivation
 
-The basic idea behind differential expression analysis is that sequencing of RNA fragments serves as a rough proxy for how much those genes are expressed.
+The basic idea behind differential expression analysis is that sequencing of RNA fragments serves as a rough proxy for how much those genes are expressed.  Typically we have two or more conditions, between which we would like to know which genes have significantly changed expression levels.
 
+## Two Parts
+
+There are two main steps in DE analyses once data is aligned.
+* Quantifying counts, usually by gene  
+* Performing the statistical analyses on the counts between different conditions.
+
+In this lesson, we'll go over a bit of the theory of DE analysis and how to get the counts.  In the next lesson we'll go over a basic analysis of those counts.
 
 ## Aligned data
 
-Alignment for DE can be to a whole reference sequence or just transcriptome  
+As we touched upon in the previous lesson, alignment for DE can be to a whole reference sequence or just transcriptome  
 * Transcriptome alignment
   * Faster – smaller target reference
   * Implicit filter of non-transcribed reads, if you trust your reference transcriptome
   * may not be as good with isoforms
 * Whole genome alignment
   * Discover new transcripts not in transcriptome annotation
-  * Time to align less of a factor nowadays
+  * Extra time to align to larger reference less of a factor nowadays
 
 
 
@@ -26,13 +33,18 @@ Alignment for DE can be to a whole reference sequence or just transcriptome
 
 The more biological replicates you can manage, the more robust your analysis results will be.
 
-The MODEncode project, which wrapped up data submissions ~2011-12 required 2 biological replicates.  Soon after 3 biological replicates became the recommendation, then 4.
+A little historical perspective, the MODEncode project, which wrapped up data submissions ~2011-12 required 2 biological replicates.  Soon after 3 biological replicates became the recommendation, then 4.
 
 [Schurch et al 2016](https://rnajournal.cshlp.org/content/22/6/839.short)
 
 In this paper, 48 biologial replicates were sequenced both from WT yeast and a known mutant strain.  42 of each where used to perform a variety of analyses.  Unsurprisingly, the more replicates used, the more of the "full set" of changes were captured (here defined by using all the replicates).
 
-The authors' take away was that at least 6 biological replicates be used, preferably 12.
+The authors' take away was that at least 6 biological replicates be used, preferably 12.  However, practically speaking experiments cost money, and so does each additional library prepped for sequencing.
+
+
+## Block Design
+
+This is also a consideration for before sequencing, when collecting the RNA experiments.  In short, you want to insure you aren't introducing artificial biases.  For example, if both you and another person in the lab are sharing the work to grow/prepare/harvest your sample tissues or cell, the different experiment conditions should be divided between the individuals contributing.  Similarly, if multiple batches need to be made on different days, don't do all of the controls in one batch and all the treated/changed condition in a different batch.
 
 
 ## Which analysis software should you use
@@ -47,7 +59,9 @@ There are many papers out there comparing many of the tools (Schurch above also 
 
 This is an older analysis, but the figure shows how all the tools agree on a subset of the data and differ on other parts.
 
-IN the previous lesson, I mentioned how the differences between aligners tend to occur with edge case read alignments, but generally agree about reads that have a single highly likely alignment.  Similarly, DE tools tend to agree on genes that have the largest changes, and disagree on whether smaller expression level changes are significant.
+In the previous lesson, I mentioned how the differences between aligners tend to occur with edge case read alignments, but generally agree about reads that have a single highly likely alignment.  Similarly, DE tools tend to agree on genes that have the largest changes, and disagree on whether smaller expression level changes are significant.
+
+The Shurch et al paper recommends the use of DESeq2 or edgeR when you have only 3 biological replicates.
 
 ***
 
