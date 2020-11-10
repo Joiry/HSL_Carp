@@ -1,19 +1,22 @@
 # Deseq2 Extras
 
+* Restarting R
 * Using R Studio
 * OnDemand with Longleaf
 * PCA plots
-* confounding/co-factor variables
+* Multi-factor design
 * Heat Maps
 * Functions
 
 As a reminder, DESeq2 has extensive documention here:
 
-[DESeq2 at Bioconductor](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
+[DESeq2 vignette](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)
 
 We'll dive into a few more areas covered in it, but no where near everything.
 
+***  
 
+## Restarting R
 
 So, in the last lesson, we saved our session.  Let's look at how that works when you want to restart R at the top of your home directory:
 
@@ -74,9 +77,13 @@ You can either use a file transfer program like filezilla, or if a local termina
 [local] $ scp tristand@longleaf.unc.edu:/nas/longleaf/home/tristand/project_Gm/deseq/.R* .
 ~~~
 
+***  
+
 ## Using R Studio
 
 I won't be going over the installation instructions at the end of the last episode.  Depending on which OS and which version, different R and RStudio downloads can have some compatibility issues that can take a while to iron out.  However, if you were not able to get all the bioconductor packages you need installed, don't worry, the next section will let you follow along.
+
+***  
 
 ## OnDemand with Longleaf
 
@@ -84,7 +91,7 @@ OnDemand is a service that ITS Research Computing runs to allow access to the cl
 
 [OnDemand at Research Computing](https://its.unc.edu/research-computing/ondemand/)
 
-
+***  
 
 ## PCA plots
 PCA - [Principle Component Analysis](https://en.wikipedia.org/wiki/Principal_component_analysis) - this is a method of reducing high dimensionality data by finding a rotation, or set of axes, that captures the greatest set of differences within the data.
@@ -98,7 +105,9 @@ PCA - [Principle Component Analysis](https://en.wikipedia.org/wiki/Principal_com
 `rlog` - 'Regularized Log' transforms the data to Log2 scale
 `plotPCA` - does the PCA plotting
 
-## confounding/co-factor variables
+***  
+
+## Multi-factor design
 
 If using RStudio locally, download this alternate experiment design file:
 
@@ -140,9 +149,13 @@ and we can compare to our original results:
 > summary(res)
 ~~~
 
+***  
+
 ## Heat Maps
 
 code from workbook
+
+***  
 
 ## Functions
 
