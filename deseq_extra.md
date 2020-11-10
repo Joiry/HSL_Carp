@@ -152,7 +152,18 @@ and we can compare to our original results:
 > summary(res)
 ~~~
 
-plotPCA(vsd2, intgroup=c("pheno", "group"))
+The basic PCA plot will not change with this extra factor, its actual a parallel look at the data than the DESeq algorithm, but it utilizes the dispersion calculations.
+
+~~~
+> rld2 <- rlog(dds2, blind=FALSE)
+> vsd2 <- vst(dds2, blind=FALSE)
+> plotPCA(rld2, intgroup=c("pheno", "group"))
+> plotPCA(vsd2, intgroup=c("pheno", "group"))
+~~~
+
+`rlog` and `vst` are two methods of transforming the data to make it suitable for visualization.  `rlog` will take longer to run with large numbers of samples.  For more, we can look at the DESeq section describing these functions:
+
+[Data Visualization](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#data-transformations-and-visualization)
 
 ***  
 
@@ -166,11 +177,7 @@ We're going to need a few more packages for more sophisticated graphing than bas
 > library("pheatmap")
 ~~~
 
-First, a bit of data prep.
-
-~~~
-> vsd2 <- vst(dds2, blind=FALSE)
-~~~
+Now we can do some graphing.  Most of below is prepping the data into the right format.
 
 ~~~
 > sampleDists <- dist(t(assay(vsd2)))
@@ -188,6 +195,10 @@ First, a bit of data prep.
 
 ## Functions
 
+If you end up doing many analyses, either refinements of one data set or work on several projects over time, you may want to start thinking about making more modular code.  This is similar to some of the scripting I showed in previous lessons - allowing you to pass in a few variables to change which data the code is working on.  
+
+We can take the heat map commands from above, and put them into a function:  
+
 ~~~
 HeatMapSamples <- function(data,col1,col2)
 {
@@ -203,7 +214,14 @@ pheatmap(sampleDistMatrix,
 }
 ~~~
 
+I have omitted the usual R prompts, `>`, that are used to show each command being entered separately.  This is just for teaching purposes, and if you have code in text files, you'll often just paste it in blocks, and you don't want all those prompts in there.
+
+The one major change we make is adding in generic variable names, which we'll pass into the function.  Note when accessing the columns in the data set, we're no longer using the `$` shortcut, but rather have to use the full canonical way to specify columns with double angle brakets `[[...]]`.  This is because R can't tell, when using `$` formulation that its looking for the name of the variable, or the value of the variable.  This may seem odd, given in Unix `$` specifies something as a variable.  But it just shows these are two different languages.
+
+Now we can invoke the function much like the built in functions in R and the DESeq2 package:
+
 ~~~
 > HeatMapSamples(vsd2,"pheno","group")
 ~~~
 
+***
