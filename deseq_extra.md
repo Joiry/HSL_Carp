@@ -100,7 +100,45 @@ PCA - [Principle Component Analysis](https://en.wikipedia.org/wiki/Principal_com
 
 ## confounding/co-factor variables
 
-new sample info file
+If using RStudio locally, download this alternate experiment design file:
+
+~~~
+[local] $scp tristand@longleaf.unc.edu:/proj/seq/data/carpentry/project_Gm/Gm_samples_2.txt .
+~~~
+
+or copy it to the working directory for OnDemand
+
+~~~
+$ cp /proj/seq/data/carpentry/project_Gm/Gm_samples_2.txt .
+~~~
+
+~~~
+> si_2 <- read.csv("Gm_samples_2.txt")
+> si_2
+> si_2 <- DataFrame(si_2)
+~~~
+
+Our count data is already correctly formated from the earlier analysis, so we can just plug that in with our new sample info, with one change:
+
+~~~
+> ddsCT_2 <- DESeqDataSetFromMatrix(countData = CountTable, colData = si_2, design = ~ group + pheno)
+~~~
+
+Additional factors in your experiment design are simply listed, separated by a plus symbol.
+
+**Import** it is the last factor on which the DE analysis is performed.
+
+~~~
+> dds2 <- DESeq(ddsCT_2)
+> res2 <- results(dds2)
+> summary(res2)
+~~~
+
+and we can compare to our original results:
+
+~~~
+> summary(res)
+~~~
 
 ## Heat Maps
 
@@ -110,6 +148,4 @@ code from workbook
 
 functionalizing things
 
-~~~
->
-~~~
+
