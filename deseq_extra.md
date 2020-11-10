@@ -51,6 +51,7 @@ We can find all those old data structures, but something is missing...
 > summary(res)
 > mcols(res)$description
 ~~~
+
 Listing the currently loaded packages:
 
 ~~~
@@ -121,6 +122,8 @@ or copy it to the working directory for OnDemand
 $ cp /proj/seq/data/carpentry/project_Gm/Gm_samples_2.txt .
 ~~~
 
+Now, load in the new experiment design, take a look at it to confirm, and transform it into a data frame type object.
+
 ~~~
 > si_2 <- read.csv("Gm_samples_2.txt")
 > si_2
@@ -149,16 +152,58 @@ and we can compare to our original results:
 > summary(res)
 ~~~
 
+plotPCA(vsd2, intgroup=c("pheno", "group"))
+
 ***  
 
 ## Heat Maps
 
-code from workbook
+We're going to need a few more packages for more sophisticated graphing than base R provides:
+
+~~~
+> library("ggplot2")
+> library("RColorBrewer")
+> library("pheatmap")
+~~~
+
+First, a bit of data prep.
+
+~~~
+> vsd2 <- vst(dds2, blind=FALSE)
+~~~
+
+~~~
+> sampleDists <- dist(t(assay(vsd2)))
+> sampleDistMatrix <- as.matrix(sampleDists)
+> rownames(sampleDistMatrix) <- paste(vsd2$pheno, vsd2$group, sep=":")
+> colnames(sampleDistMatrix) <- NULL
+> colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+> pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+~~~
 
 ***  
 
 ## Functions
 
-functionalizing things
+~~~
+HeatMapSamples <- function(data,col1,col2)
+{
+sampleDists <- dist(t(assay(data)))
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) <- paste(data[[col1]], data[[col2]], sep=":")
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+}
+~~~
 
+~~~
+> HeatMapSamples(vsd2,"pheno","group")
+~~~
 
