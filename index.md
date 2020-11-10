@@ -20,7 +20,7 @@
   * Part 2 - Differential Expression Analysis
     * [Intro and Counting](https://joiry.github.io/HSL_Carp/counting)
     * [DESeq Basics](https://joiry.github.io/HSL_Carp/deseq2)
-    * [Intermediate DESeq & RStudio]  
+    * [Intermediate DESeq & RStudio](https://joiry.github.io/HSL_Carp/deseq_extra)  
   
   
 ****
