@@ -1,6 +1,6 @@
 # Second steps
 
-## More moving around the file system
+## Scratch space on Longleaf
 
 In the first lesson, we learned how to use `pwd` to find our current location within our file system, 
 and also how to use `cd` to change locations and `ls` to list the contents of a directory.  Additionally,
@@ -349,7 +349,7 @@ $ !260
 ~~~
 
 Type `!` (exclamation point) and then the number of the command from your history.
-You will be glad you learned this when you need to re-run very complicated commands.
+
 
 ****
 
@@ -367,7 +367,16 @@ You will be glad you learned this when you need to re-run very complicated comma
 > > First type `history`. Then use `!` followed by the line number to rerun that command.
 
 ****
-
+  
+The `history` command also has a number of options, on of which is to delete a specific line of your history.
+  
+~~~
+$ history -d [line number]
+~~~
+  
+This can be useful if you accidently type a password at the command prompt.
+  
+  
 
 ## Examining files
 
