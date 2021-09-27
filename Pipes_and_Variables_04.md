@@ -1,6 +1,9 @@
 # Pipes and Variables
 
-In this lesson, we will learn about a powerful search tool, how to use redirection of streams, and assigning and using variables
+In this lesson:
+ * we will learn about a powerful search tool
+ * how to use redirection of streams
+ * How to use and assign values to variables
 
 
 ## Searching files
@@ -353,7 +356,8 @@ efficiently. Let's take a few minutes to practice.
 >>> 186
 >>> ~~~
 
-
+## Streams
+The word 'stream' has been used a few times in the lesson.  There are 3 main streams in Unix, and they are a core concept much like paths.  Whenever a file is accessed, its contents are put on the input stream.  Some commands and programs, like `less`, automatically direct the output stream to themselves.  The output stream goes directly to the terminal, to be displayed to the user.  So `less` takes the input stream and formats it a specific way to display it to the user in an interactive form on the output stream.  The third stream, standard error, is like the output stream, only it's a channel meant for error messages.  For example, when the shell reports an error in a commands usage, that is usually on the error stream, even though a user gets no indication whether it was from the output or error streams.  Some bioinformatics programs make use of the error stream to output diagnostics on their operation.
 
   
 
@@ -403,7 +407,7 @@ $ history | grep "NNNN"
 Since `grep` is also sending its results to the output stream, you can keep on piping:
 
 ~~~
-$ history | grep "for" | less
+$ history | grep "NNNN" | less
 ~~~
 
 So long as a command or program outputs to the out stream, you can keep piping.  This is what a lot of bioinformatics utilities do, and are designed to chain a series of manipulations.
