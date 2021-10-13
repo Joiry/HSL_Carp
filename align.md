@@ -2,6 +2,14 @@
 
 ***
 
+In this lesson:
+ * A brief background on alignment
+ * Creating an index for alignment
+ * Aligning fastq files
+ * Post-alignment processing
+
+***
+
 ## What is Alignment?
 
 The typical Illumina HiSeq type run can produce 100s of millions of reads, usually from 50-150bp long.  These reads are from the ends of DNA fragments which are typically 400-600bp long.  These fragments either came directly from harvesting genomic DNA, or the conversion of RNA from cells into cDNA.
