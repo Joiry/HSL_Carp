@@ -91,6 +91,7 @@ Let's copy a test fastq, this is a file of E Coli reads, 5 million in fact.  Its
 
 ~~~
 $ cp /proj/seq/data/carpentry/ecoli/ecoli_ref-5m.fastq.gz .
+$ cp /proj/seq/data/carpentry/ecoli/adapters.fa .
 ~~~
 
 ***
