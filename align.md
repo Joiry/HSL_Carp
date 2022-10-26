@@ -163,7 +163,7 @@ First let's get a genome to use - usually these aren't just sitting around but w
 $ cp /proj/seq/data/dm6_UCSC/Sequence/WholeGenomeFasta/genome.fa .
 ~~~
 
-'genome.fa' is a bit generic of a name, but as we'll see in a bit, the set of genomic data we store in /proj/seq/data follows a structure to make it easy to automate access.  We can rename this file to remind us of what it is.
+`genome.fa` is a bit generic of a name, but as we'll see in a bit, the set of genomic data we store in /proj/seq/data follows a structure to make it easy to automate access.  We can rename this file to remind us of what it is.
   
 ~~~
 $ mv genome.fa dm6_UCSC.genome.fa
@@ -268,12 +268,16 @@ in1=${base}.fastq.gz
 ~~~
 
 `in1=<file_path>` tells `bbmap` what fastq file to use.  If we had paired end data in 2 separate files (which is how data is released by default), we'd have to specify the 'R2' file using `in2=`
+  
+`path=$refpath` the "path=" parameter points bbmap to an existing bbmap index.  If it is not set, bbmap looks for a 'ref/' directory in the current directory as mentioned above.
 
 `out=` specifies the name of the file we want to write the bam (aka alignment file) to.
 
 
 ***
+
 *Wait for at least one run from everyone to finish*
+  
 ***
   
 The `bbmap` log files are very useful (not all aligners make such convenient summaries), it reports all sorts of info on how well the alignments we to standard out:  
