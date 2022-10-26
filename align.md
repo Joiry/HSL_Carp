@@ -93,23 +93,31 @@ Now, those edge cases may be important to your particular experiment, so that is
 
 As we've seen, things can get quite messy once you start processing and analyzing a lot of files.  Once you get more comfortable with paths you can start to have your commands and programs access data from different directories and write out results to a different set of directories.  For now we'll just continue to use the approach of accessing and writing to the current directory, then sort out files afterwards.
 
-If you recall, the fastq files we produced last lesson were all in the `trim` directory, and no separation of the raw fastq files from the trimmed ones.
-  then move all these files to a new directory.    
-(normally we might just move only the trimmed ones to align, but we're going to use the original for our alignment practice and demostration)
+If you recall, the fastq files we produced last lesson were all in the `trim` directory, and no separation of the raw fastq files from the trimmed ones.  How you organize your data is up to you, though remember someone else may need to reconstruct your analysis later - that someone may even be you a few months or years in the future.
+  
+Usually it's a good idea to keep the files from each stage of processing in their own directories, for example you may have several directories like:
+  
+~~~
+fastq/
+fastqc/
+trimmed/
+align/
+~~~
+
+You could have it all organized from the beginning, using relative paths to have each stage (QC, trimming, aligning, counting) write directly to the relevant directories.  Or at each stage you just access files in the current "working" directory and then move all those files to a new directory.    
 
 *(we're not actually doing this, it's example/hypothetical set of commands)*
 
-Imagine we have all our raw fastq files in 
+Imagine we have all our raw fastq files in our current directory, and then we trimmed them, and wanted to put the trimmed versions in a new directory and we included the string "trim" in each of the resulting trimmed fastqs.
 
 ~~~
-$ mkdir align
-$ mv *fastq.gz align/
-$ mv align ..
-$ cd ../align/
-$ ls -1
+$ mkdir trimmed
+$ mv *trim*fastq.gz trimmed/
+$ mv trimmed/ ..
+$ cd ../trimmed/
 ~~~
 
-In the last three commands, we move the new `align` directory up one level and then enter it, and lastly make sure all the files we want are here.
+In the last three commands, we move the new `trimmed` directory up one level and then enter it, and lastly make sure all the files we want are here.
 
 
 ***  
@@ -147,14 +155,20 @@ Currently Loaded Modules:
 As might have noticed earlier, extra modules appeared in addition to `bbmap`.  The BBmap package makes use of other modules, and ITS has set up the system so these modules are loaded automatically.  Here's another reason for using the modules system, some packages may depend on very specific versions of other packages.  Samtools is a module we'll be using later - it has a lot of utilities for working with alignment files.  `pigz` is module that let's the BBmap programs access compressed files.
 
 
-Making a reference is fairly straight forward with `bbmap`
+Making a reference is fairly straight forward with `bbmap`.
 
-First let's get a genome to use - usually these aren't just sitting around but I've made one available.
+First let's get a genome to use - usually these aren't just sitting around but we'll grab one from a set we maintain on longleaf.
 
 ~~~
-$ cp /proj/seq/data/carpentry/ref_genome/ecoli_rel606.fasta .
+$ cp /proj/seq/data/dm6_UCSC/Sequence/WholeGenomeFasta/genome.fa .
 ~~~
 
+'genome.fa' is a bit generic of a name, but as we'll see in a bit, the set of genomic data we store in /proj/seq/data follows a structure to make it easy to automate access.  We can rename this file to remind us of what it is.
+  
+~~~
+$ mv genome.fa dm6_UCSC.genome.fa
+~~~
+  
 We can look at bbmap's help to get a basic idea of its use:
 (here we are piping the output to `less` to make it easier to look over)
 
@@ -168,33 +182,33 @@ From the help, we can see the instructions for creating an index are:
 So, we can construction this slurm submission:
 
 ~~~
-$ sbatch -o ecoli_indexing.out --wrap="bbmap.sh ref=ecoli_rel606.fasta"
+$ sbatch -o dm6_indexing.out --wrap="bbmap.sh ref=dm6_UCSC.genome.fa"
 ~~~
 
 As we saw with its bbduk trimming sister program, bbmap provides useful information in its logging:
 
 ~~~
-$ less ecoli_indexing.out
+$ less dm6_indexing.out
 ~~~
 
 BBmap will by default write its indexing files to a directory called `ref` in the current directory.  In fact, when aligning, if you don't specify a reference, bbmap will look for the `ref` by default.  Because I've setup the alignment script to point to a directory containing a `ref` directory, let's move the index we just made into a newly made directory.  Why we do this will hopefully become clear later.
 
 ~~~
-$ mkdir index_ecoli
-$ mv ref/ index_ecoli/
+$ mkdir index_dm6
+$ mv ref/ index_dm6/
 ~~~
 
 ***
 
 ## Premade references
 
-Since indexes for each reference genome only need to be made once, we've provided a number of common reference genomes for some of the most commonly used aligners.
+Since indexes for each reference genome only need to be made once, we've provided a number of common reference genomes for some of the most commonly used aligners.  In fact that's what we used to get our alignments going.
 
 ~~~
 $ ls /proj/seq/data/
 ~~~
 
-Let's look in the `dm6_UCSC` as an example, which is a build of the Drosophila melanogaster genome.
+Let's look in the `dm6_UCSC` directory, which is a build of the Drosophila melanogaster genome.
 
 ~~~
 $ ls /proj/seq/data/dm6_UCSC/
@@ -259,11 +273,9 @@ in1=${base}.fastq.gz
 
 
 ***
-
-
-
 *Wait for at least one run from everyone to finish*
-
+***
+  
 The `bbmap` log files are very useful (not all aligners make such convenient summaries), it reports all sorts of info on how well the alignments we to standard out:  
 *(note the job ID, the number after SRRxxxxxx, will differ for everyone, so try using tab completion)*
 
