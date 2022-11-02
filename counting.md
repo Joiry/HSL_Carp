@@ -28,6 +28,17 @@ As we touched upon in the previous lesson, alignment for DE can be to a whole re
   * Extra time to align to larger reference less of a factor nowadays
 
 
+## Getting some aligned data
+
+First, let's get some data to work on.  I've prepared a directory within `project_dm` with some pre-aligned data.  The data is a bit big, so we'll want to work in our scratch space in /pine/scr/... 
+
+Once you cd there:
+
+~~~
+$ cp -r /proj/seq/data/carpentry/project_dm/ .
+~~~
+
+***
 
 ## How many Biological replicates
 
@@ -65,15 +76,6 @@ The Shurch et al paper recommends the use of DESeq2 or edgeR when you have only 
 
 ***
 
-## Getting gene counts
-
-First, let's get some data to work on.  I've prepared a set of subdirectories within `project_Gm` with some pre-aligned data and other files we'll need.  The data is a bit big, so we'll want to work in our scratch space.  Once there:
-
-~~~
-$ cp -r /proj/seq/data/carpentry/project_Gm/ .
-~~~
-
-
 ### Annotation files
 
 When you align data, we're only matching each read to a location on the genome.  The reference genome and the alignment files, SAM or BAM, know nothing about where exons, protein binding sites, or other features exist in the genome.
@@ -86,16 +88,16 @@ For all the genomes we provide in `/proj/seq/data/` there are corresponding anno
 $ cd /proj/seq/data/
 ~~~
 
-Let's look in the `HG19_UCSC` directory:
+Let's look in the `dm6_UCSC` directory:
 
 ~~~
-$ cd HG19_UCSC
+$ cd dm6_UCSC
 $ ls
 ~~~
 
 ~~~
-Annotation    Homo_sapiens_UCSC_hg19.tar  README.txt
-Homo_sapiens  NOTE                        Sequence
+Annotation               Drosophila_melanogaster_UCSC_dm6.tar  README.txt
+Drosophila_melanogaster  NOTE                                  Sequence
 ~~~
 
 Recall the index files we use to align are in the `Sequence` directory.  The GTF files are in `Annotation` and its subdirectories, and for today's lesson we'll just be using the `Genes` annotations.
@@ -131,13 +133,13 @@ $ pwd
 ~~~
 
 ~~~
-/proj/seq/data/HG19_UCSC/Annotation/Genes
+/proj/seq/data/dm6_UCSC/Annotation/Genes
 ~~~
 
 And the full path to the GTF is:
 
 ~~~
-/proj/seq/data/HG19_UCSC/Annotation/Genes/genes.gtf
+/proj/seq/data/dm6_UCSC/Annotation/Genes/genes.gtf
 ~~~
 
 We'll see this path in the script we use below.
@@ -157,7 +159,15 @@ $ module list
 
 ~~~
 Currently Loaded Modules:
-  1) subread/1.6.3
+  1) subread/2.0.3
+~~~
+
+To run this script, we just `sbatch` it, since all values it needs is coded into the script itself.  We'll run the script first since it may take a while, and then discuss the details of what's in the script.
+
+~~~
+$ cd /pine/scr/o/n/onyen/project_dm/
+[put in your own onyen and letters]
+$ sbatch -J dm_run01 dm_fcounts.slurm.sh
 ~~~
 
 `subread` is an aligner, but the authors also made `featureCounts` as part of the same package.  So this is an example of a module that has a suite of programs within it.
@@ -180,11 +190,11 @@ However, in practice you're going to be using a few more options.  Here we have 
 Let's take a look at this slurm script for running `featureCounts`
 
 ~~~
-$ less Gm_fcounts.slurm.sh
+$ less dm_fcounts.slurm.sh
 ~~~
 
 ~~~
-featureCounts -a $gtf -o Gm_counts_all.txt -T 4 -g gene_id -p -s 2 $bam1 $bam2 $bam3 $bam4 $bam5 $bam6 $bam7 $bam8 $bam9 $bam10
+featureCounts -a $gtf -o dm_counts_s2.txt -T 6 -g gene_id -p -s 2 $bams
 ~~~
 
 `-p` tells `featureCounts` this is paired end data, if you don't use this option with paired data, the counts will be weird
@@ -192,14 +202,10 @@ featureCounts -a $gtf -o Gm_counts_all.txt -T 4 -g gene_id -p -s 2 $bam1 $bam2 $
 
 If your read counts are low, try with `0`, as it will count in both directions, and then you can figure out if the library was actually in the other direction.
 
-`-T 4` specifies to use 8 threads, which should have the same value as the `-n` for the slurm script
+`-T 6` specifies to use 6 threads, which should have the same value as the `-n` for the slurm script
 
 Finally, there is the list of paths to all the bams we want to count.  You can modify this script by changing the path/names of the variable assignments for the variables `bam1`, `bam2`, etc.
 
-To run this script, we just `sbatch` it, since all values it needs is coded into the script itself
-
-~~~
-$ sbatch -J proj_Gm Gm_fcounts.slurm.sh
-~~~
-
 ***
+
+Once the counting is done...
