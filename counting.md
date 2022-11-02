@@ -30,9 +30,9 @@ As we touched upon in the previous lesson, alignment for DE can be to a whole re
 
 ## Getting some aligned data
 
-First, let's get some data to work on.  I've prepared a directory within `project_dm` with some pre-aligned data.  The data is a bit big, so we'll want to work in our scratch space in /pine/scr/... 
+First, let's get some data to work on.  I've prepared a directory `project_dm` with some pre-aligned data.  The data is a bit big, so we'll want to work in our scratch space in /pine/scr/... 
 
-Once you cd there:
+Once you `cd` there:
 
 ~~~
 $ cp -r /proj/seq/data/carpentry/project_dm/ .
@@ -144,6 +144,8 @@ And the full path to the GTF is:
 
 We'll see this path in the script we use below.
 
+***
+
 ### featureCounts
 
 There are a number of counting programs.  We're going to use `featureCounts` which is in the `subread` package of tools.
@@ -162,11 +164,9 @@ Currently Loaded Modules:
   1) subread/2.0.3
 ~~~
 
-To run this script, we just `sbatch` it, since all values it needs is coded into the script itself.  We'll run the script first since it may take a while, and then discuss the details of what's in the script.
+To run this script, we just `sbatch` it, since all values it needs is coded into the script itself.  We'll run the script first since it may take a while, and then discuss the details of what's in the script.  Let's return to our scratch space in `/pine/scr/...` and then submit the script to the slurm queue.
 
 ~~~
-$ cd /pine/scr/o/n/onyen/project_dm/
-[put in your own onyen and letters]
 $ sbatch -J dm_run01 dm_fcounts.slurm.sh
 ~~~
 
@@ -208,4 +208,34 @@ Finally, there is the list of paths to all the bams we want to count.  You can m
 
 ***
 
-Once the counting is done...
+Once the counting is done, we can look at the results in a number of ways.
+(you'll have to change the below to match the jobID number)
+
+~~~
+$ less feature_counts.dm_run01.57859336.err
+~~~
+
+Here we see featureCounts self-documents the parameters it used, and gives a nice little report.  Again, here is a place that `grep` is a useful tool, we could pull out of the log just the most relevant info, how many reads fell within a feature in the gtf:
+
+~~~
+$ grep 'Successfully' feature_counts.dm_run01.57859336.err
+~~~
+
+which produces:
+
+~~~
+||    Successfully assigned alignments : 7581502 (69.0%)                      ||
+||    Successfully assigned alignments : 2515213 (75.5%)                      ||
+||    Successfully assigned alignments : 7411675 (76.4%)                      ||
+||    Successfully assigned alignments : 1930952 (71.9%)                      ||
+||    Successfully assigned alignments : 6634231 (78.0%)                      ||
+||    Successfully assigned alignments : 7369325 (79.6%)                      ||
+~~~
+
+Now, let's look at the actual count file:
+
+~~~
+$ less -S dm_counts_s2.txt
+~~~
+
+Even with the -S, it's hard to read this file since there are columns that list every exon.  However, once we load it into our analysis program in the next lesson, we'll be able to see the data in count columns a lot better.
