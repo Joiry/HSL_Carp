@@ -341,6 +341,14 @@ LFC > 0 (up)       : 3004, 24%
 LFC < 0 (down)     : 2209, 17%
 ~~~
 
+For the initial analysis, we set `3LW` as the reference condition, but the other possible comparisons are also part of DESeq2's algorithm.  We can get results from those other possible combinations of reference vs 'treated' conditions without re-running the main analysis step:
+
+~~~
+> res_44hAPF_v_24hAPF <- results(dds, contrast=c("condition","44hAPF","24hAPF"))
+> summary(res_44hAPF_v_24hAPF, alpha=0.05)
+~~~
+
+Here, we are just naming the new results object with description of the conditions used - again, you can come up with your own naming scheme.
 
 ### Writing results to a file
 ~~~
@@ -423,6 +431,20 @@ We can transfer the resulting file, `dm_pca_rld.png` to a local machine and view
 
 ![Gm PCA](/images/dm_pca_rld.png)
 
+*(if there is time)*
+
+This is another tranformation for PCA, it is less computationally intensive for larger date sets
+
+~~~
+> vsd <- vst(dds, blind=FALSE)
+> png('dm_pca_vsd.png')
+> plotPCA(vsd, intgroup=c("condition"))
+> dev.off()
+~~~
+
+![Gm PCA](/images/dm_pca_vst.png)
+
+***
 
 ## Quiting R and saving the session
 
