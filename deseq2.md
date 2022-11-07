@@ -356,7 +356,7 @@ Here, we are just naming the new results object with description of the conditio
 > write.table(res, "dm_result_table.txt", col.names=NA, sep="\t")
 ~~~
 
-This function will write the data in `res` to a file in the current directory (ie the one you started R in) `Gm_result_table.txt` and will separate the columns with tabs.  This table delimited text file can be read by Excel, however, note it may be quite large since we are writing results for every gene.
+This function will write the data in `res` to a file in the current directory (ie the one you started R in) `dm_result_table.txt` and will separate the columns with tabs.  This table delimited text file can be read by Excel, however, note it may be quite large since we are writing results for every gene.
 
 
 
