@@ -59,7 +59,8 @@ Let's copy an experimental design file in the `/proj/seq/data/carpentry/deseq_dm
 
 ~~~
 $ cd deseq/
-$ cp /proj/seq/data/carpentry/deseq_dm/* .
+$ cp /proj/seq/data/carpentry/deseq_dm/dm_sampleInfo.txt .
+$ cp /proj/seq/data/carpentry/deseq_dm/deseq2.project_dm.R .
 $ ls
 ~~~
 
@@ -374,7 +375,7 @@ Here, we're using two features of R
 `$` is used to indicate column identifiers within a data frame.  
 Thus `res$baseMean` accesses all the values in the `baseMean` column
 
-`which` is a function that selects items based on a test, in this case `<value> > 1` - all values greater than 1
+`which` is a function that selects items based on a test, in this case `<value> > 0` - all values greater than 0, which will trim out all except the 12707 with nonzero counts. 
 
 The results of the above are used as row selectors, so every row whose `baseMean` value is greater than one is selected, and are assigned to a new data frame.
 
@@ -403,7 +404,7 @@ We can also sort the data.  We pull out the `padj` values and feed them to the `
 Once we've done the filtering we like, we can also write out the results:
 
 ~~~
-> write.table(resOrdered, "export_significant_result_table.txt", col.names=NA, sep="\t")
+> write.table(resOrdered, "padj_005_result_table.txt", col.names=NA, sep="\t")
 ~~~
 
 
