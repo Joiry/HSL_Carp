@@ -88,7 +88,7 @@ We have the name of each sample in the first column labelled `sample` and a sing
 If your counting run didn't work, you can copy the counts file from my scratch space: 
 
 ~~~
-cp /pine/scr/t/r/tristand/project_dm/deseq .
+cp /pine/scr/t/r/tristand/project_dm/deseq/dm_counts_s2.txt .
 ~~~
 
 So we should have the following files:
@@ -128,7 +128,7 @@ $ module list
 
 ~~~
 Currently Loaded Modules:
-  1) r/3.3.1
+  1) r/4.1.3
 ~~~
 
 The main thing to note here is the module is lowercase `r` while the command to invoke is uppercase `R`
