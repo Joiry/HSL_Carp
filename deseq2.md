@@ -166,7 +166,7 @@ Deseq wants data in a particular format, there are several ways to get to this f
 
 ### Step 2: read in count data
 ~~~
-> Counts_bbmap <- read.table("Gm_counts_all.txt", header = TRUE, row.names=1)
+> Counts_bbmap <- read.table("dm_counts_s2.txt", header = TRUE, row.names=1)
 ~~~
 
 `read` is a function that reads from a file, and we are specifying to read in a table format.
@@ -187,12 +187,12 @@ After each of the formatting steps below, we'll use `head` to see what changes h
 
 ### Step 2a: remove unneeded columns
 ~~~
-> CountTable <- Counts_bbmap[,6:15]
+> CountTable <- Counts_bbmap[,6:11]
 ~~~
 
 Most of the columns created by featureCounts are unneeded by DESeq, so we're going to remove them.
 
-`[,6:15]` this syntax means we're taking all the rows (nothing before the comma) and only columns 6 through 15 - we have 10 data rows.
+`[,6:11]` this syntax means we're taking all the rows (nothing before the comma) and only columns 6 through 11 - we have 6 data rows.
 
 Note, we've assigned this cropping of the data to a new variable:
 
@@ -204,10 +204,10 @@ Note, we've assigned this cropping of the data to a new variable:
 
 ### Step 2b: truncate count headers to match experiment design names
 ~~~
-> colnames(CountTable) <- sapply(colnames(CountTable), substr, 0,7)
+> colnames(CountTable) <- sapply(colnames(CountTable), substr, 0,10)
 ~~~
 
-featureCounts names each column of the counts by the name of the file, but in our experiment design file, we just use the names of the sames.  Eg sample `Gm10847` in the design file corresponds to `Gm10847.bam` in the counts file, so we need to remove the `.bam`, or in this as, we're using the `substr` function to just keep the first 7 characters of the column name.
+featureCounts names each column of the counts by the name of the file, but in our experiment design file, we just use the names of the sames.  Eg sample `SRR5457511` in the design file corresponds to `SRR5457511_1.bam` in the counts file, so we need to remove the `.bam`, or in this as, we're using the `substr` function to just keep the first 10 characters of the column name.
 
 What's happening here is `colnames` is fetching all the column names in `CountTable`, `sapply` is applying the `substr` function to each of these names.  Then, we take that list and put it back into the data structure using `colnames` again.
 
@@ -218,7 +218,7 @@ What's happening here is `colnames` is fetching all the column names in `CountTa
 
 ### Step 3: read in experiment design
 ~~~
-> sampleInfo <- read.csv("Gm_sampleInfo.txt")
+> sampleInfo <- read.csv("dm_sampleInfo.txt")
 ~~~
 
 Here, we use `read`'s method for csv (Comma Separated Values) files.
@@ -243,10 +243,12 @@ Data frames are an special R data type that basically store a table of data, wit
 
 ### Step 4: Make DDS object
 ~~~
-> ddsFullCountTable <- DESeqDataSetFromMatrix(countData = CountTable, colData = sampleInfo, design = ~pheno)
+> dds <- DESeqDataSetFromMatrix(countData = CountTable, colData = sampleInfo, design = ~condition)
 ~~~
 
 By default, R chooses the reference level alphabetically.  Thus, if you had a condition 'genotype' with levels 'wildtype' and 'mutant', 'm' comes before 'w' in the alphabet, so 'mutant' will be considered the reference level.  There are a number of ways to change this, two of which are:
+
+*note these first two are just examples and won't work with the current data set*
 
 ~~~
 > dds$condition <- factor(dds$condition, levels = c("wildtype","mutant"))
@@ -258,12 +260,15 @@ or
 > dds$condition <- relevel(dds$condition, ref = "wildtype")
 ~~~
 
-This has to be done before the next step.
+This has to be done before the next step.  So, for our data, do the following, which sets the earliest time point as the reference level:
 
+~~~
+> dds$condition <- relevel(dds$condition, ref = "3LW")
+~~~
 
 ### Step 5: Run Deseq2 analysis
 ~~~
-> dds <- DESeq(ddsFullCountTable)
+> dds <- DESeq(dds)
 ~~~
 
 This is it, the big analysis step!  Exciting, right?
@@ -294,12 +299,12 @@ or
 ~~~
 
 ~~~
-baseMean       intermediate    mean of normalized counts for all samples
-log2FoldChange      results log2 fold change (MAP): pheno male vs female
-lfcSE               results         standard error: pheno male vs female
-stat                results         Wald statistic: pheno male vs female
-pvalue              results      Wald test p-value: pheno male vs female
-padj                results                         BH adjusted p-values
+[1] "mean of normalized counts for all samples"      
+[2] "log2 fold change (MLE): condition 44hAPF vs 3LW"
+[3] "standard error: condition 44hAPF vs 3LW"        
+[4] "Wald statistic: condition 44hAPF vs 3LW"        
+[5] "Wald test p-value: condition 44hAPF vs 3LW"     
+[6] "BH adjusted p-values" 
 ~~~
 
 The Benjamini–Hochberg (BH) procedure is used to find adjusted p-values
@@ -311,22 +316,38 @@ We can also use the summary function:
 ~~~
 
 ~~~
-out of 19254 with nonzero total read count
+out of 12707 with nonzero total read count
 adjusted p-value < 0.1
-LFC > 0 (up)     : 21, 0.11% 
-LFC < 0 (down)   : 15, 0.078% 
-outliers [1]     : 243, 1.3% 
-low counts [2]   : 4412, 23% 
+LFC > 0 (up)       : 3309, 26%
+LFC < 0 (down)     : 2466, 19%
+outliers [1]       : 0, 0%
+low counts [2]     : 3149, 25%
 (mean count < 2)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+~~~
+
+The `res` function also allows for changing the p-adj value used for filtering:
+
+~~~
+> summary(res, alpha=0.05)
+~~~
+
+This only changes the numbers reported up or down:
+
+~~~
+adjusted p-value < 0.05
+LFC > 0 (up)       : 3004, 24%
+LFC < 0 (down)     : 2209, 17%
 ~~~
 
 
 ### Writing results to a file
 ~~~
-> write.table(res, "Gm_result_table.txt", col.names=NA, sep="\t")
+> write.table(res, "dm_result_table.txt", col.names=NA, sep="\t")
 ~~~
 
-This function will write the data in `res` to a file in the current directory (ie the one you started R in) `Gm_result_table.txt` and will separate the columns with tabs.  This table delimited text file can be read by Excel, however, note it may be quite large.
+This function will write the data in `res` to a file in the current directory (ie the one you started R in) `Gm_result_table.txt` and will separate the columns with tabs.  This table delimited text file can be read by Excel, however, note it may be quite large since we are writing results for every gene.
 
 
 
@@ -337,7 +358,7 @@ We can use various R features make some subsets of the data, which are smaller a
 ### Cutoff by present
 
 ~~~
-> resPresent <- res[which(res$baseMean > 1),]
+> resPresent <- res[which(res$baseMean > 0),]
 ~~~
 
 Here, we're using two features of R
@@ -389,8 +410,8 @@ PCA - Principle Component Analysis - this is a method of reducing high dimension
 
 ~~~
 > rld <- rlog(dds, blind=FALSE)
-> png('Gm_pca.png')
-> plotPCA(rld, intgroup=c("pheno", "run"))
+> png('dm_pca_rld.png')
+> plotPCA(rld, intgroup=c("condition"))
 > dev.off()
 ~~~
 
@@ -398,9 +419,9 @@ PCA - Principle Component Analysis - this is a method of reducing high dimension
 `plotPCA` - does the PCA plotting
 The `png` and `dev.off()` functions are only being used to store the plot into a png file.  This is a bit hack-y, but a way to make graphs and write them to a file when using a simple terminal connection.  Thus, for more serious plotting, and re-plotting, of data, its best to do this locally.
 
-We can transfer the resulting file, `Gm_pca.png` to a local machine and view the results.
+We can transfer the resulting file, `dm_pca_rld.png` to a local machine and view the results.
 
-![Gm PCA](/images/Gm_pca.png)
+![Gm PCA](/images/dm_pca_rld.png)
 
 
 ## Quiting R and saving the session
