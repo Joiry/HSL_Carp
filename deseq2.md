@@ -23,46 +23,72 @@ A lot of the work above is in loading the data into R, and then making sure they
 The two main pieces of data we need for steps 2 and 3:
  * a table of the counts  
  * the experiment design  
- 
-The counts we should be familiar with now, however let's look at the experimental design file we'll be using.  The design is a list of all the samples and what experimental conditions are assigned to them - at a minimum control vs treated.
 
-Let's take a look at the provided experimental design file in the `project_Gm` directory:
+First, let's clean up our directory a bit:
+
+~~~
+$ ls
+~~~
+
+shows:
+
+~~~
+dm_counts_s2.txt                      SRR5457510_1.bam
+dm_counts_s2.txt.summary              SRR5457511_1.bam
+dm_fcounts.slurm.sh                   SRR5457512_1.bam
+dm_fcounts.slurm.sh~                  SRR5457513_1.bam
+feature_counts.dm_run01.57865896.err  SRR5457514_1.bam
+feature_counts.dm_run01.57865896.out  SRR5457515_1.bam
+~~~
+
+We'll move the bam files into their own directory, and then create a directory to do our DESeq analysis.
+
+~~~
+$ mkdir bams
+$ mv *bam bams/
+$ mkdir deseq
+$ mv dm_counts_s2.txt deseq/
+$ ls
+bams   dm_counts_s2.txt.summary  feature_counts.dm_run01.57865896.err
+deseq  dm_fcounts.slurm.sh       feature_counts.dm_run01.57865896.out
+~~~
+
+We also moved the counts into the `deseq` folder.
+
+Let's copy an experimental design file in the `/proj/seq/data/carpentry/deseq_dm/` directory, which also has an R analysis script.
 
 ~~~
 $ cd deseq/
-$ less Gm_sampleInfo.txt
+$ cp /proj/seq/data/carpentry/deseq_dm/* .
+$ ls
+~~~
+
+Now, let's look at the experimental design file we'll be using.  The design is a list of all the samples and what experimental conditions are assigned to them - at a minimum control vs treated.
+
+~~~
+$ less dm_sampleInfo.txt
 ~~~
 
 Which shows:
 
 ~~~
-run,pheno
-Gm10847,female
-Gm10851,male
-Gm12752,male
-Gm12753,female
-Gm12801,male
-Gm12802,female
-Gm12818,female
-Gm12832,female
-Gm12864,male
-Gm12877,male
+sample,condition
+SRR5457510,3LW
+SRR5457511,3LW
+SRR5457512,24hAPF
+SRR5457513,24hAPF
+SRR5457514,44hAPF
+SRR5457515,44hAPF
 ~~~
 
-We have the name of each sample in the first column labelled `run` and a single experimental condition `pheno`.  In our teaching example, we're going to use the fact these samples came from male and female subjects.  You could have more than one condition, addition comma separated columns can be added.  The column names can be anything you want, but keeping them relatively simple will make things easier.
+We have the name of each sample in the first column labelled `sample` and a single experimental condition `condition`.  In this case, samples are different stages of fly wing development.  You could have more than one condition, addition comma separated columns can be added.  The column names can be anything you want, but keeping them relatively simple will make things easier.
 
 ***  
 
-Next, let's copy over the counts we generated in the `bams` folder.  The same counts file is also available in prebaked if your run hasn't finished yet.
+If your counting run didn't work, you can copy the counts file from my scratch space: 
 
 ~~~
-$ cp ../bams/Gm_counts_all.txt .
-~~~
-
-**or**
-
-~~~
-cp ../prebaked/Gm_counts_all.txt .
+cp /pine/scr/t/r/tristand/project_dm/deseq .
 ~~~
 
 So we should have the following files:
@@ -72,9 +98,9 @@ $ ls -1
 ~~~
 
 ~~~
-deseq2.barebones.R
-Gm_counts_all.txt
-Gm_sampleInfo.txt
+deseq2.project_dm.R
+dm_counts_s2.txt
+dm_sampleInfo.txt
 ~~~
 
 Now we're all set to use DESeq2 to analyze the data.
