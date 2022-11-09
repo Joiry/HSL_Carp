@@ -114,13 +114,13 @@ When running Rstudio, we don't need to bracket our plot functions with any funct
 If using RStudio locally, download this alternate experiment design file:
 
 ~~~
-[local] $scp tristand@longleaf.unc.edu:/proj/seq/data/carpentry/project_Gm/Gm_samples_2.txt .
+[local] $scp tristand@longleaf.unc.edu:/proj/seq/data/carpentry/deseq_dm/dm_samples_2.txt .
 ~~~
 
 or copy it to the working directory for OnDemand
 
 ~~~
-$ cp /proj/seq/data/carpentry/project_Gm/Gm_samples_2.txt .
+$ cp /proj/seq/data/carpentry/deseq_dm/dm_samples_2.txt .
 ~~~
 
 Now, load in the new experiment design, take a look at it to confirm, and transform it into a data frame type object.
@@ -202,7 +202,7 @@ If you end up doing many analyses, either refinements of one data set or work on
 We can take the heat map commands from above, and put them into a function:  
 
 ~~~
-HeatMapSamples <- function(data,col1,col2)
+HeatMapSamples <- function(data,col1)
 {
 sampleDists <- dist(t(assay(data)))
 sampleDistMatrix <- as.matrix(sampleDists)
@@ -223,7 +223,7 @@ The one major change we make is adding in generic variable names, which we'll pa
 Now we can invoke the function much like the built in functions in R and the DESeq2 package:
 
 ~~~
-> HeatMapSamples(vsd2,"pheno","group")
+> HeatMapSamples(vsd,"condition")
 ~~~
 
 ***
