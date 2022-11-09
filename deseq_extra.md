@@ -28,7 +28,7 @@ $ srun -p interact --pty R
 If we look around, we can't find any of the variables or data or we were using last lesson that got saved.  There is a load function, but the easier method is to restart R in the same directory you ran before, because R will automatically look for the two save files.
 
 ~~~
-$ cd project_Gm/deseq/
+$ cd /pine/scr/t/r/tristand/project_dm/deseq
 $ ls -la
 ~~~
 
@@ -75,7 +75,7 @@ $ pwd
 You can either use a file transfer program like filezilla, or if a local terminal like OSX is available, with this construction:
 
 ~~~
-[local] $ scp tristand@longleaf.unc.edu:/nas/longleaf/home/tristand/project_Gm/deseq/.R* .
+[local] $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/project_dm/deseq/.R* .
 ~~~
 
 ***  
@@ -95,12 +95,13 @@ OnDemand is a service that ITS Research Computing runs to allow access to the cl
 ***  
 
 ## PCA plots
-PCA - [Principle Component Analysis](https://en.wikipedia.org/wiki/Principal_component_analysis) - this is a method of reducing high dimensionality data by finding a rotation, or set of axes, that captures the greatest set of differences within the data.
+Last lesson, we briefly looked at PCA - [Principle Component Analysis](https://en.wikipedia.org/wiki/Principal_component_analysis) - this is a method of reducing high dimensionality data by finding a rotation, or set of axes, that captures the greatest set of differences within the data.
 
+When running Rstudio, we don't need to bracket our plot functions with any functions to write the image to a file:
 
 ~~~
-> rld <- rlog(dds, blind=FALSE)
-> plotPCA(rld, intgroup=c("pheno", "run"))
+> plotPCA(rld, intgroup=c("condition"))
+> plotPCA(vsd, intgroup=c("condition"))
 ~~~
 
 `rlog` - 'Regularized Log' transforms the data to Log2 scale
@@ -125,7 +126,7 @@ $ cp /proj/seq/data/carpentry/project_Gm/Gm_samples_2.txt .
 Now, load in the new experiment design, take a look at it to confirm, and transform it into a data frame type object.
 
 ~~~
-> si_2 <- read.csv("Gm_samples_2.txt")
+> si_2 <- read.csv("dm_samples_2.txt")
 > si_2
 > si_2 <- DataFrame(si_2)
 ~~~
@@ -133,7 +134,8 @@ Now, load in the new experiment design, take a look at it to confirm, and transf
 Our count data is already correctly formated from the earlier analysis, so we can just plug that in with our new sample info, with one change:
 
 ~~~
-> ddsCT_2 <- DESeqDataSetFromMatrix(countData = CountTable, colData = si_2, design = ~ group + pheno)
+> dds_2f <- DESeqDataSetFromMatrix(countData = CountTable, colData = si_2, design = ~ harvest + condition)
+> dds_2f$condition <- relevel(dds_2f$condition, ref = "3LW")
 ~~~
 
 Additional factors in your experiment design are simply listed, separated by a plus symbol.
@@ -141,9 +143,9 @@ Additional factors in your experiment design are simply listed, separated by a p
 **Import** it is the last factor on which the DE analysis is performed.
 
 ~~~
-> dds2 <- DESeq(ddsCT_2)
-> res2 <- results(dds2)
-> summary(res2)
+> dds_2f <- DESeq(dds_2f)
+> res_2f <- results(dds_2f)
+> summary(res_2f)
 ~~~
 
 and we can compare to our original results:
@@ -155,10 +157,10 @@ and we can compare to our original results:
 The basic PCA plot will not change with this extra factor, its actual a parallel look at the data than the DESeq algorithm, but it utilizes the dispersion calculations.
 
 ~~~
-> rld2 <- rlog(dds2, blind=FALSE)
-> vsd2 <- vst(dds2, blind=FALSE)
-> plotPCA(rld2, intgroup=c("pheno", "group"))
-> plotPCA(vsd2, intgroup=c("pheno", "group"))
+> rld_2f <- rlog(dds_2f, blind=FALSE)
+> vsd_2f <- vst(dds_2f, blind=FALSE)
+> plotPCA(rld_2f, intgroup=c("condition"))
+> plotPCA(vsd_2f, intgroup=c("condition"))
 ~~~
 
 `rlog` and `vst` are two methods of transforming the data to make it suitable for visualization.  `rlog` will take longer to run with large numbers of samples.  For more, we can look at the DESeq section describing these functions:
@@ -180,9 +182,9 @@ We're going to need a few more packages for more sophisticated graphing than bas
 Now we can do some graphing.  Most of below is prepping the data into the right format.
 
 ~~~
-> sampleDists <- dist(t(assay(vsd2)))
+> sampleDists <- dist(t(assay(vsd)))
 > sampleDistMatrix <- as.matrix(sampleDists)
-> rownames(sampleDistMatrix) <- paste(vsd2$pheno, vsd2$group, sep=":")
+> rownames(sampleDistMatrix) <- paste(vsd$condition)
 > colnames(sampleDistMatrix) <- NULL
 > colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
 > pheatmap(sampleDistMatrix,
@@ -204,7 +206,7 @@ HeatMapSamples <- function(data,col1,col2)
 {
 sampleDists <- dist(t(assay(data)))
 sampleDistMatrix <- as.matrix(sampleDists)
-rownames(sampleDistMatrix) <- paste(data[[col1]], data[[col2]], sep=":")
+rownames(sampleDistMatrix) <- paste(data[[col1]])
 colnames(sampleDistMatrix) <- NULL
 colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
 pheatmap(sampleDistMatrix,
