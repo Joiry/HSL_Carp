@@ -102,6 +102,11 @@ macs2 callpeak -n $base -g dm \
       --broad --outdir faire_${base}_out
 ~~~
 
+
+The script can be used one at a time, but is also structed to be loop friendly:
+
+*(note, you could turn the for loop into int's own script, which then calls the macs2 script.  Scripts calling other scripts is a common thing to do)*
+
 ~~~
 $ for bamfile in $(ls -1 *bam); do sbatch -J $bamfile s_macs2_single.sh $bamfile; done
 $ squeue -u tristand
@@ -117,8 +122,10 @@ $ sbatch -J 24hAPF s_macs2_24hAPF.sh
 $ sbatch -J 44hAPF s_macs2_44hAPF.sh
 ~~~
 
+Now that everything is running, let's look at how these three scripts differ from the generic one.
+
 ~~~
-$ less s_macs2_single.sh
+$ less s_macs2_3LW.sh 
 ~~~
 
 While the sbatch headers remain the same, I've made changes to the callpeaks run.  It would be tempting to make one generic script for having multiple bams in one callpeaks run, but we run into issues with trying to pass a list of files into a script.  It's doable, but making a script for an arbitrary list of bam files might not be worth your time, while creating one with a specified number of bams is possible, but limiting (eg $bam1 $bam2 $bam3).
@@ -155,17 +162,59 @@ $ wc -l faire*out/*broad*
 
 ## Bedtools
 
-[Bedtools](https://bedtools.readthedocs.io/en/latest/) is a powerful suite of programs that can perform various comparisons with interval data, typicall bed format files, but also can work with BAM files and other genomic formats.
+[Bedtools](https://bedtools.readthedocs.io/en/latest/) is a powerful suite of programs that can perform various comparisons with interval data, typicall Bed format files, but also can work with BAM, GFF, and VCF (Variant Call Format) files.
 
 ~~~
-$ 
-$ 
+$ module load bedtools
+$ module list
 ~~~
+
+~~~
+Currently Loaded Modules:
+  1) python/2.7.12   2) macs/2.1.2   3) samtools/1.16   4) bedtools/2.30
+~~~
+
+Since bedtools depends on samtools, and the modules system has be set to automatically load samtools as well.
+
+[Tools of Bedtools](https://bedtools.readthedocs.io/en/latest/content/bedtools-suite.html) - we can see that Bedtools 40 different subcommands, we're only going to scratch the surface, looking at the `intersect` tool.
+
+Of import note in using `interset`, and any of the other Bedtools, is the "A" (`-a`) file is compared to the "B" (`-b').  The A file is fully loaded into memory, so all other factors being equal, it's generally a good idea to use the smaller of the files as the A file.
+
+So, we're going to need to files to compare, one will be a peaks file we generated.
+
+The other will the gene annotation file we used in generating counts for the DESeq analysis, `/proj/seq/data/dm6_UCSC/Annotation/Genes/genes.gtf`, which brings us a step closer to comparing two sets of "-omics" data.  Let's go ahead an make a local copy of this GFF file and give it a slightly more descriptive name.
+
+~~~
+$ cp /proj/seq/data/dm6_UCSC/Annotation/Genes/genes.gtf dm6_genes.gtf
+$ less -S dm6_genes.gtf
+~~~
+
+Now, we don't necessarily want this entire file to compare intervals with, so we can use `grep` to narrow it down.  Recall that when we did gene counts, `featureCounts` only used the "exon" entries.  We don't have to limit ourselves to exons tho, we may for example be interested in peaks that only overlap the start codons for example.  In ChIP-Seq analyses, often you'll want a custom GFF file that only has the first kilobase or more preceding the TSS if you are looking for proximal promoter regions.
+
+~~~
+$ grep "exon" dm6_genes.gtf > dm6_genes_exons.gtf
+$ grep "start_codon" dm6_genes.gtf > dm6_genes_starts.gtf
+~~~
+
+~~~
+$ sbatch -o bed_inter.exons_vs_24hAPF.%j.out --wrap="bedtools intersect -a dm6_genes_exons.gtf -b faire_24hAPF_out/faire_24hAPF_peaks.broadPeak -wa -wb  > bed_inter.exons_vs_24hAPF.txt"
+~~~
+
+Once it finishes, we can look at the resulting file
+
+~~~
+$ less -S bed_inter.exons_vs_24hAPF.txt
+~~~
+
+You can see this is no longer a properly formated GFF nor Bed file, and you'd have to do some custom script writing, probably in a language more powerful than just the shell commands, like Python or Perl, to do further analysis.  And here we've only looked at the one set of peaks.  In practive, you'll spend a lot of time comparing all your peak sets to various intervals, depending on the exact type of "-seq" data and the overall goals of the experiment.
+
 
 ## Visualizing data with IGV
 
 
 [Integrative Genomics Viewer IGV](https://software.broadinstitute.org/software/igv/) - as it's name suggests, can be used to graphically view the data in Bam, Bed, and other file formats of genomic data.
+
+
 
 **[Interactive Demo of IGV with files generated from lessons]**
 
