@@ -21,7 +21,8 @@
     * [Intro and Counting](https://joiry.github.io/HSL_Carp/counting)
     * [DESeq Basics](https://joiry.github.io/HSL_Carp/deseq2)
     * [Intermediate DESeq & RStudio](https://joiry.github.io/HSL_Carp/deseq_extra)  
-  
+  * Part 3 - Basic Multiomics
+    * [Peak Calling and Multiomic Comparisons](https://github.com/Joiry/HSL_Carp/blob/master/peakcalling_and_multi.md)
   
 ****
   
