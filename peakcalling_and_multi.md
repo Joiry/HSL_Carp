@@ -2,12 +2,8 @@
 
 * Peak calling
 * How to call peaks with MACS
-* Comparing interval data Bedtools
-* Visulization
-
-* 
-* 
-* 
+* Comparing interval data with Bedtools
+* Visulization with IGV
 
 ***
 
@@ -51,14 +47,12 @@ SRR5457509_1.bam      # 44hAPF
 ~~~
 
 
-[MACS project page](https://github.com/macs3-project/MACS)
-
-
 
 ***  
 
 ## Using MACS2
 
+[MACS project page](https://github.com/macs3-project/MACS)
 
 
 ~~~
@@ -71,6 +65,7 @@ Currently Loaded Modules:
   1) python/2.7.12   2) macs/2.1.2
 ~~~
 
+I've made some scripts using MACS2, let's copy those
 
 ~~~
 $ cp /proj/seq/data/carpentry/scripts/*macs2*sh .
@@ -198,6 +193,7 @@ $ grep "start_codon" dm6_genes.gtf > dm6_genes_starts.gtf
 
 ~~~
 $ sbatch -o bed_inter.exons_vs_24hAPF.%j.out --wrap="bedtools intersect -a dm6_genes_exons.gtf -b faire_24hAPF_out/faire_24hAPF_peaks.broadPeak -wa -wb  > bed_inter.exons_vs_24hAPF.txt"
+$ sbatch -o bed_inter.starts_vs_24hAPF.%j.out --wrap="bedtools intersect -a dm6_genes_starts.gtf -b faire_24hAPF_out/faire_24hAPF_peaks.broadPeak -wa -wb > bed_inter.starts_vs_24hAPF.txt"
 ~~~
 
 Once it finishes, we can look at the resulting file
