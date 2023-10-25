@@ -17,7 +17,7 @@ Since the queues may or may not be congested, we'll go ahead and get some alignm
 These files will be bigger than the ones we've worked with before, so let's work in our individual scratch spaces
 
 ~~~
-$ cd /pine/scr/t/r/tristand/
+$ cd /work/users/t/r/tristand/
 ~~~
 
 Remember to use your own info instead of 't/r/tristand'.  We'll now copy some data: 
