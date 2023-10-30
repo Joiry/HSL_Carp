@@ -30,7 +30,7 @@ As we touched upon in the previous lesson, alignment for DE can be to a whole re
 
 ## Getting some aligned data
 
-First, let's get some data to work on.  I've prepared a directory `project_dm` with some pre-aligned data.  The data is a bit big, so we'll want to work in our scratch space in /pine/scr/... 
+First, let's get some data to work on.  I've prepared a directory `project_dm` with some pre-aligned data.  The data is a bit big, so we'll want to work in our scratch space in /work/users/... 
 
 Once you `cd` there:
 
@@ -164,7 +164,7 @@ Currently Loaded Modules:
   1) subread/2.0.3
 ~~~
 
-To run this script, we just `sbatch` it, since all values it needs is coded into the script itself.  We'll run the script first since it may take a while, and then discuss the details of what's in the script.  Let's return to our scratch space in `/pine/scr/...` and then submit the script to the slurm queue.
+To run this script, we just `sbatch` it, since all values it needs is coded into the script itself.  We'll run the script first since it may take a while, and then discuss the details of what's in the script.  Let's return to our scratch space in `/work/users/...` and then submit the script to the slurm queue.
 
 ~~~
 $ sbatch -J dm_run01 dm_fcounts.slurm.sh
