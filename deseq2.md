@@ -89,7 +89,7 @@ We have the name of each sample in the first column labelled `sample` and a sing
 If your counting run didn't work, you can copy the counts file from my scratch space: 
 
 ~~~
-cp /pine/scr/t/r/tristand/project_dm/deseq/dm_counts_s2.txt .
+cp /work/users/t/r/tristand/project_dm/deseq/dm_counts_s2.txt .
 ~~~
 
 So we should have the following files:
