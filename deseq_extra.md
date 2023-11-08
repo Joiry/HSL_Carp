@@ -90,7 +90,7 @@ I won't be going over the installation instructions at the end of the last episo
 
 OnDemand is a service that ITS Research Computing runs to allow access to the cluster in a more graphical means.  However, since its essentially sending a constant stream of your virtual desktop on the cluster, it can at times be laggy and lower resolution than if you were running locally on your own computer.
 
-[OnDemand at Research Computing](https://its.unc.edu/research-computing/ondemand/)
+[OnDemand at Research Computing](https://ondemand.rc.unc.edu/pun/sys/dashboard)
 
 ***  
 
