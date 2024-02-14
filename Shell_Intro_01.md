@@ -365,3 +365,49 @@ Over time, it will become easier for you to keep a mental note of the
 structure of the directories that you are using and how to quickly
 navigate amongst them.  Always remember the `pwd` command, it can help you figure out the path of your current directory.
 
+
+## Scratch space on Longleaf
+
+We'll end the lesson looking briefly at storage locations other than your home directory.  We can't teach lesssons with /proj/<lab>/ spaces, since these are private to the individual labs.  But we can look at your scratch space.
+  
+Scratch is a special area where you can work with large files, but files are deleted after ~36 days.  We'll dive in with a slightly complicated *absolute path*, it requires a few user specific substitutions:
+
+~~~
+cd /work/users/<a>/<b>/<onyen>
+~~~
+
+Replacing `<a>` with the first letter of your onyen, `<b>` with the second letter of your onyen, and as before your onyen for `<onyen>`.  For me, the command is:
+
+~~~
+cd /work/users/t/r/tristand/
+~~~
+
+If your onyen was 'zjdown', the location of your scratch space would be:
+
+`/work/users/z/j/zjdown`
+
+Once there, use `pwd` to see your new location, which for my account is:
+
+
+> ~~~
+> /work/users/t/r/tristand
+> ~~~
+
+If you do an `ls` here, it'll probably be empty unless you've used the scratch space before.
+
+
+## New user storage directories
+
+There is now a longer term storage were you can store up to 10Tb of data in.  It's probably still better to run analyses in the scratch space above, since the disk access is a bit faster.  The path to this storage is very similar to that of the scratch space, which may seem a little confusing at first.
+
+~~~
+cd /users/<a>/<b>/<onyen>
+~~~
+
+Again, replace `<a>` with the first letter of your onyen, `<b>` with the second letter of your onyen, and as before your onyen for `<onyen>`.  For me, the command is:
+
+~~~
+cd /users/t/r/tristand/
+~~~
+
+Even tho this may almost seem like the same location as scratch, the /users/ top level directory is a different array of hard disks on the system.
