@@ -1,40 +1,16 @@
 # Second steps
 
-## Scratch space on Longleaf
 
 In the first lesson, we learned how to use `pwd` to find our current location within our file system, 
 and also how to use `cd` to change locations and `ls` to list the contents of a directory.  Additionally,
 we learned of the `man` command that gives you detailed information on most shell commands.  All this leading up
 to a discussion of paths and how integral they are to thinking in a Unix mindframe.
 
-Now we'll go more in depth in moving around within a file system.  Previously, storage locations other than
-your home directory were mentioned.  We can't teach lesssons with /proj/<lab>/ spaces, since these are private 
-to the individual labs.  But we can look at your scratch space.
-  
-Scratch is a special area where you can work with large files, but files are deleted after 36 days.  We'll dive in with a slightly complicated *absolute path*, it requires a few user specific substitutions:
+Now we'll go more in depth in moving around within a file system.  First, let's head back to our scratch space:
 
 ~~~
-cd /work/users/<a>/<b>/<onyen>
+$ cd /work/users/t/r/tristand/
 ~~~
-
-Replacing `<a>` with the first letter of your onyen, `<b>` with the second letter of your onyen, and as before your onyen for `<onyen>`.  For me, the command is:
-
-~~~
-cd /work/users/t/r/tristand/
-~~~
-
-If your onyen was 'zjdown', the location of your scratch space would be:
-
-`/work/users/z/j/zjdown`
-
-Once there, use `pwd` to see your new location, which for my account is:
-
-
-> ~~~
-> /work/users/t/r/tristand
-> ~~~
-
-If you do an `ls` here, it'll probably be empty unless you've used the scratch space before.
 
 Now, let's try using the `cd` command without any arguments
 
