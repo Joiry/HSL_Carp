@@ -46,7 +46,7 @@ $ module load fastqc<tab><tab>
 
 By hitting tab, you can see the other versions available.  Why are these other versions there - the short answer is you should treat version numbers of software the same as you might lot numbers of reagents.
 
-Updates to packages may fix earlier bugs, improve an algorithm, or introduce new bugs or behaviors.  Its important to document which version you're using.  
+Updates to packages may fix earlier bugs, improve an algorithm, or introduce new bugs or behaviors.  **Its important to document which version you're using.**  
 
 Sometimes you may do an analysis months or years after an initial analysis - you will have to decide if you want to rerun the originals with a newer version of the software, or run the newer data with the older version of the software.
 
@@ -77,8 +77,11 @@ $ echo $PATH
 
 ## Using FastQC
 
-The following can be done in your home directory.   
-(or you can work in the scratch space `/pine/scr/<a>/<b>/<onyen>`)
+Even though the following can be done in your home directory, we'll use the scratch space `/work/users/<a>/<b>/<onyen>` as if this was a much larger fastq file.
+
+~~~
+$ cd /work/users/t/r/tristand
+~~~
 
 We'll make a trimming folder and enter it.
 
@@ -135,7 +138,7 @@ Let's transfer the `.html` file to our local computer and take a look at it.  So
 
 If working in your scratch space (replacing with your own onyen and scratch path:  
 ~~~
-$ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/ecoli_ref-5m_fastqc.html .
+$ scp tristand@longleaf.unc.edu:/work/users/t/r/tristand/trim/ecoli_ref-5m_fastqc.html .
 ~~~
 
 ...or, somewhat simpler, from your home directory:
@@ -245,7 +248,7 @@ $ pwd
 ~~~
 
 ~~~
-/pine/scr/t/r/tristand/trim/fastqc
+/work/users/t/r/tristand/trim/fastqc
 ~~~
 
 If using `scp` from a local terminal, this helps me build a path to specify the download target.
@@ -255,7 +258,7 @@ If using `scp` from a local terminal, this helps me build a path to specify the 
 From scratch space:
 
 ~~~
-$ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/trim/fastqc/*.html .
+$ scp tristand@longleaf.unc.edu:/work/users/t/r/tristand/trim/fastqc/*.html .
 ~~~
 
 or home directory:
