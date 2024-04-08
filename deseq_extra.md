@@ -28,7 +28,7 @@ $ srun -p interact --pty R
 If we look around, we can't find any of the variables or data or we were using last lesson that got saved.  There is a load function, but the easier method is to restart R in the same directory you ran before, because R will automatically look for the two save files.
 
 ~~~
-$ cd /pine/scr/t/r/tristand/project_dm/deseq
+$ cd /work/users/t/r/tristand/project_dm/deseq
 $ ls -la
 ~~~
 
@@ -75,7 +75,7 @@ $ pwd
 You can either use a file transfer program like filezilla, or if a local terminal like OSX is available, with this construction:
 
 ~~~
-[local] $ scp tristand@longleaf.unc.edu:/pine/scr/t/r/tristand/project_dm/deseq/.R* .
+[local] $ scp tristand@longleaf.unc.edu:/work/users/t/r/tristand/project_dm/deseq/.R* .
 ~~~
 
 ***  
