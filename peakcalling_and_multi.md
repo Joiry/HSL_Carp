@@ -22,7 +22,7 @@ Some examples:
 
 As we can see in the [Workflow Overview](https://joiry.github.io/HSL_Carp/workflow), the preceding steps for these types of NNN-Seq data also follow the common early steps of QC and trimming, and then alignment to the reference genome.  Note, for these sorts of targeted DNA sequencing, we must always align to the full genome and not a subset like only the transcriptome.
 
-I've already aligned a set of [FAIRE-Seq](https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA383482&o=acc_s%3Aa) data for us to use, which come from the same paper as the RNA-Seq data we used for our DESeq comparisons.  These are big, but not too large, so we'd best work in our /pine/scr/ space for these
+I've already aligned a set of [FAIRE-Seq](https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA383482&o=acc_s%3Aa) data for us to use, which come from the same paper as the RNA-Seq data we used for our DESeq comparisons.  These are big, but not too large, so we'd best work in our /work/users/ space for these
 
 ~~~
 $ mkdir faireseq
