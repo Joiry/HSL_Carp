@@ -1,113 +1,9 @@
-****
-
-A very useful command line option for `less` is `-S`, which makes it much easier to view text data arranged in columns.
-
-Compare using the `-S` with not using it on the `SraRunTable.txt` file one directory over:
-
-~~~
-$ less ../sra_metadata/SraRunTable.txt
-~~~
-
-You can kind of see that there are columns, but the line wrapping makes it hard to see.
-
-~~~
-$ less -S ../sra_metadata/SraRunTable.txt
-~~~
-
-
-****
-
-Another way to examine a file is to print out all of the contents using the program `cat`. 
-
-Enter the following command from within the `untrimmed_fastq` directory: 
-
-~~~
-$ cat SRR098026.fastq
-~~~
-
-This will print out all of the contents of the `SRR098026.fastq` to the screen. When the file is really big, `cat` can be annoying to use.   
-
-However, it may not seem like it at first, but `cat` is a useful program.  `cat` is short for concatenate, and its primary function is to join files together, but you will often see it used to just stream out individual file.  Next lesson we'll see it can serve several purposes once you've learned a few more advanced techniques. 
-
-
-There's another way that we can look at files, and in this case, just
-look at part of them. This can be particularly useful if we just want
-to see the beginning or end of the file, or see how it's formatted.
-
-The commands are `head` and `tail` and they let you look at
-the beginning and end of a file, respectively.
-
-~~~
-$ head SRR098026.fastq
-~~~
-
-> ~~~
-> @SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
-> NNNNNNNNNNNNNNNNCNNNNNNNNNNNNNNNNNN
-> +SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
-> !!!!!!!!!!!!!!!!#!!!!!!!!!!!!!!!!!!
-> @SRR098026.2 HWUSI-EAS1599_1:2:1:0:312 length=35
-> NNNNNNNNNNNNNNNNANNNNNNNNNNNNNNNNNN
-> +SRR098026.2 HWUSI-EAS1599_1:2:1:0:312 length=35
-> !!!!!!!!!!!!!!!!#!!!!!!!!!!!!!!!!!!
-> @SRR098026.3 HWUSI-EAS1599_1:2:1:0:570 length=35
-> NNNNNNNNNNNNNNNNANNNNNNNNNNNNNNNNNN
-> ~~~
-
-
-~~~
-$ tail SRR098026.fastq
-~~~
-
-
-> ~~~
-> +SRR098026.247 HWUSI-EAS1599_1:2:1:2:1311 length=35
-> #!##!#################!!!!!!!######
-> @SRR098026.248 HWUSI-EAS1599_1:2:1:2:118 length=35
-> GNTGNGGTCATCATACGCGCCCNNNNNNNGGCATG
-> +SRR098026.248 HWUSI-EAS1599_1:2:1:2:118 length=35
-> B!;?!A=5922:##########!!!!!!!######
-> @SRR098026.249 HWUSI-EAS1599_1:2:1:2:1057 length=35
-> CNCTNTATGCGTACGGCAGTGANNNNNNNGGAGAT
-> +SRR098026.249 HWUSI-EAS1599_1:2:1:2:1057 length=35
-> A!@B!BBB@ABAB#########!!!!!!!######
-> ~~~
-
-
-The `-n` option to either of these commands can be used to print the
-first or last `n` lines of a file. 
-
-~~~
-$ head -n 1 SRR098026.fastq
-~~~
-
-
-> ~~~
-> @SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
-> ~~~
-
-
-~~~
-$ tail -n 1 SRR098026.fastq
-~~~
-
-> ~~~
-> A!@B!BBB@ABAB#########!!!!!!!######
-> ~~~
-
-When you know a file has special information at its beginning, such as meta data headers or column names, head can be especially useful:
-
-~~~
-$ head -n 1 ../sra_metadata/SraRunTable.txt
-~~~
-
-As with all these commands/programs, we can see it has several options listed on its man page:
-
-~~~
-$ man tail
-~~~
-
-
+# Working with Files
+In today's lesson:
+ * Learn more about using `less` and some other tools for looking at files.
+ * Go into more depth in copying files, as well as creating directories and moving files around
+ * Learn about file permissions and how to change them
+ * See how to delete files
 
 ## Creating, moving, copying, and removing
 
@@ -153,8 +49,7 @@ $ mkdir backup
 
 ### Moving / Renaming 
 
-We can now move our backup file to this directory. We can
-move files around using the command `mv`. 
+We can now move our backup file to this directory. We can move files around using the command `mv`. 
 
 ~~~
 $ mv SRR098026-copy.fastq backup
@@ -357,30 +252,122 @@ $ cd ..
 $ rmdir backup/
 ~~~
 
-This time `rmdir` should work without any complaints from the system.
+This time `rmdir` should work without any complaints from the system.****
+
+
+
+## Examining Files
+
+
+A very useful command line option for `less` is `-S`, which makes it much easier to view text data arranged in columns.
+
+Compare using the `-S` with not using it on the `SraRunTable.txt` file one directory over:
+
+~~~
+$ less SraRunTable.txt
+~~~
+
+You can kind of see that there are columns, but the line wrapping makes it hard to see.
+
+~~~
+$ less -S SraRunTable.txt
+~~~
+
+
+****
+
+Another way to examine a file is to print out all of the contents using the program `cat`. 
+
+~~~
+$ cat SraRunTable.txt
+~~~
+
+This will print out all of the contents of the `SraRunTable.txt` to the screen. When the file is really big, `cat` can be annoying to use.   
+
+However, it may not seem like it at first, but `cat` is a useful program.  `cat` is short for concatenate, and its primary function is to join files together, but you will often see it used to just stream out individual file.  Later, we'll see it can serve several purposes once you've learned about streams. 
+
+
+There's another way that we can look at files, and in this case, just look at part of them. This can be particularly useful if we just want to see the beginning or end of the file, or see how it's formatted.
+
+The commands are `head` and `tail` and they let you look at the beginning and end of a file, respectively.
+
+~~~
+$ head SraRunTable.txt
+~~~
+
+> ~~~
+> BioSample_s	InsertSize_l	LibraryLayout_s	Library_Name_s	LoadDate_s	MBases_l	MBytes_l	ReleaseDate_s	Run_s	SRA_Sample_s	Sample_Name_s	Assay_Type_s	AssemblyName_s	BioProject_s	Center_Name_s	Consent_s	Organism_s	Platform_s	SRA_Study_s	g1k_analysis_group_s	g1k_pop_code_s	source_s	strain_s
+> SAMN00205533	0	SINGLE	CZB152	29-May-14	149	100	25-Mar-11	SRR097977	SRS167141	CZB152	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205558	0	SINGLE	CZB154	29-May-14	627	444	25-Mar-11	SRR098026	SRS167166	CZB154	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205559	0	SINGLE	CZB199	29-May-14	157	118	25-Mar-11	SRR098027	SRS167167	CZB199	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205560	0	SINGLE	REL1166A	29-May-14	627	440	25-Mar-11	SRR098028	SRS167168	REL1166A	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205561	0	SINGLE	REL10979	29-May-14	140	94	25-Mar-11	SRR098029	SRS167169	REL10979	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205562	0	SINGLE	REL10988	29-May-14	145	110	25-Mar-11	SRR098030	SRS167170	REL10988	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205563	0	SINGLE	ZDB16	29-May-14	606	424	25-Mar-11	SRR098031	SRS167171	ZDB16	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205564	0	SINGLE	<not provided>	29-May-14	311	257	25-Mar-11	SRR098032	SRS167172	ZDB30	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205564	2834	PAIRED	ZDB30	29-May-14	1695	679	25-Mar-11	SRR098033	SRS167172	ZDB30	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> ~~~
+
+
+~~~
+$ tail SraRunTable.txt
+~~~
+
+
+> ~~~
+> SAMN00205593	0	SINGLE	ZDB467	29-May-14	714	322	25-Mar-11SRR098286	SRS167201	ZDB467	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205594	0	SINGLE	ZDB477	29-May-14	691	487	25-Mar-11SRR098287	SRS167202	ZDB477	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205595	0	SINGLE	ZDB483	29-May-14	829	593	25-Mar-11SRR098288	SRS167203	ZDB483	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205596	0	SINGLE	ZDB564	29-May-14	265	171	25-Mar-11SRR098289	SRS167204	ZDB564	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN01095545	0	SINGLE	ZDB285	25-Jul-12	150	106	26-Jul-12SRR527252	SRS351858	ZDB285	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN01095546	0	SINGLE	ZDB290	25-Jul-12	151	112	26-Jul-12SRR527253	SRS351860	ZDB290	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN01095547	0	SINGLE	ZDB165	25-Jul-12	155	106	26-Jul-12SRR527254	SRS351861	ZDB165	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN01095548	0	SINGLE	ZDB283	25-Jul-12	153	113	26-Jul-12SRR527255	SRS351862	ZDB283	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN01095549	0	SINGLE	ZDB294	25-Jul-12	158	112	26-Jul-12SRR527256	SRS351863	ZDB294	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN01095550	0	SINGLE	ZDB281	25-Jul-12	157	115	26-Jul-12SRR527257	SRS351864	ZDB281	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> ~~~
+
+The `-n` option to either of these commands can be used to print the first or last `n` lines of a file. When you know a file has special information at its beginning, such as meta data headers or column names, head can be especially useful.
+
+~~~
+$ head -n 1 SraRunTable.txt
+~~~
+
+
+> ~~~
+> BioSample_s	InsertSize_l	LibraryLayout_s	Library_Name_s	LoadDate_s	MBases_l	MBytes_l	ReleaseDate_s	Run_s	SRA_Sample_s	Sample_Name_s	Assay_Type_s	AssemblyName_s	BioProject_s	Center_Name_s	Consent_s	Organism_s	Platform_s	SRA_Study_s	g1k_analysis_group_s	g1k_pop_code_s	source_s	strain_s
+> ~~~
+
+
+~~~
+$ tail -n 1 SraRunTable.txt
+~~~
+
+> ~~~
+> SAMN01095550	0	SINGLE	ZDB281	25-Jul-12	157	115	26-Jul-12SRR527257	SRS351864	ZDB281	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> ~~~
+
+
+
+~~~
+$ head -n 1 ../sra_metadata/SraRunTable.txt
+~~~
+
+As with all these commands/programs, we can see it has several options listed on its man page:
+
+~~~
+$ man tail
+~~~
+
+
+
+
 
 ********
 
 ## Searching files
 
-We discussed in a previous lesson how to search within a file using `less`. We can also
-search within files without even opening them, using `grep`. `grep` is a command-line
-utility for searching plain text files for lines matching a specific set of 
-characters (sometimes called a string) or a particular pattern 
-(which can be specified using something called regular expressions). We're not going to work with 
-regular expressions in this lesson, and instead will use specific strings or with shell wildcards.
-
-
-> Fastq Format
-> There are 4 lines per read in a fastq file:
->
-> @ (a line starting with @ has header info, usually technical info about the sequencer and the read itself)  
-> ATCGCG... (the read sequence)  
-> \+ (a line starting with +, that in older fastq files duplicated the @ line, but now is usually blank)    
-> !!!#@$+$ (a line with numbers and symbols that are a code for the quality scores of each base above)  
-
-
-We'll search for strings inside of our fastq files. Let's first make sure we are in the correct directory.
+We discussed in a previous lesson how to search within a file using `less`. We can also search within files without even opening them, using `grep`. `grep` is a command-line utility for searching plain text files for lines matching a specific set of characters (sometimes called a string) or a particular pattern (which can be specified using something called regular expressions). We're not going to work with regular expressions in this lesson, and instead will use specific strings or with shell wildcards.
 
 ~~~
 $ cd ~/shell_data/untrimmed_fastq
@@ -389,17 +376,8 @@ $ cd ~/shell_data/untrimmed_fastq
 
 Suppose we want to see how many reads in our file have really bad segments containing 10 consecutive unknown nucleoties (Ns). Let's search for the string NNNNNNNNNN in the SRR098026 file.
 
-> ## Determining quality
-> 
-> In this lesson, we're going to be manually searching for strings of `N`s within our sequence
-> results to illustrate some principles of file searching. It can be really useful to do this
-> type of searching to get a feel for the quality of your sequencing results, however, in you 
-> research you will most likely use a bioinformatics tool that has a built-in program for
-> filtering out low-quality reads.
-
-
 ~~~
-$ grep NNNNNNNNNN SRR098026.fastq
+$ grep NNNNNNNNNN SraRunTable.txt
 ~~~
 
 This command returns a lot of output to the terminal. Every single line in the SRR098026 
@@ -416,7 +394,7 @@ each match and the `-A` argument to return a specific number of lines after each
 matching line so we add `-B1 -A2` to our grep command.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq
+$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt
 ~~~
 
 One of the sets of lines returned by this command is: 
@@ -431,7 +409,7 @@ One of the sets of lines returned by this command is:
 
 > ## Exercise
 >
-> 1. Search for the sequence `GNATNACCACTTCC` in the `SRR098026.fastq` file.
+> 1. Search for the sequence `GNATNACCACTTCC` in the `SraRunTable.txt` file.
 > Have your search return all matching lines and the name (or identifier) for each sequence
 > that contains a match.
 > 
@@ -446,7 +424,7 @@ One of the sets of lines returned by this command is:
 ****
 
 > > ## Solution  
-> > 1. `grep -B1 GNATNACCACTTCC SRR098026.fastq`  
+> > 1. `grep -B1 GNATNACCACTTCC SraRunTable.txt`  
 > > 2. `grep -B1 AAGTT *.fastq`
 
 ## Redirecting output
@@ -467,7 +445,7 @@ Let's try out this command and copy all the records (including all four lines of
 in our FASTQ files that contain 'NNNNNNNNNN' to another file called `bad_reads.txt`.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
+$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
 ~~~
 
 
@@ -502,7 +480,7 @@ four to get the number of sequences that match our search pattern.
 
 > ## Exercise
 >
-> How many sequences in `SRR098026.fastq` contain at least 3 consecutive Ns?
+> How many sequences in `SraRunTable.txt` contain at least 3 consecutive Ns?
 
 ****
 
@@ -514,7 +492,7 @@ four to get the number of sequences that match our search pattern.
 >>  
 >>
 >> ~~~
->> $ grep NNN SRR098026.fastq > bad_reads.txt
+>> $ grep NNN SraRunTable.txt > bad_reads.txt
 >> $ wc -l bad_reads.txt
 >> ~~~
 >> 
@@ -530,7 +508,7 @@ This is called "overwriting" and, just like you don't want to overwrite your vid
 of your kid's first birthday party, you also want to avoid overwriting your data files.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
+$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
 $ wc -l bad_reads.txt
 ~~~
 
@@ -559,7 +537,7 @@ We can avoid overwriting our files by using the command `>>`. `>>` is known as t
 append new output to the end of a file, rather than overwriting it.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
+$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
 $ wc -l bad_reads.txt
 ~~~
 
@@ -634,7 +612,7 @@ reads using a wildcard within our search string for `grep`.
 
 > ## Exercise
 > 
-> How many reads in the `SRR098026.fastq` file contain at least two regions of 5 unknown
+> How many reads in the `SraRunTable.txt` file contain at least two regions of 5 unknown
 > nucleotides in a row, separated by any number of known nucleotides?
 
 ****
@@ -646,7 +624,7 @@ reads using a wildcard within our search string for `grep`.
 >> ## Solution
 >> 
 >> ~~~
->> $ grep "NNNNN*NNNNN" SRR098026.fastq > bad_reads_2.txt
+>> $ grep "NNNNN*NNNNN" SraRunTable.txt > bad_reads_2.txt
 >> $ wc -l bad_reads_2.txt
 >> ~~~
 >> 
@@ -673,7 +651,7 @@ look at it, like we can with `less`. Well it turns out that we can! We can redir
 from our `grep` call through the `less` command.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SRR098026.fastq | less
+$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt | less
 ~~~
 
 We can now see the output from our `grep` call within the `less` interface. We can use the up and down arrows 
@@ -691,7 +669,7 @@ efficiently. Let's take a few minutes to practice.
 > ## Exercise
 >
 > Now that we know about the pipe (`|`), write a single command to find the number of reads 
-> in the `SRR098026.fastq` file that contain at least two regions of 5 unknown
+> in the `SraRunTable.txt` file that contain at least two regions of 5 unknown
 > nucleotides in a row, separated by any number of known nucleotides. Do this without creating 
 > a new file.
 
@@ -704,7 +682,7 @@ efficiently. Let's take a few minutes to practice.
 >> ## Solution
 >> 
 >> ~~~
->> $ grep "NNNNN*NNNNN" SRR098026.fastq | wc -l
+>> $ grep "NNNNN*NNNNN" SraRunTable.txt | wc -l
 >> ~~~
 >>
 >>> ~~~
@@ -750,12 +728,12 @@ $ history | grep "NNNN"
 ~~~
 
 > ~~~
-> 103  grep NNNNNNNNNN SRR098026.fastq 
-> 104  grep -B1 -A2 NNNNNNNNNN SRR098026.fastq 
-> 107  grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
-> 118  grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
+> 103  grep NNNNNNNNNN SraRunTable.txt 
+> 104  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt 
+> 107  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
+> 118  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
 > 121  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq > bad_reads.txt
-> 123  grep -B1 -A2 NNNNNNNNNN SRR098026.fastq > bad_reads.txt
+> 123  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
 > 125  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq >> bad_reads.txt
 > ~~~
 
