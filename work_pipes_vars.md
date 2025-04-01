@@ -5,7 +5,7 @@ In today's lesson:
  * Learn about file permissions and how to change them
  * See how to delete files
 
-## Creating, moving, copying, and removing
+## Copying, creating directories, moving, and removing
 
 Now we can move around in the file structure, look at files, and search files. But what if we want to copy files or move
 them around or get rid of them? Most of the time, you can do these sorts of file manipulations without the command line,
@@ -18,6 +18,10 @@ of those files. In cases like this, it's much faster to do these operations at t
 When working with computational data, it's important to keep a safe copy of that data that can't be accidentally overwritten or deleted. 
 For this lesson, our raw data is our FASTQ files.  We don't want to accidentally change the original files, so we'll make a copy of them
 and change the file permissions so that we can read from, but not write to, the files.
+
+~~~
+$ cd ~/shell_data/untrimmed_fastq
+~~~
 
 First, let's make a copy of one of our FASTQ files using the `cp` command. 
 
@@ -256,7 +260,11 @@ This time `rmdir` should work without any complaints from the system.****
 
 
 
-## Examining Files
+# Examining Files
+
+~~~
+$ cd ~/shell_data/sra_metadata
+~~~
 
 
 A very useful command line option for `less` is `-S`, which makes it much easier to view text data arranged in columns.
@@ -369,167 +377,104 @@ $ man tail
 
 We discussed in a previous lesson how to search within a file using `less`. We can also search within files without even opening them, using `grep`. `grep` is a command-line utility for searching plain text files for lines matching a specific set of characters (sometimes called a string) or a particular pattern (which can be specified using something called regular expressions). We're not going to work with regular expressions in this lesson, and instead will use specific strings or with shell wildcards.
 
-~~~
-$ cd ~/shell_data/untrimmed_fastq
-~~~
-
-
-Suppose we want to see how many reads in our file have really bad segments containing 10 consecutive unknown nucleoties (Ns). Let's search for the string NNNNNNNNNN in the SRR098026 file.
+Suppose we want to see how many samples in our meta data file are paired end data.
 
 ~~~
-$ grep NNNNNNNNNN SraRunTable.txt
+$ grep PAIRED SraRunTable.txt
 ~~~
 
-This command returns a lot of output to the terminal. Every single line in the SRR098026 
-file that contains at least 10 consecutive Ns is printed to the terminal, regardless of how long or short the file is. 
-We may be interested not only in the actual sequence which contains this string, but 
-in the name (or identifier) of that sequence. We discussed in a previous lesson 
-that the identifier line immediately precedes the nucleotide sequence for each read
-in a FASTQ file. We may also want to inspect the quality scores associated with
-each of these reads. To get all of this information, we will return the line 
-immediately before each match and the two lines immediately after each match.
+~~~
+> SAMN00205564	2834	PAIRED	ZDB30	29-May-14	1695	679	25-Mar-11SRR098033	SRS167172	ZDB30	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205573	2729	PAIRED	ZDB172-PE	29-May-14	1620	635	25-Mar-11	SRR098043	SRS167181	ZDB172	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752<not provided>	<not provided>	<not provided>	REL606
+~~~
 
-We can use the `-B` argument for grep to return a specific number of lines before
-each match and the `-A` argument to return a specific number of lines after each matching line. Here we want the line before and the two lines after each 
-matching line so we add `-B1 -A2` to our grep command.
+We can use the `-B` argument for grep to return a specific number of lines before each match and the `-A` argument to return a specific number of lines after each matching line. Here we want the line before and the line after each matching line so we add `-B1 -A1` to our grep command.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt
+$ grep -B1 -A1 PAIRED SraRunTable.txt
 ~~~
 
 One of the sets of lines returned by this command is: 
 
 > ~~~
-> @SRR098026.177 HWUSI-EAS1599_1:2:1:1:2025 length=35
-> CNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-> +SRR098026.177 HWUSI-EAS1599_1:2:1:1:2025 length=35
-> #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+> SAMN00205564	0	SINGLE	<not provided>	29-May-14	311	257	25-Mar-11	SRR098032	SRS167172	ZDB30	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205564	2834	PAIRED	ZDB30	29-May-14	1695	679	25-Mar-11SRR098033	SRS167172	ZDB30	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
+> SAMN00205565	0	SINGLE	ZDB83	29-May-14	260	162	25-Mar-11SRR098034	SRS167173	ZDB83	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
 > ~~~
 
 
-> ## Exercise
->
-> 1. Search for the sequence `GNATNACCACTTCC` in the `SraRunTable.txt` file.
-> Have your search return all matching lines and the name (or identifier) for each sequence
-> that contains a match.
-> 
-> 2. Search for the sequence `AAGTT` in both FASTQ files.
-> Have your search return all matching lines and the name (or identifier) for each sequence
-> that contains a match.
-
-****
-
-****
-
-****
-
-> > ## Solution  
-> > 1. `grep -B1 GNATNACCACTTCC SraRunTable.txt`  
-> > 2. `grep -B1 AAGTT *.fastq`
-
 ## Redirecting output
 
-`grep` allowed us to identify sequences in our FASTQ files that match a particular pattern. 
-All of these sequences were printed to our terminal screen, but in order to work with these 
-sequences and perform other opperations on them, we may need to capture that output in some
-way. 
+`grep` allowed us to identify specific line entries in our meta data file that matched a particular pattern.  All of these were printed to our terminal screen, but we may need to capture that output in some way instead of just printing to the screen. 
 
-We can do this with something called "redirection". The idea is that
-we are taking what would ordinarily be printed to the terminal screen and redirecting it to another location. 
-In our case, we want to stream this information into a file so that we can look at it later and 
+We can do this with something called "redirection". The idea is that we are taking what would ordinarily be printed to the terminal screen and redirecting it to another location.  In our case, we want to stream this information into a file so that we can look at it later and 
 use other commands to analyze this data.
 
 The operator for redirecting output to a file is `>`.
 
-Let's try out this command and copy all the records (including all four lines of each record) 
-in our FASTQ files that contain 'NNNNNNNNNN' to another file called `bad_reads.txt`.
+Let's try out this command and copy all the records in our SraRunTable.txt file that contain 'PAIRED' to another file called `paired_end_samples.txt`.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
+$ grep PAIRED SraRunTable.txt > paired_end_samples.txt
 ~~~
 
+Type `ls`. You should see a new file called `paired_end_samples.txt`. 
 
-The prompt should sit there a little bit, and then it should look like nothing
-happened. But type `ls`. You should see a new file called `bad_reads.txt`. 
-
-We can check the number of lines in our new file using a command called `wc`. 
-`wc` stands for **word count**. This command counts the number of words, lines, and characters
-in a file. 
+We can check the number of lines in our new file using a command called `wc`.  `wc` stands for **word count**. This command counts the number of words, lines, and characters in a file. 
 
 ~~~
-$ wc bad_reads.txt
+$ wc paired_end_samples.txt
 ~~~
 
 > ~~~
->   537  1073 23217 bad_reads.txt
+>   2  62 465 paired_end_samples.txt
 > ~~~
 
-This will tell us the number of lines, words and characters in the file. If we
-want only the number of lines, we can use the `-l` flag for `lines`.
+This will tell us the number of lines, words and characters in the file. If we want only the number of lines, we can use the `-l` flag for `lines`.
 
 ~~~
-$ wc -l bad_reads.txt
+$ wc -l paired_end_samples.txt
 ~~~
 
 > ~~~
-> 537 bad_reads.txt
+> 2 paired_end_samples.txt
 > ~~~
 
-Because we asked `grep` for all four lines of each FASTQ record, we need to divide the output by
-four to get the number of sequences that match our search pattern.
 
-> ## Exercise
->
-> How many sequences in `SraRunTable.txt` contain at least 3 consecutive Ns?
-
-****
-
-****
-
-****
-
->> ## Solution
->>  
->>
->> ~~~
->> $ grep NNN SraRunTable.txt > bad_reads.txt
->> $ wc -l bad_reads.txt
->> ~~~
->> 
->>> ~~~
->>> 249
->>> ~~~
-
-
-We might want to search multiple FASTQ files for sequences that match our search pattern.
+What if we might want to search multiple times in a file for our search pattern?
 However, we need to be careful, because each time we use the `>` command to redirect output
 to a file, the new output will replace the output that was already present in the file. 
-This is called "overwriting" and, just like you don't want to overwrite your video recording
-of your kid's first birthday party, you also want to avoid overwriting your data files.
+This is called "overwriting" and
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
-$ wc -l bad_reads.txt
+$ grep CZB1 SraRunTable.txt > special_samples.txt
+$ wc -l special_samples.txt
 ~~~
-
 
 > ~~~
-> 537 bad_reads.txt
+> 3 special_samples.txt
 > ~~~
 
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SRR097977.fastq > bad_reads.txt
-$ wc -l bad_reads.txt
+$ grep REL1 SraRunTable.txt > special_samples.txt
+$ wc -l special_samples.txt
+~~~
+
+which gives:
+
+> ~~~
+> 3 special_samples.txt
+> ~~~
+
+Still only at 3 lines, let's take a look again
+
+~~~
+$ less -S special_samples.txt
 ~~~
 
 
-> ~~~
-> 0 bad_reads.txt
-> ~~~
-
-
-Here, the output of our second  call to `wc` shows that we no longer have any lines in our `bad_reads.txt` file. This is 
+Here, the output of our second  call to `wc` shows that we no longer have any lines in our `paired_end_samples.txt` file. This is 
 because the second file we searched (`SRR097977.fastq`) does not contain any lines that match our
 search sequence. So our file was overwritten and is now empty.
 
@@ -537,23 +482,23 @@ We can avoid overwriting our files by using the command `>>`. `>>` is known as t
 append new output to the end of a file, rather than overwriting it.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
-$ wc -l bad_reads.txt
+$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > paired_end_samples.txt
+$ wc -l paired_end_samples.txt
 ~~~
 
 
 > ~~~
-> 537 bad_reads.txt
+> 537 paired_end_samples.txt
 > ~~~
 
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SRR097977.fastq >> bad_reads.txt
-$ wc -l bad_reads.txt
+$ grep -B1 -A2 NNNNNNNNNN SRR097977.fastq >> paired_end_samples.txt
+$ wc -l paired_end_samples.txt
 ~~~
 
 > ~~~
-> 537 bad_reads.txt
+> 537 paired_end_samples.txt
 > ~~~
 
 The output of our second call to `wc` shows that we have not overwritten our original data. 
@@ -561,24 +506,24 @@ The output of our second call to `wc` shows that we have not overwritten our ori
 Well, nothing got added, so let's try a search pattern that will:
 
 ~~~
-$ grep -B1 -A2 AAAAAA SRR097977.fastq >> bad_reads.txt
-$ wc -l bad_reads.txt
+$ grep -B1 -A2 AAAAAA SRR097977.fastq >> paired_end_samples.txt
+$ wc -l paired_end_samples.txt
 ~~~
 
 > ~~~
-> 583 bad_reads.txt
+> 583 paired_end_samples.txt
 > ~~~
 
 
 We can also do this with a single line of code by using a wildcard. 
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN *.fastq > bad_reads.txt
-$ wc -l bad_reads.txt
+$ grep -B1 -A2 NNNNNNNNNN *.fastq > paired_end_samples.txt
+$ wc -l paired_end_samples.txt
 ~~~
 
 > ~~~
-> 537 bad_reads.txt
+> 537 paired_end_samples.txt
 > ~~~
 
 
@@ -730,11 +675,11 @@ $ history | grep "NNNN"
 > ~~~
 > 103  grep NNNNNNNNNN SraRunTable.txt 
 > 104  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt 
-> 107  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
-> 118  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
-> 121  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq > bad_reads.txt
-> 123  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > bad_reads.txt
-> 125  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq >> bad_reads.txt
+> 107  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > paired_end_samples.txt
+> 118  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > paired_end_samples.txt
+> 121  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq > paired_end_samples.txt
+> 123  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > paired_end_samples.txt
+> 125  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq >> paired_end_samples.txt
 > ~~~
 
 Since `grep` is also sending its results to the output stream, you can keep on piping:
