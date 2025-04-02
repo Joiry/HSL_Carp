@@ -1,9 +1,8 @@
-# Working with Files
-In today's lesson:
- * Learn more about using `less` and some other tools for looking at files.
+# Various File Manipulations, Redirection, and Variables
  * Go into more depth in copying files, as well as creating directories and moving files around
- * Learn about file permissions and how to change them
- * See how to delete files
+ * Learn about file permissions, how to change them, and delete files
+ * Redirection operators and Streams
+ * How to assign and use variables
 
 ## Copying, creating directories, moving, and removing
 
@@ -548,23 +547,19 @@ You'll also notice the search itself is added to the history before the output i
 You can search on any part of line of the command:
 
 ~~~
-$ history | grep "NNNN"
+$ history | grep "CZB1"
 ~~~
 
 > ~~~
-> 103  grep NNNNNNNNNN SraRunTable.txt 
-> 104  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt 
-> 107  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > paired_end_samples.txt
-> 118  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > paired_end_samples.txt
-> 121  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq > paired_end_samples.txt
-> 123  grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > paired_end_samples.txt
-> 125  grep -B1 -A2 NNNNNNNNNN SRR097977.fastq >> paired_end_samples.txt
+> 993  grep CZB1 SraRunTable.txt > special_samples.txt
+> 1007  grep CZB1 SraRunTable.txt >> special_samples.txt
+> 1015  history | grep "CZB1"
 > ~~~
 
 Since `grep` is also sending its results to the output stream, you can keep on piping:
 
 ~~~
-$ history | grep "NNNN" | less
+$ history | grep "CZB1" | less
 ~~~
 
 So long as a command or program outputs to the out stream, you can keep piping.  This is what a lot of bioinformatics utilities do, and are designed to chain a series of manipulations.
@@ -575,8 +570,8 @@ Eg:
 Or with some of the commands we've used:
 
 ~~~
-$ history | grep "basename" > basename_uses.txt
-$ less basename_uses.txt
+$ history | grep "CZB1" > CZB1_uses.txt
+$ less CZB1_uses.txt
 ~~~
 
   
@@ -631,7 +626,7 @@ $ echo $PATH
 ~~~
 
 ~~~
-/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/ifs/sec/cpc/addhealth/apps/bin:/nas/longleaf/home/tristand/.local/bin:/nas/longleaf/home/tristand/bin
+/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/nas/longleaf/home/tristand/.local/bin:/nas/longleaf/home/tristand/bin
 ~~~
 
 Each path the shell looks through is separated by `:`, and it looks for the command you type in order from the first until the last.  If the command wasn't found, then you get the error message
@@ -647,7 +642,7 @@ $ env
 One use of shell variables is to simplify our navigation of the file system.  You could for example record the path to your scratch space:
 
 ~~~
-$ scr_path=/pine/scr/t/r/tristand
+$ scr_path=/work/users/t/r/tristand
 ~~~
 
 Again, substituting in your own scratch space.  We can now easily move to our scratch space, or include it in a longer path
