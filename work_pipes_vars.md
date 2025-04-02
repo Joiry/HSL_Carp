@@ -383,10 +383,10 @@ Suppose we want to see how many samples in our meta data file are paired end dat
 $ grep PAIRED SraRunTable.txt
 ~~~
 
-~~~
+> ~~~
 > SAMN00205564	2834	PAIRED	ZDB30	29-May-14	1695	679	25-Mar-11SRR098033	SRS167172	ZDB30	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752	<not provided>	<not provided>	<not provided>	REL606
 > SAMN00205573	2729	PAIRED	ZDB172-PE	29-May-14	1620	635	25-Mar-11	SRR098043	SRS167181	ZDB172	WGS	<not provided>	PRJNA188723	MSU	public	Escherichia coli B str. REL606	ILLUMINA	SRP004752<not provided>	<not provided>	<not provided>	REL606
-~~~
+> ~~~
 
 We can use the `-B` argument for grep to return a specific number of lines before each match and the `-A` argument to return a specific number of lines after each matching line. Here we want the line before and the line after each matching line so we add `-B1 -A1` to our grep command.
 
@@ -475,166 +475,45 @@ $ less -S special_samples.txt
 
 
 Here, the output of our second  call to `wc` shows that we no longer have any lines in our `paired_end_samples.txt` file. This is 
-because the second file we searched (`SRR097977.fastq`) does not contain any lines that match our
-search sequence. So our file was overwritten and is now empty.
+because the second time we searched our file was overwritten and now only contains the new matches.
 
 We can avoid overwriting our files by using the command `>>`. `>>` is known as the "append redirect" and will 
 append new output to the end of a file, rather than overwriting it.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt > paired_end_samples.txt
-$ wc -l paired_end_samples.txt
-~~~
-
-
-> ~~~
-> 537 paired_end_samples.txt
-> ~~~
-
-
-~~~
-$ grep -B1 -A2 NNNNNNNNNN SRR097977.fastq >> paired_end_samples.txt
-$ wc -l paired_end_samples.txt
+$ grep CZB1 SraRunTable.txt >> special_samples.txt
+$ wc -l special_samples.txt
 ~~~
 
 > ~~~
-> 537 paired_end_samples.txt
+> 6 special_samples.txt
 > ~~~
 
-The output of our second call to `wc` shows that we have not overwritten our original data. 
-
-Well, nothing got added, so let's try a search pattern that will:
+We can verify what got written:
 
 ~~~
-$ grep -B1 -A2 AAAAAA SRR097977.fastq >> paired_end_samples.txt
-$ wc -l paired_end_samples.txt
+$ less -S special_samples.txt
 ~~~
 
-> ~~~
-> 583 paired_end_samples.txt
-> ~~~
 
+## Pipes
 
-We can also do this with a single line of code by using a wildcard. 
+What if we don't care to save the results of these searches, but also don't want a large number of matches to clutter up the screen?  We ca the pipe operator (`|`).
 
-~~~
-$ grep -B1 -A2 NNNNNNNNNN *.fastq > paired_end_samples.txt
-$ wc -l paired_end_samples.txt
-~~~
-
-> ~~~
-> 537 paired_end_samples.txt
-> ~~~
-
-
-
-> ## Making use of file extensions
-> 
-> This is where we would have trouble if we were naming our output file with a `.fastq` extension. 
-> If we already had a file called `bad_reads.fastq` (from our previous `grep` practice) 
-> and then ran the command above using a `.fastq` extension instead of a `.txt` extension, `grep`
-> would give us a warning. 
-> 
-> ~~~
-> grep -B1 -A2 NNNNNNNNNN *.fastq > bad_reads.fastq
-> ~~~
-> 
->> ~~~
->> grep: input file ‘bad_reads.fastq’ is also the output
->> ~~~
-> 
-> `grep` is letting you know that the output file `bad_reads.fastq` is also included in your
-> `grep` call because it matches the `*.fastq` pattern. Be careful with this as it can lead to
-> some surprising output.
-> 
-
-
-So far we've searched for reads containing a long string of at least 10 unknown nucleotides. 
-We might also be interested in finding any reads with at least two shorter strings of 5 unknown 
-nucleotides, separated by any number of known nucleotides. Reads with more than one region of 
-ambiguity like this might be poor enough to not pass our quality filter. We can search for these
-reads using a wildcard within our search string for `grep`. 
-
-> ## Exercise
-> 
-> How many reads in the `SraRunTable.txt` file contain at least two regions of 5 unknown
-> nucleotides in a row, separated by any number of known nucleotides?
-
-****
-
-****
-
-****
-
->> ## Solution
->> 
->> ~~~
->> $ grep "NNNNN*NNNNN" SraRunTable.txt > bad_reads_2.txt
->> $ wc -l bad_reads_2.txt
->> ~~~
->> 
->>> ~~~
->>> 186 bad_reads_2.txt
->>> ~~~
-
-
-
-We've now created two separate files to store the results of our search for reads matching 
-particular criteria. Since we might have multiple different criteria we want to search for, 
-creating a new output file each time has the potential to clutter up our workspace. We also
-so far haven't been interested in the actual contents of those files, only in the number of 
-reads that we've found. We created the files to store the reads and then counted the lines in 
-the file to see how many reads matched our criteria. There's a way to do this, however, that
-doesn't require us to create these intermediate files - the pipe command (`|`).
-
-This is probably not a key on
-your keyboard you use very much, so let's all take a minute to find that key. 
-What `|` does is take the output that is
-scrolling by on the terminal and uses that output as input to another command. 
-When our output was scrolling by, we might have wished we could slow it down and
-look at it, like we can with `less`. Well it turns out that we can! We can redirect our output
-from our `grep` call through the `less` command.
+This is probably not a key on your keyboard you use very much, so let's all take a minute to find that key.  What `|` does is take the output that is scrolling by on the terminal and uses that output as input to another command.  When our output was scrolling by, we might have wished we could slow it down and look at it, like we can with `less`. Well it turns out that we can! We can redirect our output from our `grep` call through the `less` command.
 
 ~~~
-$ grep -B1 -A2 NNNNNNNNNN SraRunTable.txt | less
+$ grep SINGLE SraRunTable.txt | less -S
 ~~~
 
-We can now see the output from our `grep` call within the `less` interface. We can use the up and down arrows 
-to scroll through the output and use `q` to exit `less`.
+We can now see the output from our `grep` call within the `less` interface.  This can sort of be likened to how `man` uses less to show us the manual pages of commands.
 
-Redirecting output is often not intuitive, and can take some time to get used to. Once you're 
-comfortable with redirection, however, you'll be able to combine any number of commands to
-do all sorts of exciting things with your data!
+Redirecting output is often not intuitive, and can take some time to get used to. Once you're comfortable with redirection, however, you'll be able to combine any number of commands to do all sorts of exciting things with your data!
 
-None of the command line programs we've been learning
-do anything all that impressive on their own, but when you start chaining
-them together, you can do some really powerful things very
-efficiently. Let's take a few minutes to practice. 
+None of the command line programs we've been learning do anything all that impressive on their own, but when you start chaining them together, you can do some really powerful things very efficiently. Let's take a few minutes to practice. 
 
-> ## Exercise
->
-> Now that we know about the pipe (`|`), write a single command to find the number of reads 
-> in the `SraRunTable.txt` file that contain at least two regions of 5 unknown
-> nucleotides in a row, separated by any number of known nucleotides. Do this without creating 
-> a new file.
 
-****
-
-****
-
-****
-
->> ## Solution
->> 
->> ~~~
->> $ grep "NNNNN*NNNNN" SraRunTable.txt | wc -l
->> ~~~
->>
->>> ~~~
->>> 186
->>> ~~~
-
-## Streams
+## Streams - the second 'pillar' to understanding Unix/Linux
 The word 'stream' has been used a few times in the lesson.  There are 3 main streams in Unix, and they are a core concept much like paths.  Whenever a file is accessed, its contents are put on the input stream.  Some commands and programs, like `less`, automatically direct the output stream to themselves.  The output stream goes directly to the terminal, to be displayed to the user.  So `less` takes the input stream and formats it a specific way to display it to the user in an interactive form on the output stream.  The third stream, standard error, is like the output stream, only it's a channel meant for error messages.  For example, when the shell reports an error in a commands usage, that is usually on the error stream, even though a user gets no indication whether it was from the output or error streams.  Some bioinformatics programs make use of the error stream to output diagnostics on their operation.
 
   
