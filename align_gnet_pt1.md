@@ -196,7 +196,6 @@ Now we see the `ref` directory that BBmap likes to see!  We can give the above p
 
 ***
 
-## But First...
 
 Since the queues may or may not be congested, we'll go ahead and get some alignment jobs running, so we can hopefully see the results by the end of the lesson.  Later in the lesson, we'll go over in detail what we're doing here:
 
@@ -209,32 +208,51 @@ $ cd /work/users/t/r/tristand/
 Remember to use your own info instead of 't/r/tristand'.  We'll now copy some data: 
 
 ~~~
-$ cp -r /proj/seq/data/carpentry/align/ .
+$ mkdir align
 $ cd align/
 $ ls
 ~~~
 
-set a few variable, and submit two alignment runs.
+We're going to build up a bit to submiting two alignment runs.  This is roughly how I might build up a for loop to submit a batch of runs.  Here, we'll use basename, that we saw before, but only giving it a file path, it's default behavior is to strip the path up to just the filename.
 
 ~~~
-$ module load bbmap
-$ refpath=/proj/seq/data/dm6_UCSC/Sequence/BBMapIndex/
-$ base=SRR5457511_1
-$ sbatch -J $base slurm_bbmap_basic.sh $base $refpath
+$ fq_path=/proj/seq/data/RNAseq-training/reads/full
+$ ls $fq_path
+$ for fq_r1_path in $(ls -1 $fq_path/Gm10*R1*fastq.gz); do echo $(basename $fq_r1_path); done
+~~
+
+Echo shows us to files. 
+
+~~~
+Gm10847_R1.fastq.gz
+Gm10851_R1.fastq.gz
 ~~~
 
-By using a variable for the "base", we can simply change the value of that variable and submit a second alignment with the same command"
+Let's refine the loop a bit more:
 
 ~~~
-$ base=SRR5457513_1
-$ sbatch -J $base slurm_bbmap_basic.sh $base $refpath
+$ for fq_r1_path in $(ls -1 $fq_path/Gm10*R1*fastq.gz); do fq_r1=$(basename $fq_r1_path); echo $(basename $fq_r1 _R1.fastq.gz); done
 ~~~
 
-A lot of these may take some time to queue, especially if we're all submitting at once.  Then a several minutes to run, so we'll go ahead and submit a few and look at the results once all have finished.
+We assgined the fastq stripped of it's path to a variable, then used basename again to remove suffix.
+
+~~~
+Gm10847
+Gm10851
+~~~
+
+
+~~~
+$ refpath=/proj/seq/data/GRCh38_NCBI/Sequence/BBMapIndex/
+$ for fq_r1_path in $(ls -1 $fq_path/Gm10*R1*fastq.gz); do fq_r1=$(basename $fq_r1_path); sample=$(basename $fq_r1 _R1.fastq.gz); sbatch -J $sample s_gnet_bbmap.sh $sample $refpath; done
+~~~
+
+
+A lot of these may take some time to queue, especially if we're all submitting at once.
 
 
 
-At the beginning of the lesson, we used a simple alignment script I made using `bbmap`, let's take a look at it:
+If time allow let's take a look at the bbmap slurm script:
 
 ~~~
 $ less slurm_bbmap_basic.sh 
@@ -250,20 +268,20 @@ refpath=$2
 I've written the script to take two arguments, once is a 'basename' of a file, and the other is the path to the reference index.
 
 ~~~
-#SBATCH -n 4
+#SBATCH -n 8
 ...
 threads=4
 ~~~
 
-I request 4 nodes with the `-n` option for `sbatch`, and I've told `bbmap` to use 4 threads - these should be equal.  Typically I'd use 8 to 16 nodes (eg '-n 12' and 'threads=12') which will take longer to queue, but run faster overall
+I request 8 nodes with the `-n` option for `sbatch`, and I've told `bbmap` to use 4 threads - these should be equal.  Typically I'd use 8 to 16 nodes (eg '-n 12' and 'threads=12') which will take longer to queue, but run faster overall
 
 ~~~
-#SBATCH --mem 8g
+#SBATCH --mem 32g
 ...
--Xmx8g
+-Xmx32g
 ~~~
 
-We're going to request 8 gigs of memory from slurm, and you see below we're telling `bbmap` to use the same amount.  For mammalian sized genomes, 32g is usually a good choice.
+We're going to request 32 gigs of memory from slurm, and you see below we're telling `bbmap` to use the same amount.  For mammalian sized genomes, 32g is usually a good choice.
 
 ~~~
 in1=${base}.fastq.gz
