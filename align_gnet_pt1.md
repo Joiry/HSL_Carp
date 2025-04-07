@@ -5,7 +5,7 @@
 In this lesson:
  * A brief background on alignment
  * Creating an index for alignment
- * Aligning fastq files
+ * Start aligning fastq files
 
 
 ***
@@ -122,6 +122,9 @@ Making a reference is fairly straight forward with `bbmap`.
 First let's get a genome to use - usually these aren't just sitting around but we'll grab one from a set we maintain on longleaf.
 
 ~~~
+$ cd /work/users/t/r/tristand/
+$ mkdir align
+$ cd align/
 $ cp /proj/seq/data/dm6_UCSC/Sequence/WholeGenomeFasta/genome.fa .
 ~~~
 
@@ -173,19 +176,19 @@ $ ls /proj/seq/data/
 Let's look in the `dm6_UCSC` directory, which is a build of the Drosophila melanogaster genome.
 
 ~~~
-$ ls /proj/seq/data/dm6_UCSC/
+$ ls /proj/seq/data/GRCh38_NCBI/
 ~~~
 
 That `Sequence` directory looks promising
 
 ~~~
-$ ls /proj/seq/data/dm6_UCSC/Sequence/
+$ ls /proj/seq/data/GRCh38_NCBI/Sequence/
 ~~~
 
 Here, we've provided the premade indexes for several common alignment programs
 
 ~~~
-$ ls /proj/seq/data/dm6_UCSC/Sequence/BBMapIndex/
+$ ls /proj/seq/data/GRCh38_NCBI/Sequence/BBMapIndex/
 ~~~
 
 Now we see the `ref` directory that BBmap likes to see!  We can give the above path to BBmap and it will automatically find the `ref` directory there.
@@ -201,15 +204,11 @@ Since the queues may or may not be congested, we'll go ahead and get some alignm
 
 These files will be bigger than the ones we've worked with before, so let's work in our individual scratch spaces
 
-~~~
-$ cd /work/users/t/r/tristand/
-~~~
 
-Remember to use your own info instead of 't/r/tristand'.  We'll now copy some data: 
+Remember to use your own info instead of 't/r/tristand'.
 
 ~~~
-$ mkdir align
-$ cd align/
+$ cp /proj/seq/data/carpentry/scripts/s_gnet_bbmap.sh .
 $ ls
 ~~~
 
@@ -219,7 +218,7 @@ We're going to build up a bit to submiting two alignment runs.  This is roughly 
 $ fq_path=/proj/seq/data/RNAseq-training/reads/full
 $ ls $fq_path
 $ for fq_r1_path in $(ls -1 $fq_path/Gm10*R1*fastq.gz); do echo $(basename $fq_r1_path); done
-~~
+~~~
 
 Echo shows us to files. 
 
@@ -241,7 +240,6 @@ Gm10847
 Gm10851
 ~~~
 
-
 ~~~
 $ refpath=/proj/seq/data/GRCh38_NCBI/Sequence/BBMapIndex/
 $ for fq_r1_path in $(ls -1 $fq_path/Gm10*R1*fastq.gz); do fq_r1=$(basename $fq_r1_path); sample=$(basename $fq_r1 _R1.fastq.gz); sbatch -J $sample s_gnet_bbmap.sh $sample $refpath; done
@@ -249,49 +247,6 @@ $ for fq_r1_path in $(ls -1 $fq_path/Gm10*R1*fastq.gz); do fq_r1=$(basename $fq_
 
 
 A lot of these may take some time to queue, especially if we're all submitting at once.
-
-
-
-If time allow let's take a look at the bbmap slurm script:
-
-~~~
-$ less slurm_bbmap_basic.sh 
-~~~
-
-There's a few things to take note of:
-
-~~~
-base=$1
-refpath=$2
-~~~
-
-I've written the script to take two arguments, once is a 'basename' of a file, and the other is the path to the reference index.
-
-~~~
-#SBATCH -n 8
-...
-threads=4
-~~~
-
-I request 8 nodes with the `-n` option for `sbatch`, and I've told `bbmap` to use 4 threads - these should be equal.  Typically I'd use 8 to 16 nodes (eg '-n 12' and 'threads=12') which will take longer to queue, but run faster overall
-
-~~~
-#SBATCH --mem 32g
-...
--Xmx32g
-~~~
-
-We're going to request 32 gigs of memory from slurm, and you see below we're telling `bbmap` to use the same amount.  For mammalian sized genomes, 32g is usually a good choice.
-
-~~~
-in1=${base}.fastq.gz
-~~~
-
-`in1=<file_path>` tells `bbmap` what fastq file to use.  If we had paired end data in 2 separate files (which is how data is released by default), we'd have to specify the 'R2' file using `in2=`
-  
-`path=$refpath` the "path=" parameter points bbmap to an existing bbmap index.  If it is not set, bbmap looks for a 'ref/' directory in the current directory as mentioned above.
-
-`out=` specifies the name of the file we want to write the bam (aka alignment file) to.
 
 
 ***
