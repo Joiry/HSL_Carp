@@ -248,5 +248,19 @@ $ for fq_r1_path in $(ls -1 $fq_path/Gm10*R1*fastq.gz); do fq_r1=$(basename $fq_
 
 A lot of these may take some time to queue, especially if we're all submitting at once.
 
-
 ***
+
+It's possible to have a script that calls scripts (or in this case sbatch to submit scripts)
+
+We may not all want to run this right away
+
+~~~
+for fq_r1_path in $(ls -1 $fq_path/Gm12*R1*fastq.gz)
+do
+  fq_r1=$(basename $fq_r1_path)
+  sample=$(basename $fq_r1 _R1.fastq.gz)
+  sbatch -J $sample s_gnet_bbmap.sh $sample $refpath
+done
+~~~
+
+You'll want to run this with `source` and not `bash` unless you say move the `refpath` assignment into the script, which is a perfectly fine thing to do.
