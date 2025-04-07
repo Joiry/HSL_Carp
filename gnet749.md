@@ -7,6 +7,9 @@
   * Day 3
     * [Loops and Scripts](https://joiry.github.io/HSL_Carp/loop_script_05)
     * [Introduction to Slurm](https://joiry.github.io/HSL_Carp/slurm)
+  * [Workflow Overview](https://joiry.github.io/HSL_Carp/workflow)
   * Day 4
     * [Quality Control and Trimming](https://joiry.github.io/HSL_Carp/qc_trim)
     * [Alignment Part 1](https://joiry.github.io/HSL_Carp/align_gnet_pt1)
+   
+ 
