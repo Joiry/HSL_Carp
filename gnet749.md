@@ -9,4 +9,4 @@
     * [Introduction to Slurm](https://joiry.github.io/HSL_Carp/slurm)
   * Day 4
     * [Quality Control and Trimming](https://joiry.github.io/HSL_Carp/qc_trim)
-    * [Alignment Part 1](https://joiry.github.io/HSL_Carp/align_gnet_pt1.md)
+    * [Alignment Part 1](https://joiry.github.io/HSL_Carp/align_gnet_pt1)
