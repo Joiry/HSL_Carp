@@ -1,9 +1,6 @@
 # Differential Expression Analysis
 
 
-
-
-
 ## Motivation
 
 The basic idea behind differential expression analysis is that sequencing of RNA fragments serves as a rough proxy for how much those genes are expressed.  Typically we have two or more conditions, between which we would like to know which genes have significantly changed expression levels.
@@ -88,16 +85,16 @@ For all the genomes we provide in `/proj/seq/data/` there are corresponding anno
 $ cd /proj/seq/data/
 ~~~
 
-Let's look in the `dm6_UCSC` directory:
+Let's look in the `GRCh38_NCBI` directory:
 
 ~~~
-$ cd dm6_UCSC
+$ cd GRCh38_NCBI
 $ ls
 ~~~
 
 ~~~
-Annotation               Drosophila_melanogaster_UCSC_dm6.tar  README.txt
-Drosophila_melanogaster  NOTE                                  Sequence
+Annotation    Homo_sapiens_NCBI_GRCh38.tar  README.txt
+Homo_sapiens  NOTE                          Sequence
 ~~~
 
 Recall the index files we use to align are in the `Sequence` directory.  The GTF files are in `Annotation` and its subdirectories, and for today's lesson we'll just be using the `Genes` annotations.
@@ -123,7 +120,7 @@ Let's take a look at the one we'll be using.
 $ less -S genes.gtf 
 ~~~
 
-The `-S` is a useful option for `less` when viewing structured files, it disables line wrapping allowing us to view the data columns in the GTF file more clearly.
+Here `-S` is especially useful when using `less` to view structured files, disabling line wrapping allowing us to view the data columns in the GTF file more clearly.
 
 
 Just as a reminder, let's see where we are:
@@ -133,13 +130,13 @@ $ pwd
 ~~~
 
 ~~~
-/proj/seq/data/dm6_UCSC/Annotation/Genes
+/proj/seq/data/GRCh38_NCBI/Annotation/Genes
 ~~~
 
 And the full path to the GTF is:
 
 ~~~
-/proj/seq/data/dm6_UCSC/Annotation/Genes/genes.gtf
+/proj/seq/data/GRCh38_NCBI/Annotation/Genes/genes.gtf
 ~~~
 
 We'll see this path in the script we use below.
@@ -161,13 +158,13 @@ $ module list
 
 ~~~
 Currently Loaded Modules:
-  1) subread/2.0.3
+  1) subread/2.0.6
 ~~~
 
 To run this script, we just `sbatch` it, since all values it needs is coded into the script itself.  We'll run the script first since it may take a while, and then discuss the details of what's in the script.  Let's return to our scratch space in `/work/users/...` and then submit the script to the slurm queue.
 
 ~~~
-$ sbatch -J dm_run01 dm_fcounts.slurm.sh
+$ sbatch -J Gm_run01 s_fcounts.sh
 ~~~
 
 `subread` is an aligner, but the authors also made `featureCounts` as part of the same package.  So this is an example of a module that has a suite of programs within it.
@@ -190,11 +187,11 @@ However, in practice you're going to be using a few more options.  Here we have 
 Let's take a look at this slurm script for running `featureCounts`
 
 ~~~
-$ less dm_fcounts.slurm.sh
+$ less s_fcounts.sh
 ~~~
 
 ~~~
-featureCounts -a $gtf -o dm_counts_s2.txt -T 6 -g gene_id -p -s 2 $bams
+featureCounts -a $gtf -o Gm_counts_s2.txt -T 6 -g gene_id -s 2 *.bam
 ~~~
 
 `-p` tells `featureCounts` this is paired end data, if you don't use this option with paired data, the counts will be weird
@@ -204,7 +201,13 @@ If your read counts are low, try with `0`, as it will count in both directions, 
 
 `-T 6` specifies to use 6 threads, which should have the same value as the `-n` for the slurm script
 
-Finally, there is the list of paths to all the bams we want to count.  You can modify this script by changing the path/names of the variable assignments for the variables `bam1`, `bam2`, etc.
+Finally, there is the list of paths to all the bams we want to count.  Here we've used `*.bam` just to generate a list of every bam file in this directory.  You could also have a specific list, eg `Gm10847.bam Gm10851.bam Gm12752.bam' or even assign them to a variable before the call to featureCounts, eg:
+
+~~~
+bams="Gm10847.bam Gm10851.bam Gm12752.bam"
+~~~
+
+and use the variable `$bams`
 
 ***
 
@@ -212,18 +215,19 @@ Once the counting is done, we can look at the results in a number of ways.
 (you'll have to change the below to match the jobID number)
 
 ~~~
-$ less feature_counts.dm_run01.57859336.err
+$ less feature_counts.Gm_run01.57859336.err
 ~~~
 
 Here we see featureCounts self-documents the parameters it used, and gives a nice little report.  Again, here is a place that `grep` is a useful tool, we could pull out of the log just the most relevant info, how many reads fell within a feature in the gtf:
 
 ~~~
-$ grep 'Successfully' feature_counts.dm_run01.57859336.err
+$ grep 'Successfully' feature_counts.Gm_run01.57859336.err
 ~~~
 
 which produces:
 
 ~~~
+!!!!!!!!!!!!!!!!!!!!!!!!!!
 ||    Successfully assigned alignments : 7581502 (69.0%)                      ||
 ||    Successfully assigned alignments : 2515213 (75.5%)                      ||
 ||    Successfully assigned alignments : 7411675 (76.4%)                      ||
@@ -235,7 +239,7 @@ which produces:
 Now, let's look at the actual count file:
 
 ~~~
-$ less -S dm_counts_s2.txt
+$ less -S Gm_counts_s2.txt
 ~~~
 
 Even with the -S, it's hard to read this file since there are columns that list every exon.  However, once we load it into our analysis program in the next lesson, we'll be able to see the data in count columns a lot better.
