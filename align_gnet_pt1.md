@@ -4,7 +4,7 @@
 
 In this lesson:
  * A brief background on alignment
- * Creating an index for alignment
+ * Where are indexes stored
  * Start aligning fastq files
 
 
@@ -46,9 +46,6 @@ These days, which aligner you use will probably depend more on external factors 
 Now, those edge cases may be important to your particular experiment, so that is one reason you find certain analyses using one aligner over another.  Another major reason is simply a lab standardized on the aligner the first person in the lab used to align sequencing data. You may also want to use the same aligner used in a paper that does the same or similar experiment you are conducting if you wish to compare results.
 
 
-
-
-
 ***
 
 ## Data Organization
@@ -84,8 +81,6 @@ In the last three commands, we move the new `trimmed` directory up one level and
 
 ***  
 
-## Making a reference with BBmap
-
 Let's pretend we have loaded so many modules we're worried there may be a conflict:
 
 ~~~
@@ -116,52 +111,6 @@ Currently Loaded Modules:
 
 As might have noticed earlier, extra modules appeared in addition to `bbmap`.  The BBmap package makes use of other modules, and ITS has set up the system so these modules are loaded automatically.  Here's another reason for using the modules system, some packages may depend on very specific versions of other packages.  Samtools is a module we'll be using later - it has a lot of utilities for working with alignment files.  `pigz` is module that let's the BBmap programs access compressed files.
 
-
-Making a reference is fairly straight forward with `bbmap`.
-
-First let's get a genome to use - usually these aren't just sitting around but we'll grab one from a set we maintain on longleaf.
-
-~~~
-$ cd /work/users/t/r/tristand/
-$ mkdir align
-$ cd align/
-$ cp /proj/seq/data/dm6_UCSC/Sequence/WholeGenomeFasta/genome.fa .
-~~~
-
-`genome.fa` is a bit generic of a name, but as we'll see in a bit, the set of genomic data we store in /proj/seq/data follows a structure to make it easy to automate access.  We can rename this file to remind us of what it is.
-  
-~~~
-$ mv genome.fa dm6_UCSC.genome.fa
-~~~
-  
-We can look at bbmap's help to get a basic idea of its use:
-(here we are piping the output to `less` to make it easier to look over)
-
-~~~
-$ bbmap.sh -h | less
-~~~
-
-From the help, we can see the instructions for creating an index are:  
-`To index:     bbmap.sh ref=<reference fasta>`
-
-So, we can construction this slurm submission:
-
-~~~
-$ sbatch -o dm6_indexing.out --wrap="bbmap.sh ref=dm6_UCSC.genome.fa"
-~~~
-
-As we saw with its bbduk trimming sister program, bbmap provides useful information in its logging:
-
-~~~
-$ less dm6_indexing.out
-~~~
-
-BBmap will by default write its indexing files to a directory called `ref` in the current directory.  In fact, when aligning, if you don't specify a reference, bbmap will look for the `ref` by default.  Because I've setup the alignment script to point to a directory containing a `ref` directory, let's move the index we just made into a newly made directory.  Why we do this will hopefully become clear later.
-
-~~~
-$ mkdir index_dm6
-$ mv ref/ index_dm6/
-~~~
 
 ***
 
