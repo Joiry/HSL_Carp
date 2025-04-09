@@ -11,5 +11,7 @@
   * Day 4
     * [Quality Control and Trimming](https://joiry.github.io/HSL_Carp/qc_trim)
     * [Alignment Part 1](https://joiry.github.io/HSL_Carp/align_gnet_pt1)
-   
+  * Day 5
+    * [Alignment Part 2](https://joiry.github.io/HSL_Carp/align_gnet_pt2)
+    * [Intro and Counting](https://joiry.github.io/HSL_Carp/gnet_counting)   
  
