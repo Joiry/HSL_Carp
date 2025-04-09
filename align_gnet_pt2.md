@@ -1,6 +1,7 @@
 * Review the alignment slurm script
 * Creating an index for alignment
 * Examine some of the BBmap output
+* Sorting the alignment files
 
 ## Alignment Slurm Script
 Let's take a look at the bbmap slurm script:
@@ -47,6 +48,7 @@ in2=$fq_path/${base}_R2.fastq.gz
 `out=` specifies the name of the file we want to write the bam (aka alignment file) to.
 
 
+***
 
 ## Making a reference with BBmap
 
@@ -96,3 +98,84 @@ $ mkdir index_GRCh38_NCBI
 $ mv ref/ index_GRCh38_NCBI/
 ~~~
 
+***
+
+## BBmap alignment 
+
+The `bbmap` log files are very useful (not all aligners make such convenient summaries), it reports all sorts of info on how well the alignments we to standard out:  
+*(note the job ID, the number after Gmxxxxx, will differ for everyone, so try using tab completion)*
+
+~~~
+$ less bbmap.Gm10847.64297282.out
+~~~
+
+That's a lot of info.  Notice anything in particular?
+
+Now say you setup a lot of fastq files to be aligned overnight, and want a quick check to see how they did.  We can use `grep` to pull out specific lines from all the `.err` files at once:
+
+~~~
+$ grep "mapped" *out
+~~~
+
+When aligning paired end reads, the alignment information section will be repeated, once for Read 1, and Read 2, plus a combined section.  When dealing with paired end data aligned with 'bbmap', I find the following to be useful, because it shows how many of R1 and R2 mapped within typical fragment size of each other.
+  
+~~~
+$ grep "mated pair" *out
+~~~
+  
+***
+
+## Samtools
+
+Samtools is a package with a number of subcommands, which you use similar to the `module` command.
+
+~~~
+$ samtools
+~~~
+
+Shows us a ton of options, but its mostly important to notice this first part:
+
+~~~
+Usage:   samtools <command> [options]
+~~~
+
+Let's sort one of the bam files.  If we type in one of the subcommands, it'll give us a list of its individual options:
+
+~~~
+$ samtools sort
+~~~
+
+Take note of this one:
+
+~~~
+  -o FILE    Write final output to FILE rather than standard output
+~~~
+
+I mentioned in a previous class a lot of bioinformatics tools are designed to have their results piped from one to another.  So by default `samtools sort` is not going to save the sorted bam file, but stream it to standard out.  Instead, we want it in a file, and the `sort` subcommand gives us that option with the `-o` option.
+
+So, to sort a bam you can submit the below to the queue:
+
+~~~
+$ sbatch -o bam_sort.out --wrap="samtools sort Gm10847.bam -o Gm10847.sorted.bam"
+~~~
+
+Once the sorting is finished, we have the file `Gm10847.sorted.bam` - let's check the file sizes:
+
+~~~
+$ du -shc *bam
+~~~
+
+~~~
+157M	Gm10847.bam
+106M	Gm10847.sorted.bam
+~~~
+
+The sorted files will get a bit smaller - this is just because they make a little more efficient use of the file structure.
+
+A lot of the programs that require sorted bams also need an index file of the bam.  Note, this is not the same sort of index as aligning needs - this is a more traditional index.
+
+~~~
+$ sbatch -o bam_index.out --wrap="samtools index Gm10847.sorted.bam"
+~~~
+
+***  
