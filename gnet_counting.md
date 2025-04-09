@@ -27,12 +27,12 @@ As we touched upon in the previous lesson, alignment for DE can be to a whole re
 
 ## Getting some aligned data
 
-First, let's get some data to work on.  I've prepared a directory `project_dm` with some pre-aligned data.  The data is a bit big, so we'll want to work in our scratch space in /work/users/... 
+**Only if you didn't manage to get your files aligned**
 
-Once you `cd` there:
+You can copy some pre-aligned data if you need it for today's lesson.  If so, you'll be working in this bam directory for the counting we do below.
 
 ~~~
-$ cp -r /proj/seq/data/carpentry/project_dm/ .
+$ sbatch --wrap="cp -r /proj/seq/data/carpentry/project_Gm/bam ."
 ~~~
 
 ***
@@ -164,7 +164,8 @@ Currently Loaded Modules:
 To run this script, we just `sbatch` it, since all values it needs is coded into the script itself.  We'll run the script first since it may take a while, and then discuss the details of what's in the script.  Let's return to our scratch space in `/work/users/...` and then submit the script to the slurm queue.
 
 ~~~
-$ sbatch -J Gm_run01 s_fcounts.sh
+$ gtf_path=/proj/seq/data/GRCh38_NCBI/Annotation/Genes/genes.gtf
+$ sbatch -J Gm_run01 s_fcounts.sh $gtf_path
 ~~~
 
 `subread` is an aligner, but the authors also made `featureCounts` as part of the same package.  So this is an example of a module that has a suite of programs within it.
@@ -191,7 +192,7 @@ $ less s_fcounts.sh
 ~~~
 
 ~~~
-featureCounts -a $gtf -o Gm_counts_s2.txt -T 6 -g gene_id -s 2 *.bam
+featureCounts -a $gtf -o Gm_counts_s2.txt -T 6 -g gene_id -p -s 2 *.bam
 ~~~
 
 `-p` tells `featureCounts` this is paired end data, if you don't use this option with paired data, the counts will be weird
@@ -212,7 +213,7 @@ and use the variable `$bams`
 ***
 
 Once the counting is done, we can look at the results in a number of ways.
-(you'll have to change the below to match the jobID number)
+(you'll have to change the below to match the jobID number - it may be faster to just copy & paste the whole file name)
 
 ~~~
 $ less feature_counts.Gm_run01.57859336.err
@@ -227,13 +228,16 @@ $ grep 'Successfully' feature_counts.Gm_run01.57859336.err
 which produces:
 
 ~~~
-!!!!!!!!!!!!!!!!!!!!!!!!!!
-||    Successfully assigned alignments : 7581502 (69.0%)                      ||
-||    Successfully assigned alignments : 2515213 (75.5%)                      ||
-||    Successfully assigned alignments : 7411675 (76.4%)                      ||
-||    Successfully assigned alignments : 1930952 (71.9%)                      ||
-||    Successfully assigned alignments : 6634231 (78.0%)                      ||
-||    Successfully assigned alignments : 7369325 (79.6%)                      ||
+||    Successfully assigned alignments : 10534288 (56.7%)                     ||
+||    Successfully assigned alignments : 9101803 (58.9%)                      ||
+||    Successfully assigned alignments : 12627065 (44.9%)                     ||
+||    Successfully assigned alignments : 18980411 (57.8%)                     ||
+||    Successfully assigned alignments : 10146054 (51.2%)                     ||
+||    Successfully assigned alignments : 15464559 (59.2%)                     ||
+||    Successfully assigned alignments : 13196962 (61.0%)                     ||
+||    Successfully assigned alignments : 14312067 (63.0%)                     ||
+||    Successfully assigned alignments : 11008278 (59.5%)                     ||
+||    Successfully assigned alignments : 10700928 (59.9%)                     ||
 ~~~
 
 Now, let's look at the actual count file:
