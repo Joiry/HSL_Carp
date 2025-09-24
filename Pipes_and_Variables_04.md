@@ -10,6 +10,13 @@ In this lesson:
 
 We discussed in a previous lesson how to search within a file using `less`. We can also search within files without even opening them, using `grep`. `grep` is a command-line utility for searching plain text files for lines matching a specific set of characters (sometimes called a string) or a particular pattern (which can be specified using something called regular expressions). We're not going to work with regular expressions in this lesson, and instead will use specific strings or with shell wildcards.
 
+Let's head into the meta data directory:
+
+~~~
+$ cd shell_data/sra_metadata/
+$ less -S SraRunTable.txt
+~~~
+
 Suppose we want to see how many samples in our meta data file are paired end data.
 
 ~~~
@@ -132,68 +139,6 @@ We can verify what got written:
 $ less -S special_samples.txt
 ~~~
 
-
-We can also do this with a single line of code by using a wildcard. 
-
-~~~
-$ grep -B1 -A2 NNNNNNNNNN *.fastq > bad_reads.txt
-$ wc -l bad_reads.txt
-~~~
-
-> ~~~
-> 537 bad_reads.txt
-> ~~~
-
-
-
-> ## Making use of file extensions
-> 
-> This is where we would have trouble if we were naming our output file with a `.fastq` extension. 
-> If we already had a file called `bad_reads.fastq` (from our previous `grep` practice) 
-> and then ran the command above using a `.fastq` extension instead of a `.txt` extension, `grep`
-> would give us a warning. 
-> 
-> ~~~
-> grep -B1 -A2 NNNNNNNNNN *.fastq > bad_reads.fastq
-> ~~~
-> 
->> ~~~
->> grep: input file ‘bad_reads.fastq’ is also the output
->> ~~~
-> 
-> `grep` is letting you know that the output file `bad_reads.fastq` is also included in your
-> `grep` call because it matches the `*.fastq` pattern. Be careful with this as it can lead to
-> some surprising output.
-> 
-
-
-So far we've searched for reads containing a long string of at least 10 unknown nucleotides. 
-We might also be interested in finding any reads with at least two shorter strings of 5 unknown 
-nucleotides, separated by any number of known nucleotides. Reads with more than one region of 
-ambiguity like this might be poor enough to not pass our quality filter. We can search for these
-reads using a wildcard within our search string for `grep`. 
-
-> ## Exercise
-> 
-> How many reads in the `SRR098026.fastq` file contain at least two regions of 5 unknown
-> nucleotides in a row, separated by any number of known nucleotides?
-
-****
-
-****
-
-****
-
->> ## Solution
->> 
->> ~~~
->> $ grep "NNNNN*NNNNN" SRR098026.fastq > bad_reads_2.txt
->> $ wc -l bad_reads_2.txt
->> ~~~
->> 
->>> ~~~
->>> 186 bad_reads_2.txt
->>> ~~~
 
 
 ## Pipes
