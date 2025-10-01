@@ -96,6 +96,12 @@ $ squeue -u <your_onyen>
 `sbatch` is the command to submit a job, and `squeue` let's us see what's in the queue
 if you don't specify a user with -u, you'll see all the jobs from everyone currently running
 
+There's also a shortcut for yourself:
+
+~~~
+$ squeue --me
+~~~
+
 **Warning**, if you type this, a lot of stuff will spew across your screen:
 
 ~~~
