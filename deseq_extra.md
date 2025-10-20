@@ -182,15 +182,15 @@ We're going to need a few more packages for more sophisticated graphing than bas
 Now we can do some graphing.  Most of below is prepping the data into the right format.
 
 ~~~
-> sampleDists <- dist(t(assay(vsd)))
-> sampleDistMatrix <- as.matrix(sampleDists)
-> rownames(sampleDistMatrix) <- paste(vsd$condition)
-> colnames(sampleDistMatrix) <- NULL
-> colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
-> pheatmap(sampleDistMatrix,
-         clustering_distance_rows=sampleDists,
-         clustering_distance_cols=sampleDists,
-         col=colors)
+resOrd <- res[order(res$padj),]
+cols <- colnames(vsd)
+
+s_rn <- rownames(resOrd)[1:50]
+scdata <- vsd[,cols]
+colnames(scdata) <- paste(scdata$sample,scdata$condition, sep=":")
+sas_scdata <- assay(scdata)[s_rn,]
+
+pheatmap(sas_scdata, cluster_rows=F, show_rownames=T, cluster_cols=T)
 ~~~
 
 ***  
@@ -202,18 +202,21 @@ If you end up doing many analyses, either refinements of one data set or work on
 We can take the heat map commands from above, and put them into a function:  
 
 ~~~
-HeatMapSamples <- function(data,col1)
+pHeatMapSamples <- function(cdata,res,cols,s_range)
 {
-sampleDists <- dist(t(assay(data)))
-sampleDistMatrix <- as.matrix(sampleDists)
-rownames(sampleDistMatrix) <- paste(data[[col1]])
-colnames(sampleDistMatrix) <- NULL
-colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
-pheatmap(sampleDistMatrix,
-         clustering_distance_rows=sampleDists,
-         clustering_distance_cols=sampleDists,
-         col=colors)
+s_rn <- rownames(res)[1:s_range]
+scdata <- cdata[,cols]
+colnames(scdata) <- paste(scdata$sample,scdata$condition, sep=":")
+sas_scdata <- assay(scdata)[s_rn,]
+
+pheatmap(sas_scdata, cluster_rows=F, show_rownames=T, cluster_cols=T)
 }
+~~~
+
+and then call it like this:
+
+~~~
+> pHeatMapSamples(vsd,resOrd,colnames(vsd),30)
 ~~~
 
 I have omitted the usual R prompts, `>`, that are used to show each command being entered separately.  This is just for teaching purposes, and if you have code in text files, you'll often just paste it in blocks, and you don't want all those prompts in there.
